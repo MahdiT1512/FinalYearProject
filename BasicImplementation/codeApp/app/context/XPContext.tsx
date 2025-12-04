@@ -1,11 +1,11 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode } from "react";
 
 type XPContextType = {
   xp: number;
   level: number;
   addXP: (amount: number) => void;
   completedLessons: string[];
-  completeLesson: (lesson: string) => void;
+  completeLesson: (lesson: string, xpAmount?: number) => void;
 };
 
 export const XPContext = createContext<XPContextType>({
@@ -22,25 +22,25 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
 
   const addXP = (amount: number) => {
-    setXP((prev) => {
-      const newXP = prev + amount;
-      if (newXP >= 100) {
-        setLevel((lvl) => lvl + 1);
-        return newXP - 100;
-      }
-      return newXP;
+    setXP((prevXP) => {
+      let totalXP = prevXP + amount;
+      setLevel((prevLevel) => prevLevel + Math.floor(totalXP / 100));
+      totalXP = totalXP % 100;
+      return totalXP;
     });
   };
 
-  const completeLesson = (lesson: string) => {
-    if (!completedLessons.includes(lesson)) {
-      setCompletedLessons([...completedLessons, lesson]);
-      addXP(10); 
-    }
+  const completeLesson = (lesson: string, xpAmount: number = 10) => {
+    setCompletedLessons((prev) => {
+      if (prev.includes(lesson)) return prev;
+      return [...prev, lesson];
+    });
+    addXP(xpAmount);
   };
-
   return (
-    <XPContext.Provider value={{ xp, level, addXP, completedLessons, completeLesson }}>
+    <XPContext.Provider
+      value={{ xp, level, addXP, completedLessons, completeLesson }}
+    >
       {children}
     </XPContext.Provider>
   );

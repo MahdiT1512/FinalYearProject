@@ -1,15 +1,31 @@
-import { Text, View, FlatList, StyleSheet } from "react-native";
 import React, { useContext } from "react";
-import { XPContext } from "../../context/XPContext";
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import XPBar from "../common/XPBar";
 import Card from "../common/LearnCard";
+import { XPContext } from "../../context/XPContext";
+import lessonsData from "../../data/lessons.json";
+
+type Exercise = {
+  type: "mc" | "code";
+  text: string;
+  options?: string[];
+  correct?: number;
+  prompt?: string;
+  answer?: string;
+  xp: number;
+};
+
+type Lesson = {
+  id: string;
+  title: string;
+  content: string;
+  exercises: Exercise[];
+};
 
 export default function LearnScreen() {
-  
   const { xp, level, completedLessons } = useContext(XPContext);
-
-  const lessons = ["Lesson 1", "Lesson 2", "Lesson 3"];
+  const lessons: Lesson[] = lessonsData as Lesson[];
 
   return (
     <LinearGradient
@@ -22,13 +38,9 @@ export default function LearnScreen() {
 
         <FlatList
           data={lessons}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Card
-              title={item}
-              route={`/learn/${item}`}
-              />
-            
+            <Card title={item.title} route={`/learn/${item.id}`} />
           )}
         />
       </View>
@@ -37,15 +49,15 @@ export default function LearnScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', padding: 10 },
-  title: { fontSize: 24, fontWeight: 'bold', marginVertical: 10 },
-  xpContainer: { width: '100%', marginBottom: 15, elevation: 5 },
+  container: { flex: 1, alignItems: "center", padding: 10 },
+  title: { fontSize: 24, fontWeight: "bold", marginVertical: 10 },
+  xpContainer: { width: "100%", marginBottom: 15, elevation: 5 },
 
   barBackground: {
     height: 20,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: "#e0e0e0",
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginTop: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -55,7 +67,7 @@ const styles = StyleSheet.create({
   },
   barFill: {
     height: 20,
-    backgroundColor: '#FFB703',
+    backgroundColor: "#FFB703",
     elevation: 5,
   },
   card: {

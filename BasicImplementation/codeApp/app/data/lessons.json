@@ -1,0 +1,170 @@
+[
+  {
+    "id": "Lesson 1",
+    "title": "Introduction to Python",
+    "content": "### What is Python?\nPython is a versatile programming language known for its readability and simplicity. It is used in web development, data science, machine learning, automation, and more. Python's syntax emphasizes readability, making it beginner-friendly.\n\n### Setting up Python\nTo start coding in Python, you need to install Python from the official website or use an IDE like PyCharm or VSCode. You can run Python programs from the terminal or through your IDE.\n\n### Variables\nVariables are containers that store data. Python supports various types of data including integers, floats, strings, and booleans.\n\nExample:\n```python\nage = 25\nname = 'Alice'\nis_student = True\nprint(age, name, is_student)\n```\nOutput:\n```\n25 Alice True\n```\n\n### Data Types\n- **Integer (int)**: Whole numbers like 10, -3, 42\n- **Float (float)**: Decimal numbers like 3.14, -0.5\n- **String (str)**: Text, enclosed in quotes 'Hello' or \"Hello\"\n- **Boolean (bool)**: True or False values\n\nExample:\n```python\nx = 10       # int\ny = 3.5      # float\nname = 'Bob' # string\nis_active = False # bool\n```\n\n### Operators\nPython supports arithmetic operators: `+`, `-`, `*`, `/`, `%`, `**` (exponent), `//` (floor division).\n\nExample:\n```python\na = 7\nb = 3\nprint(a + b)  # 10\nprint(a - b)  # 4\nprint(a * b)  # 21\nprint(a / b)  # 2.333...\nprint(a % b)  # 1\nprint(a ** b) # 343\nprint(a // b) # 2\n```\n\n### Strings\nStrings are sequences of characters. You can concatenate, repeat, and slice them.\n\nExample:\n```python\ntext = 'Hello'\nprint(text + ' World') # Hello World\nprint(text * 3)         # HelloHelloHello\nprint(text[0])          # H\nprint(text[1:4])        # ell\n```\n\n### Input and Output\nYou can take input from the user with `input()` and print results using `print()`.\n\nExample:\n```python\nname = input('Enter your name: ')\nprint('Hello,', name)\n```\n\n### Example Program: Simple Calculator\n```python\nx = int(input('Enter first number: '))\ny = int(input('Enter second number: '))\nsum = x + y\nprint('Sum:', sum)\n```\n\n### Summary\nIn this lesson, you learned:\n- Python basics and syntax\n- Variables and data types\n- Arithmetic and string operations\n- Taking input and printing output\n\nPractice these concepts with the exercises below.",
+    "exercises": [
+      {
+        "type": "mc",
+        "text": "Which of the following is a correct way to declare a variable in Python?",
+        "options": ["x = 10", "int x = 10", "var x = 10", "declare x = 10"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "type": "mc",
+        "text": "What data type is the value 'Hello World'?",
+        "options": ["Integer", "String", "Boolean", "Float"],
+        "correct": 1,
+        "xp": 10
+      },
+      {
+        "type": "code",
+        "text": "Fill in the blank to store 25 in a variable called 'age'.",
+        "prompt": "___ = 25",
+        "answer": "age",
+        "xp": 15
+      },
+      {
+        "type": "code",
+        "text": "Print the value of the variable 'age'.",
+        "prompt": "print( ___ )",
+        "answer": "age",
+        "xp": 15
+      },
+      {
+        "type": "mc",
+        "text": "Which symbol is used for assignment in Python?",
+        "options": ["=", "==", ":", "+="],
+        "correct": 0,
+        "xp": 10
+      }
+    ]
+  },
+  {
+  "id": "Lesson 2",
+  "title": "Control Flow",
+  "content": "### Introduction to Control Flow\nControl flow in Python allows your programs to make decisions and repeat actions. Without control flow, programs would just execute statements sequentially, which is rarely useful.\n\nIn this lesson, you will learn about:\n- Conditional statements (if, elif, else)\n- Comparison operators (==, !=, >, <, >=, <=)\n- Logical operators (and, or, not)\n- Loops (for and while)\n- Nested loops and conditions\n\n### Conditional Statements\nConditional statements let your program execute certain code only when a condition is true.\n\n**Syntax:**\n```python\nif condition:\n    # code executed if condition is True\nelif another_condition:\n    # code executed if another_condition is True\nelse:\n    # code executed if all conditions are False\n```\n\n**Example 1:**\n```python\nage = 18\nif age >= 18:\n    print('You are an adult')\nelse:\n    print('You are a minor')\n```\nOutput:\n```\nYou are an adult\n```\n\n**Example 2: Multiple conditions**\n```python\nscore = 85\nif score >= 90:\n    print('A grade')\nelif score >= 80:\n    print('B grade')\nelif score >= 70:\n    print('C grade')\nelse:\n    print('Fail')\n```\nOutput:\n```\nB grade\n```\n\n### Comparison Operators\nComparison operators are used to compare values and return a boolean (`True` or `False`).\n\n| Operator | Meaning        | Example       |\n|----------|----------------|---------------|\n| ==     | Equals         | 5 == 5 → True |\n| !=     | Not equal      | 5 != 3 → True |\n| >      | Greater than   | 5 > 3 → True  |\n| <      | Less than      | 5 < 3 → False |\n| >=     | Greater or equal | 5 >= 5 → True |\n| <=     | Less or equal    | 3 <= 5 → True |\n\n**Example:**\n```python\nx = 10\ny = 7\nprint(x > y)   # True\nprint(x == y)  # False\n```",
+  "exercises": [
+    {
+      "type": "mc",
+      "text": "Which keyword starts a conditional statement in Python?",
+      "options": ["if", "for", "while", "def"],
+      "correct": 0,
+      "xp": 10
+    },
+    {
+      "type": "mc",
+      "text": "What will the following code print?\n\nif 5 > 3:\n    print('Yes')",
+      "options": ["No", "Yes", "Error", "Nothing"],
+      "correct": 1,
+      "xp": 10
+    },
+    {
+      "type": "code",
+      "text": "Write a for loop that prints numbers 1 to 5.",
+      "prompt": "for ___ in range(1,6):\n    print(___)",
+      "answer": "i,i",
+      "xp": 15
+    },
+    {
+      "type": "mc",
+      "text": "Which of these is a correct while loop?",
+      "options": ["while x < 5:", "while x = 5:", "for x while 5:", "loop while x < 5"],
+      "correct": 0,
+      "xp": 10
+    },
+    {
+      "type": "code",
+      "text": "Complete the if statement to check if a number is even.",
+      "prompt": "if number % 2 ___ 0:\n    print('Even')",
+      "answer": "==",
+      "xp": 15
+    }
+  ]
+},
+  {
+    "id": "Lesson 3",
+    "title": "Functions",
+    "content": "Functions are reusable blocks of code that perform a specific task. They help make your code cleaner and more organized. In this lesson, you'll learn how to define functions, pass arguments, and return values.\n\nFunctions are defined using the 'def' keyword. You can call a function multiple times with different arguments to perform the same operation without rewriting the code. Functions can return values using the 'return' keyword.",
+    "exercises": [
+      {
+        "type": "mc",
+        "text": "Which keyword is used to define a function in Python?",
+        "options": ["def", "function", "fun", "define"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "type": "code",
+        "text": "Define a function named 'greet' that prints 'Hello'.",
+        "prompt": "def ___():\n    print('Hello')",
+        "answer": "greet",
+        "xp": 15
+      },
+      {
+        "type": "code",
+        "text": "Call the function 'greet' to execute it.",
+        "prompt": "___()",
+        "answer": "greet",
+        "xp": 15
+      },
+      {
+        "type": "mc",
+        "text": "Which statement correctly returns a value from a function?",
+        "options": ["return x", "give x", "output x", "send x"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "type": "code",
+        "text": "Write a function 'square' that returns the square of a number 'n'.",
+        "prompt": "def square(n):\n    ___",
+        "answer": "return n * n",
+        "xp": 20
+      }
+    ]
+  },
+  {
+    "id": "Lesson 4",
+    "title": "Lists and Loops",
+    "content": "Lists are ordered collections of items in Python. You can store multiple values in a single variable using a list. Combined with loops, lists become very powerful.\n\nYou can access items by index, add new items with append(), and remove items using remove() or pop(). Loops allow you to iterate through all items in a list, performing operations on each element.",
+    "exercises": [
+      {
+        "type": "mc",
+        "text": "Which of these defines a list in Python?",
+        "options": ["[1, 2, 3]", "{1,2,3}", "(1,2,3)", "list(1,2,3)"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "type": "code",
+        "text": "Add 'Python' to the list 'languages'.",
+        "prompt": "languages = ['Java', 'C++']\nlanguages.___('Python')",
+        "answer": "append",
+        "xp": 15
+      },
+      {
+        "type": "code",
+        "text": "Print all items in the list using a for loop.",
+        "prompt": "for item in languages:\n    ___",
+        "answer": "print(item)",
+        "xp": 15
+      },
+      {
+        "type": "mc",
+        "text": "Which method removes the first occurrence of a value from a list?",
+        "options": ["remove()", "pop()", "delete()", "discard()"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "type": "code",
+        "text": "Get the length of the list 'languages'.",
+        "prompt": "len(___)",
+        "answer": "languages",
+        "xp": 10
+      }
+    ]
+  }
+]

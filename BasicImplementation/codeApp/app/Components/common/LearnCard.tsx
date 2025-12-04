@@ -27,7 +27,9 @@ export default function Card({ title, route }: CardProps) {
       disabled={completed}
     >
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.status}>{completed ? "Completed" : "Tap to Start"}</Text>
+      <Text style={styles.status}>
+        {completed ? "Completed" : "Tap to Start"}
+      </Text>
     </Pressable>
   );
 }
@@ -45,6 +47,11 @@ const styles = StyleSheet.create({
   },
   pressed: { transform: [{ scale: 0.98 }], opacity: 0.95 },
   completedCard: { backgroundColor: "#7BCBC9", opacity: 0.7 },
-  title: { fontSize: 16, fontWeight: "700", marginBottom: 6, textAlign: "center" },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+    marginBottom: 6,
+    textAlign: "center",
+  },
   status: { fontSize: 13, color: "#333" },
 });
