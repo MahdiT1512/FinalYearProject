@@ -1,0 +1,495 @@
+[
+  {
+    "id": "def",
+    "name": "def",
+    "description": "Define a function",
+    "mastery": 10,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "def-1",
+        "type": "mc",
+        "text": "Which keyword defines a function in Python?",
+        "options": ["def", "function", "fn", "lambda"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "id": "def-2",
+        "type": "code",
+        "text": "Fill the blank to define a function named greet.",
+        "prompt": "def ___():",
+        "answer": "greet",
+        "xp": 15
+      },
+      {
+        "id": "def-3",
+        "type": "mc",
+        "text": "Which statement is true about functions?",
+        "options": [
+          "They can return values",
+          "They must always print",
+          "They cannot accept arguments",
+          "They are only for loops"
+        ],
+        "correct": 0,
+        "xp": 8
+      }
+    ]
+  },
+  {
+    "id": "print",
+    "name": "print",
+    "description": "Print output to console",
+    "mastery": 30,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "print-1",
+        "type": "mc",
+        "text": "Which command prints to the console in Python?",
+        "options": ["console.log", "print", "echo", "printf"],
+        "correct": 1,
+        "xp": 10
+      },
+      {
+        "id": "print-2",
+        "type": "code",
+        "text": "Print the string Hello World.",
+        "prompt": "print(___)",
+        "answer": "\"Hello World\"",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "int",
+    "name": "int",
+    "description": "Integer data type",
+    "mastery": 5,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "int-1",
+        "type": "mc",
+        "text": "Which type describes whole numbers in Python?",
+        "options": ["float", "str", "int", "bool"],
+        "correct": 2,
+        "xp": 8
+      },
+      {
+        "id": "int-2",
+        "type": "code",
+        "text": "Convert '42' (string) to an integer.",
+        "prompt": "x = int(___)",
+        "answer": "\"42\"",
+        "xp": 10
+      }
+    ]
+  },
+  {
+    "id": "str",
+    "name": "str",
+    "description": "String data type",
+    "mastery": 5,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "str-1",
+        "type": "mc",
+        "text": "What is the correct way to create a string?",
+        "options": ["s = 'hello'", "s = hello", "s = `hello`", "s = (hello)"],
+        "correct": 0,
+        "xp": 8
+      },
+      {
+        "id": "str-2",
+        "type": "code",
+        "text": "Get the first character of a string 'cat'.",
+        "prompt": "x = 'cat'\\nfirst = x[___]",
+        "answer": "0",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "if",
+    "name": "if",
+    "description": "Conditional statement",
+    "mastery": 15,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "if-1",
+        "type": "mc",
+        "text": "Which keyword starts a conditional block?",
+        "options": ["for", "if", "when", "case"],
+        "correct": 1,
+        "xp": 10
+      },
+      {
+        "id": "if-2",
+        "type": "code",
+        "text": "Write an if checking if x equals 5.",
+        "prompt": "if x ___ 5:\\n    print('yes')",
+        "answer": "==",
+        "xp": 15
+      }
+    ]
+  },
+  {
+    "id": "else",
+    "name": "else",
+    "description": "Alternative branch in conditionals",
+    "mastery": 10,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "else-1",
+        "type": "mc",
+        "text": "Which keyword runs when an if condition is false?",
+        "options": ["elsif", "otherwise", "else", "fallback"],
+        "correct": 2,
+        "xp": 8
+      },
+      {
+        "id": "else-2",
+        "type": "code",
+        "text": "Add an else clause to this snippet.",
+        "prompt": "if x > 10:\\n    print('big')\\n___:\\n    print('small')",
+        "answer": "else",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "elif",
+    "name": "elif",
+    "description": "Else-if for chaining conditions",
+    "mastery": 8,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "elif-1",
+        "type": "mc",
+        "text": "Which keyword allows an additional condition after if?",
+        "options": ["elseif", "elif", "elifse", "else if"],
+        "correct": 1,
+        "xp": 9
+      },
+      {
+        "id": "elif-2",
+        "type": "code",
+        "text": "Complete the chain: if ... elif ... else ...",
+        "prompt": "if x > 10:\\n    print('a')\\n___ x == 10:\\n    print('b')\\nelse:\\n    print('c')",
+        "answer": "elif",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "for",
+    "name": "for",
+    "description": "For loop for iteration",
+    "mastery": 20,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "for-1",
+        "type": "mc",
+        "text": "Which is the correct for-loop header to iterate numbers 0..4?",
+        "options": ["for i in range(5):", "for (i=0; i<5; i++)", "for i in 0..4:", "foreach i in 0..4:"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "id": "for-2",
+        "type": "code",
+        "text": "Print each item in list items.",
+        "prompt": "for item in ___:\\n    print(item)",
+        "answer": "items",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "while",
+    "name": "while",
+    "description": "While loop for repeated execution",
+    "mastery": 18,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "while-1",
+        "type": "mc",
+        "text": "Which loop runs while a condition holds?",
+        "options": ["for", "repeat", "while", "loop"],
+        "correct": 2,
+        "xp": 9
+      },
+      {
+        "id": "while-2",
+        "type": "code",
+        "text": "Loop until n is zero.",
+        "prompt": "while n ___ 0:\\n    n -= 1",
+        "answer": ">",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "return",
+    "name": "return",
+    "description": "Return a value from a function",
+    "mastery": 25,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "return-1",
+        "type": "mc",
+        "text": "What does return do inside a function?",
+        "options": ["Stop function and give back value", "Print value", "Call another function", "Create variable"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "id": "return-2",
+        "type": "code",
+        "text": "Return the sum of a and b.",
+        "prompt": "def add(a,b):\\n    ___ a + b",
+        "answer": "return",
+        "xp": 15
+      }
+    ]
+  },
+  {
+    "id": "list",
+    "name": "list",
+    "description": "Ordered, mutable collection",
+    "mastery": 12,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "list-1",
+        "type": "mc",
+        "text": "Which literal creates a list?",
+        "options": ["(1,2,3)", "{1,2,3}", "[1,2,3]", "<1,2,3>"],
+        "correct": 2,
+        "xp": 9
+      },
+      {
+        "id": "list-2",
+        "type": "code",
+        "text": "Append 'x' to list L.",
+        "prompt": "L = [1,2]\\nL.___('x')",
+        "answer": "append",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "dict",
+    "name": "dict",
+    "description": "Key-value mapping (dictionary)",
+    "mastery": 8,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "dict-1",
+        "type": "mc",
+        "text": "Which literal creates a dictionary with key 'a' -> 1?",
+        "options": ["{'a':1}", "('a',1)", "['a',1]", "{'a'}"],
+        "correct": 0,
+        "xp": 10
+      },
+      {
+        "id": "dict-2",
+        "type": "code",
+        "text": "Access value with key 'k' from d.",
+        "prompt": "value = d[___]",
+        "answer": "'k'",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "tuple",
+    "name": "tuple",
+    "description": "Immutable ordered collection",
+    "mastery": 6,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "tuple-1",
+        "type": "mc",
+        "text": "Which literal makes a tuple?",
+        "options": ["[1,2]", "(1,2)", "{1,2}", "<1,2>"],
+        "correct": 1,
+        "xp": 8
+      },
+      {
+        "id": "tuple-2",
+        "type": "mc",
+        "text": "Can you append to a tuple?",
+        "options": ["Yes", "No"],
+        "correct": 1,
+        "xp": 8
+      }
+    ]
+  },
+  {
+    "id": "len",
+    "name": "len",
+    "description": "Built-in function to get length",
+    "mastery": 14,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "len-1",
+        "type": "mc",
+        "text": "What does len([1,2,3]) return?",
+        "options": ["0", "2", "3", "Error"],
+        "correct": 2,
+        "xp": 8
+      },
+      {
+        "id": "len-2",
+        "type": "code",
+        "text": "Get length of string s.",
+        "prompt": "n = len(___)",
+        "answer": "s",
+        "xp": 10
+      }
+    ]
+  },
+  {
+    "id": "range",
+    "name": "range",
+    "description": "Generate a sequence of numbers",
+    "mastery": 10,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "range-1",
+        "type": "mc",
+        "text": "range(3) produces numbers:",
+        "options": ["1,2,3", "0,1,2", "0,1,2,3", "3,2,1"],
+        "correct": 1,
+        "xp": 8
+      },
+      {
+        "id": "range-2",
+        "type": "code",
+        "text": "Create a loop from 0 to 4.",
+        "prompt": "for i in range(___):\\n    print(i)",
+        "answer": "5",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "append",
+    "name": "append",
+    "description": "List method to add one item at end",
+    "mastery": 7,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "append-1",
+        "type": "mc",
+        "text": "Which method adds a single element to a list?",
+        "options": ["extend", "append", "insert", "add"],
+        "correct": 1,
+        "xp": 8
+      },
+      {
+        "id": "append-2",
+        "type": "code",
+        "text": "Append 4 to list a.",
+        "prompt": "a = [1,2,3]\\na.___(4)",
+        "answer": "append",
+        "xp": 10
+      }
+    ]
+  },
+  {
+    "id": "pop",
+    "name": "pop",
+    "description": "List method to remove and return item",
+    "mastery": 9,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "pop-1",
+        "type": "mc",
+        "text": "What does list.pop() do?",
+        "options": [
+          "Removes last item and returns it",
+          "Adds an item",
+          "Clears the list",
+          "Returns list length"
+        ],
+        "correct": 0,
+        "xp": 9
+      },
+      {
+        "id": "pop-2",
+        "type": "code",
+        "text": "Remove and store last element of L.",
+        "prompt": "last = L.___()",
+        "answer": "pop",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "import",
+    "name": "import",
+    "description": "Bring external modules into scope",
+    "mastery": 12,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "import-1",
+        "type": "mc",
+        "text": "Which imports the math module?",
+        "options": ["include math", "require math", "import math", "from math import * as math"],
+        "correct": 2,
+        "xp": 10
+      },
+      {
+        "id": "import-2",
+        "type": "code",
+        "text": "Import only sqrt from math.",
+        "prompt": "from math ___ sqrt",
+        "answer": "import",
+        "xp": 12
+      }
+    ]
+  },
+  {
+    "id": "lambda",
+    "name": "lambda",
+    "description": "Small anonymous function expression",
+    "mastery": 4,
+    "remainingExercises": 3,
+    "exercises": [
+      {
+        "id": "lambda-1",
+        "type": "mc",
+        "text": "Which creates an anonymous function doubling x?",
+        "options": ["lambda x: x*2", "def x: x*2", "fun x => x*2", "anon x: x*2"],
+        "correct": 0,
+        "xp": 12
+      },
+      {
+        "id": "lambda-2",
+        "type": "code",
+        "text": "Write lambda that adds a and b.",
+        "prompt": "f = lambda a,b: ___",
+        "answer": "a + b",
+        "xp": 15
+      }
+    ]
+  }
+]

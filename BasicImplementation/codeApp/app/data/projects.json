@@ -1,0 +1,31 @@
+[
+  {
+    "id": "proj-0",
+    "name": "First Steps CLI App",
+    "description": "Build a simple command-line app that prints your name.",
+    "instructions": "Create a Python file called main.py. Inside it, print your name and a welcome message. Run it in your terminal.",
+    "xp": 25,
+    "requiredSkillLevel": ["Beginner", "Intermediate", "Advanced"],
+    "completed": false
+  },
+  {
+    "id": "proj-1",
+    "name": "Build a Calculator",
+    "description": "Create a simple calculator using Python.",
+    "instructions": "Use Python to build a calculator that can add, subtract, multiply, and divide.",
+    "xp": 50,
+    "requiredSkillLevel": ["Intermediate", "Advanced"],
+    "skills": ["Python", "Functions", "Operators"],
+    "completed": false
+  },
+  {
+    "id": "proj-2",
+    "name": "Website Portfolio",
+    "description": "Create your personal portfolio website.",
+    "instructions": "Use HTML, CSS, and JavaScript to create a portfolio site showcasing your projects.",
+    "xp": 70,
+    "requiredSkillLevel": ["Advanced"],
+    "skills": ["Python", "Functions", "HTML", "CSS" ],
+    "completed": false
+  }
+]

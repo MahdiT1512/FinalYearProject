@@ -1,7 +1,5 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { XPProvider } from "../../context/XPContext";
-import { Slot } from "expo-router";
 
 export default function TabsLayout() {
   return (

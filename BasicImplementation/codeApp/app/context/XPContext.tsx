@@ -1,8 +1,11 @@
 import React, { createContext, useState, ReactNode } from "react";
 
+export type SkillLevel = "Beginner" | "Intermediate" | "Advanced";
+
 type XPContextType = {
   xp: number;
   level: number;
+  userSkillLevel: SkillLevel;
   addXP: (amount: number) => void;
   completedLessons: string[];
   completeLesson: (lesson: string, xpAmount?: number) => void;
@@ -11,6 +14,7 @@ type XPContextType = {
 export const XPContext = createContext<XPContextType>({
   xp: 0,
   level: 1,
+  userSkillLevel: "Beginner",
   addXP: () => {},
   completedLessons: [],
   completeLesson: () => {},
@@ -21,11 +25,22 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
   const [level, setLevel] = useState(1);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
 
+  const getSkillLevel = (lvl: number): SkillLevel => {
+    if (lvl < 3) return "Beginner";
+    if (lvl < 6) return "Intermediate";
+    return "Advanced";
+  };
+
   const addXP = (amount: number) => {
     setXP((prevXP) => {
       let totalXP = prevXP + amount;
-      setLevel((prevLevel) => prevLevel + Math.floor(totalXP / 100));
-      totalXP = totalXP % 100;
+
+      if (totalXP >= 100) {
+        const levelIncrease = Math.floor(totalXP / 100);
+        setLevel((prevLevel) => prevLevel + levelIncrease);
+        totalXP = totalXP % 100;
+      }
+
       return totalXP;
     });
   };
@@ -35,11 +50,20 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
       if (prev.includes(lesson)) return prev;
       return [...prev, lesson];
     });
+
     addXP(xpAmount);
   };
+
   return (
     <XPContext.Provider
-      value={{ xp, level, addXP, completedLessons, completeLesson }}
+      value={{
+        xp,
+        level,
+        userSkillLevel: getSkillLevel(level),
+        addXP,
+        completedLessons,
+        completeLesson,
+      }}
     >
       {children}
     </XPContext.Provider>

@@ -1,48 +1,43 @@
-import React, { useState, useContext } from "react";
-import { View, Text, Button, FlatList, StyleSheet, Dimensions } from "react-native";
+// SyntaxScreen.tsx (under app/syntax or app/screens whichever you use for tabs)
+import React, { useContext } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import { XPContext } from "../../context/XPContext";
-import KeywordCard from "../common/KeywordCard";
-type Keyword = { name: string; mastery: number };
+import { SyntaxContext } from "../../context/SyntaxContext";
+import KeywordCard from "../../Components/common/KeywordCard";
+import { useRouter } from "expo-router";
 
 export default function SyntaxScreen() {
-  const { xp, addXP } = useContext(XPContext);
-  const [keywords, setKeywords] = useState<Keyword[]>([
-    { name: "def", mastery: 10 },
-    { name: "print", mastery: 30 },
-    { name: "int", mastery: 0 },
-    { name: "str", mastery: 5 },
-    { name: "if", mastery: 20 },
-    { name: "else", mastery: 15 },
-    { name: "for", mastery: 40 },
-    { name: "while", mastery: 25 },
-    { name: "return", mastery: 50 },
-  ]);
+  const { xp } = useContext(XPContext);
+  const { keywords } = useContext(SyntaxContext);
+  const router = useRouter();
 
-  const numColumns = 2;
-  const tileWidth = Dimensions.get("window").width / numColumns - 20;
+  const sortedKeywords = [...keywords].sort((a, b) => a.mastery - b.mastery);
 
-  const practiceKeyword = (index: number) => {
-    setKeywords(prev => {
-      const newKeywords = [...prev];
-      newKeywords[index].mastery = Math.min(newKeywords[index].mastery + 10, 100);
-      addXP(5); 
-      return newKeywords;
+  const handlePractice = (keywordId: string, exerciseIndex: number = 0) => {
+    router.push({
+      pathname: "/syntax/SyntaxPractice",
+      params: { keywordId, exerciseIndex: exerciseIndex.toString() },
     });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Syntax</Text>
+      <Text style={styles.xp}>XP: {xp}</Text>
       <FlatList
-        data={keywords}
-        keyExtractor={(item) => item.name}
+        data={sortedKeywords}
+        keyExtractor={(item) => item.id}
         numColumns={3}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
-          <KeywordCard name={item.name} mastery={item.mastery} onPress={() => practiceKeyword(keywords.indexOf(item))}
-            completed={item.mastery >= 100} />
+          <KeywordCard
+            name={item.name}
+            mastery={item.mastery}
+            remainingExercises={item.remainingExercises}
+            completed={item.mastery >= 100}
+            onPress={() => handlePractice(item.id)}
+          />
         )}
-        contentContainerStyle={{ paddingBottom: 20 }}
       />
     </View>
   );
@@ -51,9 +46,6 @@ export default function SyntaxScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: "center", padding: 10 },
   title: { fontSize: 24, fontWeight: "bold", marginVertical: 10 },
-  card: { backgroundColor: "#F0F0F0", padding: 10, margin: 5, borderRadius: 10 },
-  cardText: { textAlign: "center", marginBottom: 5 },
-  barBackground: { height: 10, backgroundColor: "#e0e0e0", borderRadius: 5, overflow: "hidden", marginBottom: 5 },
-  barFill: { height: 10, backgroundColor: "#FFB703" },
-  row: {justifyContent: "space-between",}
+  xp: { fontSize: 16, marginBottom: 10 },
+  row: { justifyContent: "space-between", width: "100%" },
 });

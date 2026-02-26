@@ -1,0 +1,52 @@
+[
+  {
+    "id": "u1",
+    "username": "alice",
+    "anonymous": false,
+    "country": "GB",
+    "badges": ["Project Pro", "Syntax Whiz", "5 Lessons"],
+    "weeklyXP": 420,
+    "monthlyXP": 1800,
+    "allTimeXP": 7200
+  },
+  {
+    "id": "u2",
+    "username": "bob",
+    "anonymous": true,
+    "country": "US",
+    "badges": ["Beginner", "First Steps"],
+    "weeklyXP": 150,
+    "monthlyXP": 900,
+    "allTimeXP": 2200
+  },
+  {
+    "id": "u3",
+    "username": "carol",
+    "anonymous": false,
+    "country": "IN",
+    "badges": ["Project Pro", "Top 10"],
+    "weeklyXP": 1200,
+    "monthlyXP": 4800,
+    "allTimeXP": 15000
+  },
+  {
+    "id": "u4",
+    "username": "dave",
+    "anonymous": false,
+    "country": "DE",
+    "badges": ["Syntax Genius"],
+    "weeklyXP": 60,
+    "monthlyXP": 210,
+    "allTimeXP": 800
+  },
+  {
+    "id": "u5",
+    "username": "erin",
+    "anonymous": false,
+    "country": "BR",
+    "badges": ["5 Lessons", "Project Completionist"],
+    "weeklyXP": 820,
+    "monthlyXP": 3200,
+    "allTimeXP": 9800
+  }
+]

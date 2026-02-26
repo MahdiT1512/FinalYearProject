@@ -1,22 +1,63 @@
-import React from "react";
-import { View, Text, StyleSheet,Button } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, StyleSheet, Button, Animated } from "react-native";
 
 type KeywordCardProps = {
   name: string;
-  mastery: number; 
+  mastery: number; // 0–100
   onPress: () => void;
-  completed?: boolean;  
+  completed?: boolean; // fully mastered
+  xpPerExercise?: number;
+  remainingExercises?: number;
 };
 
-export default function KeywordCard({ name, mastery, onPress, completed = false }: KeywordCardProps) {
+export default function KeywordCard({
+  name,
+  mastery,
+  onPress,
+  completed = false,
+  xpPerExercise = 10,
+  remainingExercises = 1,
+}: KeywordCardProps) {
+  const animatedWidth = useRef(new Animated.Value(0)).current;
+  const [displayMastery, setDisplayMastery] = useState(mastery);
+
+  useEffect(() => {
+    Animated.timing(animatedWidth, {
+      toValue: mastery,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+
+    setDisplayMastery(mastery);
+  }, [mastery]);
+
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, completed && styles.completedCard]}>
       <Text style={styles.keyword}>{name}</Text>
+
       <View style={styles.barBackground}>
-        <View style={[styles.barFill, { width: `${mastery}%` }]} />
+        <Animated.View
+          style={[
+            styles.barFill,
+            {
+              width: animatedWidth.interpolate({
+                inputRange: [0, 100],
+                outputRange: ["0%", "100%"],
+              }),
+            },
+          ]}
+        />
       </View>
+
+      <Text style={styles.masteryText}>{displayMastery}% mastery</Text>
+      <Text style={styles.xpText}>XP per exercise: {xpPerExercise}</Text>
+
       <Button
-        title={completed ? "Mastered" : "Practice"}
+        title={
+          completed
+            ? "Mastered ✅"
+            : `Practice${remainingExercises && remainingExercises > 1 ? ` (${remainingExercises} left)` : ""}`
+        }
         onPress={onPress}
         disabled={completed}
       />
@@ -30,13 +71,16 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 10,
-    width: 120,
+    width: 130,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
+  },
+  completedCard: {
+    opacity: 0.6,
   },
   keyword: {
     fontSize: 16,
@@ -54,5 +98,14 @@ const styles = StyleSheet.create({
   barFill: {
     height: "100%",
     backgroundColor: "#FFB703",
+  },
+  masteryText: {
+    fontSize: 12,
+    marginBottom: 2,
+  },
+  xpText: {
+    fontSize: 12,
+    marginBottom: 5,
+    color: "#555",
   },
 });
