@@ -1,34 +1,46 @@
 import React, { useContext } from "react";
-import { Pressable, Text, StyleSheet } from "react-native";
+import { Pressable, Text, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import { XPContext } from "../../context/XPContext";
 
 type CardProps = {
+  id: string;
   title: string;
   route: string;
+  locked?: boolean;
 };
 
-export default function Card({ title, route }: CardProps) {
+export default function Card({ id, title, route, locked }: CardProps) {
   const router = useRouter();
   const { completedLessons } = useContext(XPContext);
-  const completed = completedLessons.includes(title);
+
+  const completed = completedLessons.includes(id);
+
+  const handlePress = () => {
+    if (!locked) router.push(route);
+  };
 
   return (
     <Pressable
-      onPress={() => !completed && router.push(route)}
+      onPress={handlePress}
       style={({ pressed }) => [
         styles.card,
         completed && styles.completedCard,
-        pressed && !completed && styles.pressed,
+        locked && styles.lockedCard,
+        pressed && !locked && styles.pressed,
       ]}
+      disabled={locked}
       android_ripple={{ color: "#00000020" }}
-      accessibilityRole="button"
-      accessibilityState={{ disabled: completed }}
-      disabled={completed}
     >
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.row}>
+        <Text style={styles.title}>{title}</Text>
+
+        {completed && <Text style={styles.icon}>✓</Text>}
+        {locked && <Text style={styles.icon}>🔒</Text>}
+      </View>
+
       <Text style={styles.status}>
-        {completed ? "Completed" : "Tap to Start"}
+        {completed ? "Completed" : locked ? "Locked" : "Tap to Start"}
       </Text>
     </Pressable>
   );
@@ -36,22 +48,47 @@ export default function Card({ title, route }: CardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    padding: 14,
-    marginVertical: 6,
-    marginHorizontal: 8,
+    padding: 16,
+    marginVertical: 8,
+    marginHorizontal: 6,
     backgroundColor: "#A0E7E5",
-    borderRadius: 12,
+    borderRadius: 14,
+    elevation: 3,
+  },
+
+  pressed: {
+    transform: [{ scale: 0.97 }],
+  },
+
+  completedCard: {
+    backgroundColor: "#7BCBC9",
+  },
+
+  lockedCard: {
+    backgroundColor: "#ddd",
+    opacity: 0.6,
+  },
+
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
-    minWidth: 140,
   },
-  pressed: { transform: [{ scale: 0.98 }], opacity: 0.95 },
-  completedCard: { backgroundColor: "#7BCBC9", opacity: 0.7 },
+
   title: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "700",
-    marginBottom: 6,
-    textAlign: "center",
+    flex: 1,
   },
-  status: { fontSize: 13, color: "#333" },
+
+  icon: {
+    fontSize: 18,
+    marginLeft: 10,
+  },
+
+  status: {
+    marginTop: 6,
+    fontSize: 13,
+    color: "#333",
+  },
 });
