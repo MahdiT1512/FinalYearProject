@@ -1,199 +1,771 @@
-// context/XPContext.tsx
 import React, {
   createContext,
   useEffect,
-  useRef,
+  useMemo,
   useState,
   ReactNode,
 } from "react";
+import { doc, onSnapshot, runTransaction, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { useAuth } from "./AuthContext";
+import { isSameUtcDay } from "../data/countries";
+import { syncUserBadges } from "../../services/badges";
 
 export type SkillLevel = "Beginner" | "Intermediate" | "Advanced";
+
+export type LessonStat = {
+  attempts: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  completed: boolean;
+  lastPracticedAt: number | null;
+  lastRewardClaimedAt?: number | null;
+};
+
+type LessonStatsMap = Record<string, LessonStat>;
 
 type XPContextType = {
   xp: number;
   level: number;
-  userSkillLevel: SkillLevel;
-  addXP: (amount: number) => void;
-  completedLessons: string[];
-  completeLesson: (lesson: string, xpAmount?: number) => void;
+  allTimeXP: number;
+  weeklyXP: number;
+  monthlyXP: number;
 
-  // Hearts API
+  username: string;
+  country: string;
+  anonymous: boolean;
+  userSkillLevel: SkillLevel;
+
+  completedLessons: string[];
+  lessonStats: LessonStatsMap;
+  pendingReviewCount: number;
+
+  streakCount: number;
+  lastActiveAt: number | null;
+
+  dailyRewardLastClaimedAt: number | null;
+  canClaimDailyReward: () => boolean;
+  claimDailyReward: () => Promise<number>;
+
   hearts: number;
   maxHearts: number;
-  loseHeart: () => void;
-  refillHearts: (instant?: boolean) => void;
-  // for UI: seconds until next heart (approx)
   secondsUntilNextHeart: number | null;
+
+  loading: boolean;
+
+  addXP: (amount: number) => Promise<void>;
+  completeLesson: (lessonId: string, xpAmount?: number) => Promise<number>;
+  loseHeart: () => Promise<void>;
+  refillHearts: (instant?: boolean) => Promise<void>;
+
+  recordLessonAttempt: (lessonId: string) => Promise<void>;
+  recordLessonAnswerResult: (
+    lessonId: string,
+    wasCorrect: boolean,
+  ) => Promise<void>;
+  markLessonCompleted: (lessonId: string) => Promise<void>;
+
+  canEarnDeckReward: (lessonId: string) => boolean;
+  markDeckRewardClaimed: (lessonId: string) => Promise<void>;
+  getLessonXPModifier: () => number;
+
+  recordDailyActivity: () => Promise<void>;
 };
 
 export const XPContext = createContext<XPContextType>({
   xp: 0,
   level: 1,
+  allTimeXP: 0,
+  weeklyXP: 0,
+  monthlyXP: 0,
+
+  username: "",
+  country: "",
+  anonymous: false,
   userSkillLevel: "Beginner",
-  addXP: () => {},
+
   completedLessons: [],
-  completeLesson: () => {},
+  lessonStats: {},
+  pendingReviewCount: 0,
+
+  streakCount: 0,
+  lastActiveAt: null,
+
+  dailyRewardLastClaimedAt: null,
+  canClaimDailyReward: () => false,
+  claimDailyReward: async () => 0,
+
   hearts: 5,
   maxHearts: 5,
-  loseHeart: () => {},
-  refillHearts: () => {},
   secondsUntilNextHeart: null,
+
+  loading: true,
+
+  addXP: async () => {},
+  completeLesson: async () => 0,
+  loseHeart: async () => {},
+  refillHearts: async () => {},
+
+  recordLessonAttempt: async () => {},
+  recordLessonAnswerResult: async () => {},
+  markLessonCompleted: async () => {},
+
+  canEarnDeckReward: () => false,
+  markDeckRewardClaimed: async () => {},
+  getLessonXPModifier: () => 1,
+
+  recordDailyActivity: async () => {},
 });
 
-export const XPProvider = ({ children }: { children: ReactNode }) => {
-  const MAX_HEARTS = 5;
-  // Regeneration interval for demo. In production you'd set this to e.g. 15 * 60 * 1000
-  const REGEN_INTERVAL_MS = 60 * 1000; // 60s per heart (demo)
-  const [xp, setXP] = useState<number>(0);
-  const [level, setLevel] = useState<number>(1);
-  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+const REGEN_INTERVAL_MS = 60 * 1000;
+const DEFAULT_MAX_HEARTS = 5;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
-  // hearts state
-  const [hearts, setHearts] = useState<number>(MAX_HEARTS);
-  const [secondsUntilNextHeart, setSecondsUntilNextHeart] = useState<
+function computeHeartState(
+  baseHearts: number,
+  maxHearts: number,
+  heartsUpdatedAt: number,
+  now: number,
+) {
+  if (baseHearts >= maxHearts) {
+    return {
+      hearts: maxHearts,
+      secondsUntilNextHeart: null as number | null,
+      syncedHearts: maxHearts,
+      syncedUpdatedAt: heartsUpdatedAt,
+      changed: false,
+    };
+  }
+
+  const elapsed = Math.max(0, now - heartsUpdatedAt);
+  const recovered = Math.floor(elapsed / REGEN_INTERVAL_MS);
+  const newHearts = Math.min(maxHearts, baseHearts + recovered);
+
+  const syncedUpdatedAt =
+    recovered > 0
+      ? heartsUpdatedAt + recovered * REGEN_INTERVAL_MS
+      : heartsUpdatedAt;
+
+  const changed =
+    newHearts !== baseHearts || syncedUpdatedAt !== heartsUpdatedAt;
+
+  if (newHearts >= maxHearts) {
+    return {
+      hearts: newHearts,
+      secondsUntilNextHeart: null as number | null,
+      syncedHearts: newHearts,
+      syncedUpdatedAt,
+      changed,
+    };
+  }
+
+  const remainder = elapsed % REGEN_INTERVAL_MS;
+  const msUntilNext = REGEN_INTERVAL_MS - remainder;
+
+  return {
+    hearts: newHearts,
+    secondsUntilNextHeart: Math.ceil(msUntilNext / 1000),
+    syncedHearts: newHearts,
+    syncedUpdatedAt,
+    changed,
+  };
+}
+
+function isYesterday(timestampA?: number | null, timestampB?: number | null) {
+  if (!timestampA || !timestampB) return false;
+
+  const a = new Date(timestampA);
+  const b = new Date(timestampB);
+
+  const aUTC = Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());
+  const bUTC = Date.UTC(b.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate());
+
+  return bUTC - aUTC === DAY_MS;
+}
+
+export const XPProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
+
+  const [loading, setLoading] = useState(true);
+
+  const [xp, setXP] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [allTimeXP, setAllTimeXP] = useState(0);
+  const [weeklyXP, setWeeklyXP] = useState(0);
+  const [monthlyXP, setMonthlyXP] = useState(0);
+
+  const [username, setUsername] = useState("");
+  const [country, setCountry] = useState("");
+  const [anonymous, setAnonymous] = useState(false);
+  const [userSkillLevel, setUserSkillLevel] = useState<SkillLevel>("Beginner");
+
+  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+  const [lessonStats, setLessonStats] = useState<LessonStatsMap>({});
+
+  const [streakCount, setStreakCount] = useState(0);
+  const [lastActiveAt, setLastActiveAt] = useState<number | null>(null);
+  const [dailyRewardLastClaimedAt, setDailyRewardLastClaimedAt] = useState<
     number | null
   >(null);
 
-  // timer refs
-  const regenTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [baseHearts, setBaseHearts] = useState(DEFAULT_MAX_HEARTS);
+  const [maxHearts, setMaxHearts] = useState(DEFAULT_MAX_HEARTS);
+  const [heartsUpdatedAt, setHeartsUpdatedAt] = useState(Date.now());
 
-  // helper to compute skill label
-  const getSkillLevel = (lvl: number): SkillLevel => {
-    if (lvl < 3) return "Beginner";
-    if (lvl < 6) return "Intermediate";
-    return "Advanced";
+  const [nowTick, setNowTick] = useState(Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNowTick(Date.now());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      setXP(0);
+      setLevel(1);
+      setAllTimeXP(0);
+      setWeeklyXP(0);
+      setMonthlyXP(0);
+      setUsername("");
+      setCountry("");
+      setAnonymous(false);
+      setUserSkillLevel("Beginner");
+      setCompletedLessons([]);
+      setLessonStats({});
+      setStreakCount(0);
+      setLastActiveAt(null);
+      setDailyRewardLastClaimedAt(null);
+      setBaseHearts(DEFAULT_MAX_HEARTS);
+      setMaxHearts(DEFAULT_MAX_HEARTS);
+      setHeartsUpdatedAt(Date.now());
+      return;
+    }
+
+    setLoading(true);
+
+    const userRef = doc(db, "users", user.uid);
+
+    const unsubscribe = onSnapshot(userRef, async (snap) => {
+      if (!snap.exists()) {
+        setLoading(false);
+        return;
+      }
+
+      const data = snap.data();
+
+      const firestoreMaxHearts = data.maxHearts ?? DEFAULT_MAX_HEARTS;
+      const firestoreHearts = data.hearts ?? firestoreMaxHearts;
+      const firestoreHeartsUpdatedAt = data.heartsUpdatedAt ?? Date.now();
+
+      const computed = computeHeartState(
+        firestoreHearts,
+        firestoreMaxHearts,
+        firestoreHeartsUpdatedAt,
+        Date.now(),
+      );
+
+      setXP(data.xp ?? 0);
+      setLevel(data.level ?? 1);
+      setAllTimeXP(data.allTimeXP ?? 0);
+      setWeeklyXP(data.weeklyXP ?? 0);
+      setMonthlyXP(data.monthlyXP ?? 0);
+
+      setUsername(data.username ?? "");
+      setCountry(data.country ?? "");
+      setAnonymous(!!data.anonymous);
+      setUserSkillLevel((data.userSkillLevel as SkillLevel) ?? "Beginner");
+
+      setCompletedLessons(data.completedLessons ?? []);
+      setLessonStats(data.lessonStats ?? {});
+
+      setStreakCount(data.streakCount ?? 0);
+      setLastActiveAt(data.lastActiveAt ?? null);
+      setDailyRewardLastClaimedAt(data.dailyRewardLastClaimedAt ?? null);
+
+      setBaseHearts(computed.syncedHearts);
+      setMaxHearts(firestoreMaxHearts);
+      setHeartsUpdatedAt(computed.syncedUpdatedAt);
+
+      if (computed.changed) {
+        await updateDoc(userRef, {
+          hearts: computed.syncedHearts,
+          heartsUpdatedAt: computed.syncedUpdatedAt,
+        });
+      }
+
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, [user]);
+
+  const heartState = useMemo(() => {
+    return computeHeartState(baseHearts, maxHearts, heartsUpdatedAt, nowTick);
+  }, [baseHearts, maxHearts, heartsUpdatedAt, nowTick]);
+
+  const pendingReviewCount = useMemo(() => {
+    return Object.values(lessonStats).filter(
+      (stat) =>
+        stat.completed &&
+        (!stat.lastRewardClaimedAt ||
+          !isSameUtcDay(stat.lastRewardClaimedAt, Date.now())),
+    ).length;
+  }, [lessonStats]);
+
+  const getLessonXPModifier = () => {
+    if (pendingReviewCount >= 10) return 0.7;
+    if (pendingReviewCount >= 6) return 0.8;
+    if (pendingReviewCount >= 3) return 0.9;
+    return 1;
   };
 
-  // Add XP and auto-level
-  const addXP = (amount: number) => {
-    setXP((prevXP) => {
-      let totalXP = prevXP + amount;
+  const recordDailyActivity = async () => {
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(userRef);
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+      const currentLastActiveAt = data.lastActiveAt ?? null;
+      const currentStreakCount = data.streakCount ?? 0;
+      const now = Date.now();
+
+      if (currentLastActiveAt && isSameUtcDay(currentLastActiveAt, now)) {
+        return;
+      }
+
+      let nextStreak = 1;
+
+      if (currentLastActiveAt && isYesterday(currentLastActiveAt, now)) {
+        nextStreak = currentStreakCount + 1;
+      }
+
+      tx.update(userRef, {
+        lastActiveAt: now,
+        streakCount: nextStreak,
+      });
+    });
+
+    await syncUserBadges(user.uid);
+  };
+
+  const addXP = async (amount: number) => {
+    if (!user || amount <= 0) return;
+
+    const userRef = doc(db, "users", user.uid);
+
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(userRef);
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+
+      const currentXP = data.xp ?? 0;
+      const currentLevel = data.level ?? 1;
+      const currentAllTimeXP = data.allTimeXP ?? 0;
+      const currentWeeklyXP = data.weeklyXP ?? 0;
+      const currentMonthlyXP = data.monthlyXP ?? 0;
+
+      let totalXP = currentXP + amount;
+      let newLevel = currentLevel;
 
       if (totalXP >= 100) {
         const levelIncrease = Math.floor(totalXP / 100);
-        setLevel((prevLevel) => prevLevel + levelIncrease);
+        newLevel += levelIncrease;
         totalXP = totalXP % 100;
       }
 
-      return totalXP;
+      tx.update(userRef, {
+        xp: totalXP,
+        level: newLevel,
+        allTimeXP: currentAllTimeXP + amount,
+        weeklyXP: currentWeeklyXP + amount,
+        monthlyXP: currentMonthlyXP + amount,
+      });
     });
+
+    await recordDailyActivity();
+    await syncUserBadges(user.uid);
   };
 
-  const completeLesson = (lesson: string, xpAmount: number = 10) => {
-    setCompletedLessons((prev) => {
-      if (prev.includes(lesson)) return prev;
-      return [...prev, lesson];
+  const completeLesson = async (lessonId: string, xpAmount: number = 10) => {
+    if (!user || !lessonId) return 0;
+
+    const userRef = doc(db, "users", user.uid);
+    let earnedXP = 0;
+
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(userRef);
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+      const currentCompletedLessons: string[] = data.completedLessons ?? [];
+      const currentLessonStats: LessonStatsMap = data.lessonStats ?? {};
+
+      const existingStat = currentLessonStats[lessonId] ?? {
+        attempts: 0,
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        completed: false,
+        lastPracticedAt: null,
+        lastRewardClaimedAt: null,
+      };
+
+      let totalXP = data.xp ?? 0;
+      let newLevel = data.level ?? 1;
+      let currentAllTimeXP = data.allTimeXP ?? 0;
+      let currentWeeklyXP = data.weeklyXP ?? 0;
+      let currentMonthlyXP = data.monthlyXP ?? 0;
+
+      if (!currentCompletedLessons.includes(lessonId) && xpAmount > 0) {
+        const currentPendingReviews = Object.values(currentLessonStats).filter(
+          (stat) =>
+            stat.completed &&
+            (!stat.lastRewardClaimedAt ||
+              !isSameUtcDay(stat.lastRewardClaimedAt, Date.now())),
+        ).length;
+
+        let modifier = 1;
+        if (currentPendingReviews >= 10) modifier = 0.7;
+        else if (currentPendingReviews >= 6) modifier = 0.8;
+        else if (currentPendingReviews >= 3) modifier = 0.9;
+
+        earnedXP = Math.max(5, Math.round(xpAmount * modifier));
+
+        totalXP += earnedXP;
+        currentAllTimeXP += earnedXP;
+        currentWeeklyXP += earnedXP;
+        currentMonthlyXP += earnedXP;
+
+        if (totalXP >= 100) {
+          const levelIncrease = Math.floor(totalXP / 100);
+          newLevel += levelIncrease;
+          totalXP = totalXP % 100;
+        }
+      }
+
+      tx.update(userRef, {
+        completedLessons: currentCompletedLessons.includes(lessonId)
+          ? currentCompletedLessons
+          : [...currentCompletedLessons, lessonId],
+        xp: totalXP,
+        level: newLevel,
+        allTimeXP: currentAllTimeXP,
+        weeklyXP: currentWeeklyXP,
+        monthlyXP: currentMonthlyXP,
+        lessonStats: {
+          ...currentLessonStats,
+          [lessonId]: {
+            ...existingStat,
+            completed: true,
+            lastPracticedAt: Date.now(),
+          },
+        },
+      });
     });
 
-    addXP(xpAmount);
+    await recordDailyActivity();
+    await syncUserBadges(user.uid);
+    return earnedXP;
   };
 
-  // lose a heart
-  const loseHeart = () => {
-    setHearts((h) => {
-      const next = Math.max(0, h - 1);
-      return next;
+  const recordLessonAttempt = async (lessonId: string) => {
+    if (!user || !lessonId) return;
+
+    const userRef = doc(db, "users", user.uid);
+
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(userRef);
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+      const currentLessonStats: LessonStatsMap = data.lessonStats ?? {};
+      const existingStat = currentLessonStats[lessonId] ?? {
+        attempts: 0,
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        completed: false,
+        lastPracticedAt: null,
+        lastRewardClaimedAt: null,
+      };
+
+      tx.update(userRef, {
+        lessonStats: {
+          ...currentLessonStats,
+          [lessonId]: {
+            ...existingStat,
+            attempts: (existingStat.attempts ?? 0) + 1,
+            lastPracticedAt: Date.now(),
+          },
+        },
+      });
     });
+
+    await recordDailyActivity();
   };
 
-  // refill all hearts instantly (demo / in-app purchase placeholder)
-  const refillHearts = (instant: boolean = false) => {
-    if (instant) {
-      setHearts(MAX_HEARTS);
-      setSecondsUntilNextHeart(null);
-    } else {
-      // start regen if hearts < max
-      // regen logic is handled by effect below
-      if (hearts < MAX_HEARTS && !regenTimerRef.current) {
-        // will start automatically via effect
-      }
-    }
+  const recordLessonAnswerResult = async (
+    lessonId: string,
+    wasCorrect: boolean,
+  ) => {
+    if (!user || !lessonId) return;
+
+    const userRef = doc(db, "users", user.uid);
+
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(userRef);
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+      const currentLessonStats: LessonStatsMap = data.lessonStats ?? {};
+      const existingStat = currentLessonStats[lessonId] ?? {
+        attempts: 0,
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        completed: false,
+        lastPracticedAt: null,
+        lastRewardClaimedAt: null,
+      };
+
+      tx.update(userRef, {
+        lessonStats: {
+          ...currentLessonStats,
+          [lessonId]: {
+            ...existingStat,
+            correctAnswers:
+              (existingStat.correctAnswers ?? 0) + (wasCorrect ? 1 : 0),
+            wrongAnswers:
+              (existingStat.wrongAnswers ?? 0) + (wasCorrect ? 0 : 1),
+            lastPracticedAt: Date.now(),
+          },
+        },
+      });
+    });
+
+    await recordDailyActivity();
   };
 
-  // MAIN regen effect: when hearts < MAX_HEARTS, tick every REGEN_INTERVAL_MS and add a heart.
-  useEffect(() => {
-    // clear any existing regen timer
-    if (regenTimerRef.current) {
-      clearInterval(regenTimerRef.current);
-      regenTimerRef.current = null;
-    }
-    if (countdownTimerRef.current) {
-      clearInterval(countdownTimerRef.current);
-      countdownTimerRef.current = null;
-      setSecondsUntilNextHeart(null);
-    }
+  const markLessonCompleted = async (lessonId: string) => {
+    if (!user || !lessonId) return;
 
-    if (hearts < MAX_HEARTS) {
-      // Start countdown for UI (seconds until next heart)
-      const NEXT = REGEN_INTERVAL_MS / 1000;
-      let remaining = NEXT;
-      setSecondsUntilNextHeart(Math.ceil(remaining));
+    const userRef = doc(db, "users", user.uid);
 
-      countdownTimerRef.current = setInterval(() => {
-        remaining -= 1;
-        setSecondsUntilNextHeart((r) => {
-          if (remaining <= 0) {
-            return null;
-          }
-          return Math.ceil(remaining);
-        });
-      }, 1000);
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(userRef);
+      if (!snap.exists()) return;
 
-      // Start actual regen interval
-      regenTimerRef.current = setInterval(() => {
-        setHearts((h) => {
-          const newH = Math.min(MAX_HEARTS, h + 1);
-          // if we've reached max, clear timers
-          if (newH >= MAX_HEARTS) {
-            if (regenTimerRef.current) {
-              clearInterval(regenTimerRef.current);
-              regenTimerRef.current = null;
-            }
-            if (countdownTimerRef.current) {
-              clearInterval(countdownTimerRef.current);
-              countdownTimerRef.current = null;
-              setSecondsUntilNextHeart(null);
-            }
-          } else {
-            // restart countdown for next heart
-            setSecondsUntilNextHeart(REGEN_INTERVAL_MS / 1000);
-          }
-          return newH;
-        });
-      }, REGEN_INTERVAL_MS);
-    } else {
-      setSecondsUntilNextHeart(null);
-    }
+      const data = snap.data();
+      const currentCompletedLessons: string[] = data.completedLessons ?? [];
+      const currentLessonStats: LessonStatsMap = data.lessonStats ?? {};
+      const existingStat = currentLessonStats[lessonId] ?? {
+        attempts: 0,
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        completed: false,
+        lastPracticedAt: null,
+        lastRewardClaimedAt: null,
+      };
 
-    // cleanup
-    return () => {
-      if (regenTimerRef.current) {
-        clearInterval(regenTimerRef.current);
-        regenTimerRef.current = null;
+      tx.update(userRef, {
+        completedLessons: currentCompletedLessons.includes(lessonId)
+          ? currentCompletedLessons
+          : [...currentCompletedLessons, lessonId],
+        lessonStats: {
+          ...currentLessonStats,
+          [lessonId]: {
+            ...existingStat,
+            completed: true,
+            lastPracticedAt: Date.now(),
+          },
+        },
+      });
+    });
+
+    await recordDailyActivity();
+    await syncUserBadges(user.uid);
+  };
+
+  const loseHeart = async () => {
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const currentHearts = computeHeartState(
+      baseHearts,
+      maxHearts,
+      heartsUpdatedAt,
+      Date.now(),
+    ).hearts;
+
+    const nextHearts = Math.max(0, currentHearts - 1);
+    const now = Date.now();
+
+    setBaseHearts(nextHearts);
+    setHeartsUpdatedAt(now);
+
+    await updateDoc(userRef, {
+      hearts: nextHearts,
+      heartsUpdatedAt: now,
+    });
+
+    await recordDailyActivity();
+  };
+
+  const refillHearts = async (instant: boolean = false) => {
+    if (!user || !instant) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const now = Date.now();
+
+    setBaseHearts(maxHearts);
+    setHeartsUpdatedAt(now);
+
+    await updateDoc(userRef, {
+      hearts: maxHearts,
+      heartsUpdatedAt: now,
+    });
+
+    await recordDailyActivity();
+  };
+
+  const canEarnDeckReward = (lessonId: string) => {
+    const stat = lessonStats[lessonId];
+    if (!stat?.completed) return false;
+    if (!stat.lastRewardClaimedAt) return true;
+    return !isSameUtcDay(stat.lastRewardClaimedAt, Date.now());
+  };
+
+  const markDeckRewardClaimed = async (lessonId: string) => {
+    if (!user || !lessonId) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const currentLessonStats = lessonStats ?? {};
+    const existingStat = currentLessonStats[lessonId];
+
+    if (!existingStat) return;
+
+    await updateDoc(userRef, {
+      lessonStats: {
+        ...currentLessonStats,
+        [lessonId]: {
+          ...existingStat,
+          lastRewardClaimedAt: Date.now(),
+          lastPracticedAt: Date.now(),
+        },
+      },
+    });
+
+    await recordDailyActivity();
+    await syncUserBadges(user.uid);
+  };
+
+  const canClaimDailyReward = () => {
+    if (!dailyRewardLastClaimedAt) return true;
+    return !isSameUtcDay(dailyRewardLastClaimedAt, Date.now());
+  };
+
+  const claimDailyReward = async () => {
+    if (!user) return 0;
+
+    const userRef = doc(db, "users", user.uid);
+    let reward = 0;
+
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(userRef);
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+      const lastClaimed = data.dailyRewardLastClaimedAt ?? null;
+      const currentStreak = data.streakCount ?? 0;
+
+      if (lastClaimed && isSameUtcDay(lastClaimed, Date.now())) {
+        reward = 0;
+        return;
       }
-      if (countdownTimerRef.current) {
-        clearInterval(countdownTimerRef.current);
-        countdownTimerRef.current = null;
+
+      reward = Math.min(50, 10 + currentStreak * 2);
+
+      const currentXP = data.xp ?? 0;
+      const currentLevel = data.level ?? 1;
+      const currentAllTimeXP = data.allTimeXP ?? 0;
+      const currentWeeklyXP = data.weeklyXP ?? 0;
+      const currentMonthlyXP = data.monthlyXP ?? 0;
+
+      let totalXP = currentXP + reward;
+      let newLevel = currentLevel;
+
+      if (totalXP >= 100) {
+        const levelIncrease = Math.floor(totalXP / 100);
+        newLevel += levelIncrease;
+        totalXP = totalXP % 100;
       }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hearts]);
+
+      tx.update(userRef, {
+        xp: totalXP,
+        level: newLevel,
+        allTimeXP: currentAllTimeXP + reward,
+        weeklyXP: currentWeeklyXP + reward,
+        monthlyXP: currentMonthlyXP + reward,
+        dailyRewardLastClaimedAt: Date.now(),
+      });
+    });
+
+    await recordDailyActivity();
+    await syncUserBadges(user.uid);
+    return reward;
+  };
 
   return (
     <XPContext.Provider
       value={{
         xp,
         level,
-        userSkillLevel: getSkillLevel(level),
-        addXP,
+        allTimeXP,
+        weeklyXP,
+        monthlyXP,
+
+        username,
+        country,
+        anonymous,
+        userSkillLevel,
+
         completedLessons,
+        lessonStats,
+        pendingReviewCount,
+
+        streakCount,
+        lastActiveAt,
+
+        dailyRewardLastClaimedAt,
+        canClaimDailyReward,
+        claimDailyReward,
+
+        hearts: heartState.hearts,
+        maxHearts,
+        secondsUntilNextHeart: heartState.secondsUntilNextHeart,
+
+        loading,
+
+        addXP,
         completeLesson,
-        hearts,
-        maxHearts: MAX_HEARTS,
         loseHeart,
         refillHearts,
-        secondsUntilNextHeart,
+
+        recordLessonAttempt,
+        recordLessonAnswerResult,
+        markLessonCompleted,
+
+        canEarnDeckReward,
+        markDeckRewardClaimed,
+        getLessonXPModifier,
+
+        recordDailyActivity,
       }}
     >
       {children}

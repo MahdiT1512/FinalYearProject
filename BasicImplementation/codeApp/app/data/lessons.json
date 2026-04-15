@@ -1,99 +1,1506 @@
 [
   {
-    "id": "Lesson 1",
-    "title": "Introduction to Python",
-    "module": "Python Basics",
-    "content": "### What is Python?\nPython is a versatile programming language known for its readability and simplicity. It is used in web development, data science, machine learning, automation, and more. Python's syntax emphasizes readability, making it beginner-friendly.\n\n### Setting up Python\nTo start coding in Python, you need to install Python from the official website or use an IDE like PyCharm or VSCode. You can run Python programs from the terminal or through your IDE.\n\n### Variables\nVariables are containers that store data. Python supports various types of data including integers, floats, strings, and booleans.\n\nExample:\n```python\nage = 25\nname = 'Alice'\nis_student = True\nprint(age, name, is_student)\n```\nOutput:\n```\n25 Alice True\n```\n\n### Data Types\n- **Integer (int)**: Whole numbers like 10, -3, 42\n- **Float (float)**: Decimal numbers like 3.14, -0.5\n- **String (str)**: Text, enclosed in quotes 'Hello' or \"Hello\"\n- **Boolean (bool)**: True or False values\n\nExample:\n```python\nx = 10       # int\ny = 3.5      # float\nname = 'Bob' # string\nis_active = False # bool\n```\n\n### Operators\nPython supports arithmetic operators: `+`, `-`, `*`, `/`, `%`, `**` (exponent), `//` (floor division).\n\nExample:\n```python\na = 7\nb = 3\nprint(a + b)  # 10\nprint(a - b)  # 4\nprint(a * b)  # 21\nprint(a / b)  # 2.333...\nprint(a % b)  # 1\nprint(a ** b) # 343\nprint(a // b) # 2\n```\n\n### Strings\nStrings are sequences of characters. You can concatenate, repeat, and slice them.\n\nExample:\n```python\ntext = 'Hello'\nprint(text + ' World') # Hello World\nprint(text * 3)         # HelloHelloHello\nprint(text[0])          # H\nprint(text[1:4])        # ell\n```\n\n### Input and Output\nYou can take input from the user with `input()` and print results using `print()`.\n\nExample:\n```python\nname = input('Enter your name: ')\nprint('Hello,', name)\n```\n\n### Example Program: Simple Calculator\n```python\nx = int(input('Enter first number: '))\ny = int(input('Enter second number: '))\nsum = x + y\nprint('Sum:', sum)\n```\n\n### Summary\nIn this lesson, you learned:\n- Python basics and syntax\n- Variables and data types\n- Arithmetic and string operations\n- Taking input and printing output\n\nPractice these concepts with the exercises below.",
+    "id": "U1-L1",
+    "title": "Python and Variables",
+    "module": "Unit 1: Python Foundations",
+    "content": "# Python and Variables",
+    "slides": [
+      {
+        "id": "u1l1-s1",
+        "type": "intro",
+        "title": "Welcome to Python",
+        "body": "### Python and Variables\n\nPython is a general-purpose programming language known for readable syntax and fast experimentation.\n\nIt is used for web apps, automation, data analysis, machine learning, scripting, and more."
+      },
+      {
+        "id": "u1l1-s2",
+        "type": "concept",
+        "title": "Why Python feels beginner-friendly",
+        "body": "## What makes Python beginner-friendly?\n\n- It reads close to plain English.\n- You do not need to declare variable types manually.\n- It has a huge standard library.\n- You can test ideas quickly."
+      },
+      {
+        "id": "u1l1-s3",
+        "type": "example",
+        "title": "Variables store values",
+        "body": "## Variables\n\nA variable stores a value so you can use it later.\n\n```python\nname = 'Alice'\nage = 17\nis_student = True\n```\n\nIn Python, the `=` symbol means **assignment**."
+      },
+      {
+        "id": "u1l1-s4",
+        "type": "concept",
+        "title": "Common data types",
+        "body": "## Common data types\n\n- `int` → whole numbers like `5`\n- `float` → decimal numbers like `3.14`\n- `str` → text like `'hello'`\n- `bool` → `True` or `False`\n\n```python\nscore = 99\nprice = 8.5\nmessage = 'Hello'\nis_ready = False\n```"
+      },
+      {
+        "id": "u1l1-s5",
+        "type": "example",
+        "title": "Printing and updating values",
+        "body": "## Printing values\n\nUse `print()` to send output to the console.\n\n```python\nname = 'Ava'\nprint(name)\nprint('Welcome!')\n```\n\n## Updating variables\n\n```python\ncoins = 10\ncoins = 12\nprint(coins)\n```"
+      },
+      {
+        "id": "u1l1-s6",
+        "type": "tip",
+        "title": "Why variables matter",
+        "body": "## Why variables matter\n\nVariables let programs remember information, calculate results, and respond to users.\n\n> Think of a variable like a labelled box. The label is the variable name, and the value is whatever is stored inside."
+      },
+      {
+        "id": "u1l1-s7",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nIn this lesson you learned:\n\n- what Python is\n- what variables do\n- common data types\n- how `print()` works\n\nNow lock it in with the exercise."
+      }
+    ],
     "exercises": [
-      { "type": "mc", "text": "Which of the following is a correct way to declare a variable in Python?", "options": ["x = 10", "int x = 10", "var x = 10", "declare x = 10"], "correct": 0, "xp": 10 },
-      { "type": "mc", "text": "What data type is the value 'Hello World'?", "options": ["Integer", "String", "Boolean", "Float"], "correct": 1, "xp": 10 },
-      { "type": "code", "text": "Fill in the blank to store 25 in a variable called 'age'.", "prompt": "___ = 25", "answer": "age", "xp": 15 },
-      { "type": "code", "text": "Print the value of the variable 'age'.", "prompt": "print( ___ )", "answer": "age", "xp": 15 },
-      { "type": "mc", "text": "Which symbol is used for assignment in Python?", "options": ["=", "==", ":", "+="], "correct": 0, "xp": 10 }
+      {
+        "id": "U1-L1-Q1",
+        "type": "mc",
+        "text": "Which symbol assigns a value to a variable in Python?",
+        "options": ["=", "==", ":", "->"],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["variables", "assignment"]
+      },
+      {
+        "id": "U1-L1-Q2",
+        "type": "mc",
+        "text": "Which value is a string?",
+        "options": ["42", "'42'", "True", "3.5"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["strings", "types"]
+      },
+      {
+        "id": "U1-L1-Q3",
+        "type": "code",
+        "text": "Store 18 in a variable called age.",
+        "prompt": "___ = 18",
+        "answer": "age",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["variables", "assignment"]
+      },
+      {
+        "id": "U1-L1-Q4",
+        "type": "code",
+        "text": "Print the variable called name.",
+        "prompt": "print(___)",
+        "answer": "name",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["print", "variables"]
+      },
+      {
+        "id": "U1-L1-Q5",
+        "type": "mc",
+        "text": "Which of these is a boolean value?",
+        "options": ["'False'", "False", "0", "'True'"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["bool", "types"]
+      }
     ]
   },
   {
-    "id": "Lesson 2",
-    "title": "Control Flow",
-    "module": "Python Basics",
-    "content": "### Introduction to Control Flow\nControl flow in Python allows your programs to make decisions and repeat actions. Without control flow, programs would just execute statements sequentially, which is rarely useful.\n\nIn this lesson, you will learn about:\n- Conditional statements (if, elif, else)\n- Comparison operators (==, !=, >, <, >=, <=)\n- Logical operators (and, or, not)\n- Loops (for and while)\n- Nested loops and conditions\n\n### Conditional Statements\nConditional statements let your program execute certain code only when a condition is true.\n\n**Syntax:**\n```python\nif condition:\n    # code executed if condition is True\nelif another_condition:\n    # code executed if another_condition is True\nelse:\n    # code executed if all conditions are False\n```\n\n**Example 1:**\n```python\nage = 18\nif age >= 18:\n    print('You are an adult')\nelse:\n    print('You are a minor')\n```\nOutput:\n```\nYou are an adult\n```\n\n**Example 2: Multiple conditions**\n```python\nscore = 85\nif score >= 90:\n    print('A grade')\nelif score >= 80:\n    print('B grade')\nelif score >= 70:\n    print('C grade')\nelse:\n    print('Fail')\n```\nOutput:\n```\nB grade\n```\n\n### Comparison Operators\nComparison operators are used to compare values and return a boolean (`True` or `False`).\n\n| Operator | Meaning        | Example       |\n|----------|----------------|---------------|\n| ==     | Equals         | 5 == 5 → True |\n| !=     | Not equal      | 5 != 3 → True |\n| >      | Greater than   | 5 > 3 → True  |\n| <      | Less than      | 5 < 3 → False |\n| >=     | Greater or equal | 5 >= 5 → True |\n| <=     | Less or equal    | 3 <= 5 → True |\n\n**Example:**\n```python\nx = 10\ny = 7\nprint(x > y)   # True\nprint(x == y)  # False\n```",
+    "id": "U1-L2",
+    "title": "Input, Output, and Expressions",
+    "module": "Unit 1: Python Foundations",
+    "content": "# Input, Output, and Expressions",
+    "slides": [
+      {
+        "id": "u1l2-s1",
+        "type": "intro",
+        "title": "Programs receive and show information",
+        "body": "### Input, Output, and Expressions\n\nPrograms become more useful when they can receive information, process it, and show a result."
+      },
+      {
+        "id": "u1l2-s2",
+        "type": "concept",
+        "title": "Output with print()",
+        "body": "## Output with `print()`\n\nUse `print()` to display text, numbers, or variables.\n\n```python\nprint('Hello')\nprint(10)\n```"
+      },
+      {
+        "id": "u1l2-s3",
+        "type": "example",
+        "title": "Input with input()",
+        "body": "## Input with `input()`\n\nUse `input()` to collect text from a user.\n\n```python\nname = input('What is your name? ')\nprint('Hello,', name)\n```\n\n`input()` always returns text, even if the user types digits."
+      },
+      {
+        "id": "u1l2-s4",
+        "type": "concept",
+        "title": "Expressions produce values",
+        "body": "## Expressions\n\nAn expression is a piece of code that produces a value.\n\nExamples:\n\n```python\n2 + 3\n10 / 2\n'hi' + ' there'\n```"
+      },
+      {
+        "id": "u1l2-s5",
+        "type": "example",
+        "title": "Convert text to numbers",
+        "body": "## Converting types\n\nIf you want to use input as a number, convert it.\n\n```python\nage = int(input('Enter age: '))\nprint(age + 1)\n```"
+      },
+      {
+        "id": "u1l2-s6",
+        "type": "tip",
+        "title": "A common beginner mistake",
+        "body": "## Useful caution\n\nThis will cause an issue:\n\n```python\nage = input('Age: ')\nprint(age + 1)\n```\n\nThat happens because `age` is text, not a number."
+      },
+      {
+        "id": "u1l2-s7",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how to display output\n- how to collect input\n- what expressions are\n- how to convert text into numbers\n\nNow test it in the exercise."
+      }
+    ],
     "exercises": [
-      { "type": "debug", "text": "Fix the indentation so the function returns the double of x.", "prompt": "def double(x):\nreturn x * 2", "answer": "def double(x):\n  return x * 2", "xp": 10 },
-      { "type": "mc", "text": "Which keyword starts a conditional statement in Python?", "options": ["if", "for", "while", "def"], "correct": 0, "xp": 10 },
-      { "type": "mc", "text": "What will the following code print?\n\nif 5 > 3:\n    print('Yes')", "options": ["No", "Yes", "Error", "Nothing"], "correct": 1, "xp": 10 },
-      { "type": "trace", "text": "Trace values of x after each step.", "prompt": "x = 0\nfor n in [2,3,4]:\n  x += n\n# trace table columns: x", "columns": ["x"], "answer": [["2"],["5"],["9"]], "xp": 7 },
-      { "type": "code", "text": "Write a for loop that prints numbers 1 to 5.", "prompt": "for ___ in range(1,6):\n    print(___)", "answer": "i,i", "xp": 15 },
-      { "type": "mc", "text": "Which of these is a correct while loop?", "options": ["while x < 5:", "while x = 5:", "for x while 5:", "loop while x < 5"], "correct": 0, "xp": 10 },
-      { "type": "code", "text": "Complete the if statement to check if a number is even.", "prompt": "if number % 2 ___ 0:\n    print('Even')", "answer": "==", "xp": 15 }
+      {
+        "id": "U1-L2-Q1",
+        "type": "mc",
+        "text": "What does input() return by default?",
+        "options": ["An integer", "A float", "A string", "A boolean"],
+        "correct": 2,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["input", "strings", "types"]
+      },
+      {
+        "id": "U1-L2-Q2",
+        "type": "code",
+        "text": "Convert the result of input() to an integer.",
+        "prompt": "age = ___(input('Age: '))",
+        "answer": "int",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["input", "int", "conversion"]
+      },
+      {
+        "id": "U1-L2-Q3",
+        "type": "mc",
+        "text": "Which expression joins two strings together?",
+        "options": ["'A' - 'B'", "'A' + 'B'", "'A' / 'B'", "'A' == 'B'"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["strings", "operators"]
+      },
+      {
+        "id": "U1-L2-Q4",
+        "type": "code",
+        "text": "Print the text Hello.",
+        "prompt": "___('Hello')",
+        "answer": "print",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["print", "output"]
+      },
+      {
+        "id": "U1-L2-Q5",
+        "type": "debug",
+        "text": "Fix the code so it adds 1 to the user's age correctly.",
+        "prompt": "age = input('Age: ')\nprint(age + 1)",
+        "answer": "age = int(input('Age: '))\nprint(age + 1)",
+        "xp": 18,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "input", "int", "conversion"]
+      }
     ]
   },
   {
-    "id": "Lesson 3",
-    "title": "Functions",
-    "module": "Python Basics",
-    "content": "Functions are reusable blocks of code that perform a specific task. They help make your code cleaner and more organized. In this lesson, you'll learn how to define functions, pass arguments, and return values.\n\nFunctions are defined using the 'def' keyword. You can call a function multiple times with different arguments to perform the same operation without rewriting the code. Functions can return values using the 'return' keyword.",
+    "id": "U1-L3",
+    "title": "Numbers, Strings, and Operators",
+    "module": "Unit 1: Python Foundations",
+    "content": "# Numbers, Strings, and Operators",
+    "slides": [
+      {
+        "id": "u1l3-s1",
+        "type": "intro",
+        "title": "Working with values",
+        "body": "### Numbers, Strings, and Operators\n\nPython can perform calculations and manipulate text."
+      },
+      {
+        "id": "u1l3-s2",
+        "type": "concept",
+        "title": "Arithmetic operators",
+        "body": "## Arithmetic operators\n\n- `+` add\n- `-` subtract\n- `*` multiply\n- `/` divide\n- `%` remainder\n- `**` power\n- `//` floor division\n\n```python\nprint(7 + 3)\nprint(7 % 3)\nprint(2 ** 3)\n```"
+      },
+      {
+        "id": "u1l3-s3",
+        "type": "example",
+        "title": "Strings and indexing",
+        "body": "## Strings\n\nStrings are text values.\n\n```python\nword = 'Python'\nprint(word[0])\nprint(word[1:4])\n```"
+      },
+      {
+        "id": "u1l3-s4",
+        "type": "tip",
+        "title": "Indexing starts at zero",
+        "body": "## String indexing\n\nIndexing starts at `0`.\n\nFor `'cat'`:\n\n- `c` is index `0`\n- `a` is index `1`\n- `t` is index `2`"
+      },
+      {
+        "id": "u1l3-s5",
+        "type": "example",
+        "title": "Using variables in expressions",
+        "body": "## Mixed use\n\nYou can use variables in expressions.\n\n```python\nx = 4\ny = 6\nprint(x + y)\n```"
+      },
+      {
+        "id": "u1l3-s6",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- arithmetic operators\n- indexing strings\n- slicing strings\n- combining values in expressions"
+      }
+    ],
     "exercises": [
-      { "type": "mc", "text": "Which keyword is used to define a function in Python?", "options": ["def", "function", "fun", "define"], "correct": 0, "xp": 10 },
-      { "type": "code", "text": "Define a function named 'greet' that prints 'Hello'.", "prompt": "def ___():\n    print('Hello')", "answer": "greet", "xp": 15 },
-      { "type": "code", "text": "Call the function 'greet' to execute it.", "prompt": "___()", "answer": "greet", "xp": 15 },
-      { "type": "mc", "text": "Which statement correctly returns a value from a function?", "options": ["return x", "give x", "output x", "send x"], "correct": 0, "xp": 10 },
-      { "type": "code", "text": "Write a function 'square' that returns the square of a number 'n'.", "prompt": "def square(n):\n    ___", "answer": "return n * n", "xp": 20 }
+      {
+        "id": "U1-L3-Q1",
+        "type": "mc",
+        "text": "What does 7 % 3 return?",
+        "options": ["2", "1", "3", "0"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["operators", "modulo", "numbers"]
+      },
+      {
+        "id": "U1-L3-Q2",
+        "type": "mc",
+        "text": "What is the first index of a string?",
+        "options": ["1", "0", "-1", "Depends"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["strings", "indexing"]
+      },
+      {
+        "id": "U1-L3-Q3",
+        "type": "code",
+        "text": "Get the first character of the string word.",
+        "prompt": "word[___]",
+        "answer": "0",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["strings", "indexing"]
+      },
+      {
+        "id": "U1-L3-Q4",
+        "type": "code",
+        "text": "Raise 2 to the power of 4.",
+        "prompt": "2 ___ 4",
+        "answer": "**",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["operators", "power"]
+      },
+      {
+        "id": "U1-L3-Q5",
+        "type": "trace",
+        "text": "Trace the value of total after each line.",
+        "prompt": "total = 5\ntotal = total + 2\ntotal = total * 3\n# trace table columns: total",
+        "columns": ["total"],
+        "answer": [["5"], ["7"], ["21"]],
+        "xp": 12,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["trace", "variables", "operators"]
+      }
     ]
   },
   {
-    "id": "Lesson 4",
-    "title": "Lists and Loops",
-    "module": "Python Basics",
-    "content": "Lists are ordered collections of items in Python. You can store multiple values in a single variable using a list. Combined with loops, lists become very powerful.\n\nYou can access items by index, add new items with append(), and remove items using remove() or pop(). Loops allow you to iterate through all items in a list, performing operations on each element.",
+    "id": "U2-L1",
+    "title": "if, elif, and else",
+    "module": "Unit 2: Decisions and Logic",
+    "content": "# if, elif, and else",
+    "slides": [
+      {
+        "id": "u2l1-s1",
+        "type": "intro",
+        "title": "Programs make decisions",
+        "body": "### if, elif, and else\n\nPrograms often need to make decisions."
+      },
+      {
+        "id": "u2l1-s2",
+        "type": "concept",
+        "title": "Basic if statement",
+        "body": "## Basic if statement\n\n```python\nage = 18\nif age >= 18:\n    print('Adult')\n```\n\nThe code inside the block only runs if the condition is `True`."
+      },
+      {
+        "id": "u2l1-s3",
+        "type": "example",
+        "title": "Adding an else path",
+        "body": "## else\n\nUse `else` when you want an alternative path.\n\n```python\nif age >= 18:\n    print('Adult')\nelse:\n    print('Minor')\n```"
+      },
+      {
+        "id": "u2l1-s4",
+        "type": "example",
+        "title": "Handling multiple cases",
+        "body": "## elif\n\nUse `elif` when there are multiple possible conditions.\n\n```python\nscore = 82\nif score >= 90:\n    print('A')\nelif score >= 80:\n    print('B')\nelse:\n    print('C or below')\n```"
+      },
+      {
+        "id": "u2l1-s5",
+        "type": "tip",
+        "title": "Indentation matters",
+        "body": "## Indentation matters\n\nPython uses indentation to define blocks.\n\nIf indentation is wrong, your logic breaks or Python raises an error."
+      },
+      {
+        "id": "u2l1-s6",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how `if` works\n- how `else` adds another path\n- how `elif` handles multiple cases"
+      }
+    ],
     "exercises": [
-      { "type": "mc", "text": "Which of these defines a list in Python?", "options": ["[1, 2, 3]", "{1,2,3}", "(1,2,3)", "list(1,2,3)"], "correct": 0, "xp": 10 },
-      { "type": "code", "text": "Add 'Python' to the list 'languages'.", "prompt": "languages = ['Java', 'C++']\nlanguages.___('Python')", "answer": "append", "xp": 15 },
-      { "type": "code", "text": "Print all items in the list using a for loop.", "prompt": "for item in languages:\n    ___", "answer": "print(item)", "xp": 15 },
-      { "type": "mc", "text": "Which method removes the first occurrence of a value from a list?", "options": ["remove()", "pop()", "delete()", "discard()"], "correct": 0, "xp": 10 },
-      { "type": "code", "text": "Get the length of the list 'languages'.", "prompt": "len(___)", "answer": "languages", "xp": 10 }
+      {
+        "id": "U2-L1-Q1",
+        "type": "mc",
+        "text": "Which keyword starts a conditional block?",
+        "options": ["for", "if", "else", "return"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["if", "conditionals"]
+      },
+      {
+        "id": "U2-L1-Q2",
+        "type": "code",
+        "text": "Complete the condition to check if x is equal to 5.",
+        "prompt": "if x ___ 5:\n    print('yes')",
+        "answer": "==",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["if", "comparison", "operators"]
+      },
+      {
+        "id": "U2-L1-Q3",
+        "type": "mc",
+        "text": "Which keyword handles an alternative when the if condition is false?",
+        "options": ["elif", "def", "else", "while"],
+        "correct": 2,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["else", "conditionals"]
+      },
+      {
+        "id": "U2-L1-Q4",
+        "type": "code",
+        "text": "Fill the missing keyword in the second condition.",
+        "prompt": "if score > 90:\n    print('A')\n___ score > 80:\n    print('B')",
+        "answer": "elif",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["elif", "conditionals"]
+      },
+      {
+        "id": "U2-L1-Q5",
+        "type": "debug",
+        "text": "Fix the indentation in this conditional.",
+        "prompt": "if age >= 18:\nprint('Adult')",
+        "answer": "if age >= 18:\n  print('Adult')",
+        "xp": 16,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "if", "indentation"]
+      }
     ]
   },
   {
-    "id": "Lesson 5",
-    "title": "Code Tracing - Summing",
-    "module": "Python Basics",
-    "content": "In this lesson you'll practice tracing loops and calculating running totals. Fill in the trace table rows in the suggested format.",
+    "id": "U2-L2",
+    "title": "Comparisons and Boolean Logic",
+    "module": "Unit 2: Decisions and Logic",
+    "content": "# Comparisons and Boolean Logic",
+    "slides": [
+      {
+        "id": "u2l2-s1",
+        "type": "intro",
+        "title": "Conditions evaluate to True or False",
+        "body": "### Comparisons and Boolean Logic\n\nConditions are built from expressions that evaluate to `True` or `False`."
+      },
+      {
+        "id": "u2l2-s2",
+        "type": "concept",
+        "title": "Comparison operators",
+        "body": "## Comparison operators\n\n- `==` equal to\n- `!=` not equal to\n- `>` greater than\n- `<` less than\n- `>=` greater than or equal to\n- `<=` less than or equal to"
+      },
+      {
+        "id": "u2l2-s3",
+        "type": "concept",
+        "title": "Logical operators",
+        "body": "## Logical operators\n\n- `and` → both parts must be true\n- `or` → at least one part must be true\n- `not` → reverses a boolean"
+      },
+      {
+        "id": "u2l2-s4",
+        "type": "example",
+        "title": "Combining conditions",
+        "body": "## Example\n\n```python\nage = 20\nhas_id = True\nif age >= 18 and has_id:\n    print('Entry allowed')\n```"
+      },
+      {
+        "id": "u2l2-s5",
+        "type": "tip",
+        "title": "Why logic matters",
+        "body": "A single comparison checks one fact.\n\nBoolean logic lets you express richer rules like:\n\n- old enough **and** has ID\n- passed **or** allowed a retake\n- **not** banned"
+      },
+      {
+        "id": "u2l2-s6",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- comparison operators\n- boolean logic\n- how to build more expressive conditions"
+      }
+    ],
     "exercises": [
-      { "type": "trace", "text": "Trace the code below and fill the table.", "prompt": "total = 0\nfor i in range(1,4):\n  total += i\n# trace table columns: i,total", "columns": ["i","total"], "answer": [["1","1"],["2","3"],["3","6"]], "xp": 8 },
-      { "type": "debug", "text": "Fix the code that attempts to print the first three square numbers.", "prompt": "for n in range(1,4)\nprint(n*n)", "answer": "for n in range(1,4):\n  print(n*n)", "xp": 10 }
+      {
+        "id": "U2-L2-Q1",
+        "type": "mc",
+        "text": "Which operator means 'not equal'?",
+        "options": ["==", "!=", ">=", "="],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["comparison", "operators"]
+      },
+      {
+        "id": "U2-L2-Q2",
+        "type": "mc",
+        "text": "What does and mean in a condition?",
+        "options": [
+          "Only one side must be true",
+          "Both sides must be true",
+          "It reverses a boolean",
+          "It compares numbers only"
+        ],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["boolean", "and", "logic"]
+      },
+      {
+        "id": "U2-L2-Q3",
+        "type": "code",
+        "text": "Complete the operator to check if score is at least 50.",
+        "prompt": "score ___ 50",
+        "answer": ">=",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["comparison", "operators"]
+      },
+      {
+        "id": "U2-L2-Q4",
+        "type": "code",
+        "text": "Fill the logical operator so both conditions must be true.",
+        "prompt": "if age >= 18 ___ has_id:\n    print('ok')",
+        "answer": "and",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["boolean", "and", "logic"]
+      },
+      {
+        "id": "U2-L2-Q5",
+        "type": "trace",
+        "text": "Trace the value of passed after each check.",
+        "prompt": "passed = False\nscore = 72\npassed = score >= 50\npassed = passed and score < 80\n# trace table columns: passed",
+        "columns": ["passed"],
+        "answer": [["false"], ["true"], ["true"]],
+        "xp": 12,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["trace", "boolean", "comparison"]
+      }
     ]
   },
   {
-    "id": "Module2-Lesson1",
-    "title": "Module 2 - Iteration Deep Dive",
-    "module": "Python Intermediate",
-    "content": "This lesson covers intermediate loop patterns and small trace/debug exercises.",
+    "id": "U2-L3",
+    "title": "Loops with while and for",
+    "module": "Unit 2: Decisions and Logic",
+    "content": "# Loops with while and for",
+    "slides": [
+      {
+        "id": "u2l3-s1",
+        "type": "intro",
+        "title": "Loops repeat code",
+        "body": "### Loops with while and for\n\nLoops repeat code."
+      },
+      {
+        "id": "u2l3-s2",
+        "type": "concept",
+        "title": "while loops",
+        "body": "## while loop\n\nA `while` loop repeats as long as its condition stays true.\n\n```python\ncount = 0\nwhile count < 3:\n    print(count)\n    count += 1\n```"
+      },
+      {
+        "id": "u2l3-s3",
+        "type": "concept",
+        "title": "for loops",
+        "body": "## for loop\n\nA `for` loop is often used with sequences.\n\n```python\nfor i in range(3):\n    print(i)\n```"
+      },
+      {
+        "id": "u2l3-s4",
+        "type": "tip",
+        "title": "How range() works",
+        "body": "`range(3)` gives `0, 1, 2`.\n\nIt starts at `0` and stops before `3`."
+      },
+      {
+        "id": "u2l3-s5",
+        "type": "example",
+        "title": "When to use each loop",
+        "body": "- Use `while` when repetition depends on a condition.\n- Use `for` when iterating over a sequence or range."
+      },
+      {
+        "id": "u2l3-s6",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- when to use `while`\n- when to use `for`\n- how `range()` works"
+      }
+    ],
     "exercises": [
-      { "type": "mc", "text": "Which statement correctly iterates a list called 'items'?", "options": ["for i in items:", "for i of items:", "foreach items as i:", "loop items"], "correct": 0, "xp": 5 },
-      { "type": "code", "text": "What is the sum of numbers 4,5,6?", "prompt": "Provide the numeric result", "answer": "15", "xp": 6 },
-      { "type": "trace", "text": "Trace values of x after each step.", "prompt": "x = 0\nfor n in [2,3,4]:\n  x += n\n# trace: x", "columns": ["x"], "answer": [["2"],["5"],["9"]], "xp": 7 },
-      { "type": "debug", "text": "Fix the indentation so the function returns the double of x.", "prompt": "def double(x):\nreturn x * 2", "answer": "def double(x):\n  return x * 2", "xp": 10 }
+      {
+        "id": "U2-L3-Q1",
+        "type": "mc",
+        "text": "Which loop repeats while a condition is true?",
+        "options": ["for", "while", "if", "def"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["while", "loops"]
+      },
+      {
+        "id": "U2-L3-Q2",
+        "type": "code",
+        "text": "Complete the while loop condition.",
+        "prompt": "while x ___ 5:\n    x += 1",
+        "answer": "<",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["while", "loops", "comparison"]
+      },
+      {
+        "id": "U2-L3-Q3",
+        "type": "mc",
+        "text": "What numbers are produced by range(3)?",
+        "options": ["1,2,3", "0,1,2", "0,1,2,3", "3,2,1"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["range", "for", "loops"]
+      },
+      {
+        "id": "U2-L3-Q4",
+        "type": "code",
+        "text": "Complete the for loop variable.",
+        "prompt": "for ___ in range(5):\n    print(i)",
+        "answer": "i",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["for", "loops", "range"]
+      },
+      {
+        "id": "U2-L3-Q5",
+        "type": "trace",
+        "text": "Trace x after each loop step.",
+        "prompt": "x = 1\nfor n in range(3):\n  x = x + 2\n# trace table columns: x",
+        "columns": ["x"],
+        "answer": [["3"], ["5"], ["7"]],
+        "xp": 12,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["trace", "for", "loops", "range"]
+      }
     ]
   },
   {
-    "id": "Module2-Lesson2",
-    "title": "Nested Loops and Patterns",
-    "module": "Python Intermediate",
-    "content": "Learn how to use nested loops to create patterns and perform more complex iterations.",
+    "id": "U3-L1",
+    "title": "Defining Functions",
+    "module": "Unit 3: Functions and Reuse",
+    "content": "# Defining Functions",
+    "slides": [
+      {
+        "id": "u3l1-s1",
+        "type": "intro",
+        "title": "Functions group reusable code",
+        "body": "### Defining Functions\n\nFunctions let you group reusable code."
+      },
+      {
+        "id": "u3l1-s2",
+        "type": "concept",
+        "title": "Basic function syntax",
+        "body": "## Basic syntax\n\n```python\ndef greet():\n    print('Hello')\n```"
+      },
+      {
+        "id": "u3l1-s3",
+        "type": "example",
+        "title": "Calling a function",
+        "body": "## Calling a function\n\n```python\ngreet()\n```"
+      },
+      {
+        "id": "u3l1-s4",
+        "type": "tip",
+        "title": "Why functions help",
+        "body": "## Why functions help\n\n- reuse logic\n- avoid repetition\n- organize programs"
+      },
+      {
+        "id": "u3l1-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how to define a function\n- how to call it\n- why functions are useful"
+      }
+    ],
     "exercises": [
-      { "type": "trace", "text": "Trace the nested loop and show values of i and j.", "prompt": "for i in range(1,3):\n  for j in range(1,3):\n    print(i,j)\n# trace: i,j", "columns": ["i","j"], "answer": [["1","1"],["1","2"],["2","1"],["2","2"]], "xp": 10 },
-      { "type": "code", "text": "Write a nested loop to print a 2x3 rectangle of '*' characters.", "prompt": "for i in range(2):\n  for j in range(3):\n    ___", "answer": "print('*', end='')", "xp": 12 },
-      { "type": "mc", "text": "Which of these loops is nested?", "options": ["for i in range(3):\n  for j in range(2):\n    print(i,j)", "for i in range(3):\n  print(i)", "while x<5:\n  x+=1", "for x in range(3):\n  print(x)"], "correct": 0, "xp": 8 }
+      {
+        "id": "U3-L1-Q1",
+        "type": "mc",
+        "text": "Which keyword defines a function in Python?",
+        "options": ["fun", "def", "function", "return"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["def", "functions"]
+      },
+      {
+        "id": "U3-L1-Q2",
+        "type": "code",
+        "text": "Name the function greet.",
+        "prompt": "def ___():\n    print('Hello')",
+        "answer": "greet",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["def", "functions"]
+      },
+      {
+        "id": "U3-L1-Q3",
+        "type": "code",
+        "text": "Call the function greet.",
+        "prompt": "___()",
+        "answer": "greet",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "calls"]
+      },
+      {
+        "id": "U3-L1-Q4",
+        "type": "mc",
+        "text": "Why are functions useful?",
+        "options": [
+          "They make code reusable",
+          "They remove all bugs",
+          "They replace variables",
+          "They only work in loops"
+        ],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "reuse"]
+      },
+      {
+        "id": "U3-L1-Q5",
+        "type": "debug",
+        "text": "Fix the function definition.",
+        "prompt": "greet():\n  print('Hi')",
+        "answer": "def greet():\n  print('Hi')",
+        "xp": 16,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "def", "functions"]
+      }
     ]
   },
   {
-    "id": "Module2-Lesson3",
-    "title": "Advanced Trace Practice",
-    "module": "Python Intermediate",
-    "content": "This lesson provides more challenging trace-table exercises to strengthen your debugging and reasoning skills.",
+    "id": "U3-L2",
+    "title": "Parameters and Arguments",
+    "module": "Unit 3: Functions and Reuse",
+    "content": "# Parameters and Arguments",
+    "slides": [
+      {
+        "id": "u3l2-s1",
+        "type": "intro",
+        "title": "Functions can receive data",
+        "body": "### Parameters and Arguments\n\nFunctions can receive data."
+      },
+      {
+        "id": "u3l2-s2",
+        "type": "concept",
+        "title": "Parameters",
+        "body": "## Parameters\n\nA parameter is a variable in a function definition.\n\n```python\ndef greet(name):\n    print('Hello', name)\n```"
+      },
+      {
+        "id": "u3l2-s3",
+        "type": "example",
+        "title": "Arguments",
+        "body": "## Arguments\n\nAn argument is the actual value passed in.\n\n```python\ngreet('Ava')\n```"
+      },
+      {
+        "id": "u3l2-s4",
+        "type": "example",
+        "title": "Multiple parameters",
+        "body": "## Multiple parameters\n\n```python\ndef add(a, b):\n    print(a + b)\n```"
+      },
+      {
+        "id": "u3l2-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- the difference between parameters and arguments\n- how to pass values into functions"
+      }
+    ],
     "exercises": [
-      { "type": "trace", "text": "Trace this code that calculates cumulative sums.", "prompt": "nums = [1,2,3]\ncum = 0\nfor n in nums:\n  cum += n\n# trace: n,cum", "columns": ["n","cum"], "answer": [["1","1"],["2","3"],["3","6"]], "xp": 12 },
-      { "type": "debug", "text": "Fix the code so it prints each number in nums list.", "prompt": "nums = [1,2,3]\nfor n in nums\nprint(n)", "answer": "nums = [1,2,3]\nfor n in nums:\n  print(n)", "xp": 10 }
+      {
+        "id": "U3-L2-Q1",
+        "type": "mc",
+        "text": "What is name in def greet(name): ?",
+        "options": ["An argument", "A parameter", "A loop", "A return value"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "parameters", "arguments"]
+      },
+      {
+        "id": "U3-L2-Q2",
+        "type": "code",
+        "text": "Fill in the missing parameter.",
+        "prompt": "def greet(___):\n    print('Hi', name)",
+        "answer": "name",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "parameters"]
+      },
+      {
+        "id": "U3-L2-Q3",
+        "type": "code",
+        "text": "Pass 'Sam' into greet.",
+        "prompt": "greet(___)",
+        "answer": "'Sam'",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "arguments"]
+      },
+      {
+        "id": "U3-L2-Q4",
+        "type": "mc",
+        "text": "How many parameters does def add(a, b): have?",
+        "options": ["1", "2", "0", "3"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "parameters"]
+      },
+      {
+        "id": "U3-L2-Q5",
+        "type": "trace",
+        "text": "Trace the printed value of n each call.",
+        "prompt": "def show(n):\n  print(n)\nshow(2)\nshow(5)\n# trace table columns: n",
+        "columns": ["n"],
+        "answer": [["2"], ["5"]],
+        "xp": 12,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["trace", "functions", "arguments"]
+      }
+    ]
+  },
+  {
+    "id": "U3-L3",
+    "title": "Returning Values",
+    "module": "Unit 3: Functions and Reuse",
+    "content": "# Returning Values",
+    "slides": [
+      {
+        "id": "u3l3-s1",
+        "type": "intro",
+        "title": "Functions can produce results",
+        "body": "### Returning Values\n\nSome functions produce a result that the rest of your program can use."
+      },
+      {
+        "id": "u3l3-s2",
+        "type": "concept",
+        "title": "Using return",
+        "body": "## return\n\nUse `return` to send a value back.\n\n```python\ndef square(n):\n    return n * n\n```"
+      },
+      {
+        "id": "u3l3-s3",
+        "type": "example",
+        "title": "Storing returned values",
+        "body": "```python\nresult = square(4)\nprint(result)\n```"
+      },
+      {
+        "id": "u3l3-s4",
+        "type": "tip",
+        "title": "print vs return",
+        "body": "Without `return`, a function does not send back a useful result.\n\n`print()` displays something.\n\n`return` gives a value back to the rest of the program."
+      },
+      {
+        "id": "u3l3-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how `return` works\n- how to store returned values\n- the difference between printing and returning"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "U3-L3-Q1",
+        "type": "mc",
+        "text": "Which keyword sends a value back from a function?",
+        "options": ["send", "yield", "return", "print"],
+        "correct": 2,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["return", "functions"]
+      },
+      {
+        "id": "U3-L3-Q2",
+        "type": "code",
+        "text": "Return the value n * n.",
+        "prompt": "def square(n):\n    ___",
+        "answer": "return n * n",
+        "xp": 18,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["return", "functions"]
+      },
+      {
+        "id": "U3-L3-Q3",
+        "type": "mc",
+        "text": "What is the main difference between print and return?",
+        "options": [
+          "print shows a value, return sends it back",
+          "They are identical",
+          "return only works with strings",
+          "print only works in functions"
+        ],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["return", "print", "functions"]
+      },
+      {
+        "id": "U3-L3-Q4",
+        "type": "code",
+        "text": "Store the result of add(2, 3) in a variable named total.",
+        "prompt": "total = ___(2, 3)",
+        "answer": "add",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "return", "calls"]
+      },
+      {
+        "id": "U3-L3-Q5",
+        "type": "debug",
+        "text": "Fix the function so it returns a + b instead of printing it.",
+        "prompt": "def add(a, b):\n  print(a + b)",
+        "answer": "def add(a, b):\n  return a + b",
+        "xp": 18,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "return", "functions"]
+      }
+    ]
+  },
+  {
+    "id": "U4-L1",
+    "title": "Lists and Indexing",
+    "module": "Unit 4: Collections and Data",
+    "content": "# Lists and Indexing",
+    "slides": [
+      {
+        "id": "u4l1-s1",
+        "type": "intro",
+        "title": "Lists store many values",
+        "body": "### Lists and Indexing\n\nLists store multiple values in one variable."
+      },
+      {
+        "id": "u4l1-s2",
+        "type": "example",
+        "title": "Creating a list",
+        "body": "```python\ncolors = ['red', 'green', 'blue']\n```"
+      },
+      {
+        "id": "u4l1-s3",
+        "type": "concept",
+        "title": "Accessing items",
+        "body": "## Accessing items\n\nUse square brackets with an index.\n\n```python\nprint(colors[0])\n```"
+      },
+      {
+        "id": "u4l1-s4",
+        "type": "tip",
+        "title": "Index reminder",
+        "body": "## Index reminder\n\nIndexes start at `0`.\n\nThat means the first item in a list is always at index `0`."
+      },
+      {
+        "id": "u4l1-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how to create a list\n- how indexing works\n- how to access items"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "U4-L1-Q1",
+        "type": "mc",
+        "text": "Which of these creates a list?",
+        "options": ["[1, 2, 3]", "(1, 2, 3)", "{1, 2, 3}", "<1, 2, 3>"],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["list", "collections"]
+      },
+      {
+        "id": "U4-L1-Q2",
+        "type": "code",
+        "text": "Access the first item in the list items.",
+        "prompt": "items[___]",
+        "answer": "0",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["list", "indexing"]
+      },
+      {
+        "id": "U4-L1-Q3",
+        "type": "mc",
+        "text": "What is the index of the third item in a list?",
+        "options": ["3", "2", "1", "0"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["list", "indexing"]
+      },
+      {
+        "id": "U4-L1-Q4",
+        "type": "code",
+        "text": "Create a list called nums with values 1, 2, and 3.",
+        "prompt": "nums = ___",
+        "answer": "[1, 2, 3]",
+        "xp": 18,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["list", "collections"]
+      },
+      {
+        "id": "U4-L1-Q5",
+        "type": "trace",
+        "text": "Trace the value accessed from the list.",
+        "prompt": "nums = [4, 7, 9]\na = nums[0]\nb = nums[2]\n# trace table columns: value",
+        "columns": ["value"],
+        "answer": [["4"], ["9"]],
+        "xp": 12,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["trace", "list", "indexing"]
+      }
+    ]
+  },
+  {
+    "id": "U4-L2",
+    "title": "Changing Lists",
+    "module": "Unit 4: Collections and Data",
+    "content": "# Changing Lists",
+    "slides": [
+      {
+        "id": "u4l2-s1",
+        "type": "intro",
+        "title": "Lists are mutable",
+        "body": "### Changing Lists\n\nLists are mutable, which means they can be changed."
+      },
+      {
+        "id": "u4l2-s2",
+        "type": "concept",
+        "title": "append()",
+        "body": "## append()\n\nAdd a value to the end.\n\n```python\nnums = [1, 2]\nnums.append(3)\n```"
+      },
+      {
+        "id": "u4l2-s3",
+        "type": "concept",
+        "title": "pop()",
+        "body": "## pop()\n\nRemove and return the last item.\n\n```python\nlast = nums.pop()\n```"
+      },
+      {
+        "id": "u4l2-s4",
+        "type": "example",
+        "title": "len()",
+        "body": "## len()\n\nFind the length of a list.\n\n```python\nprint(len(nums))\n```"
+      },
+      {
+        "id": "u4l2-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how to append values\n- how pop works\n- how to count items with len()"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "U4-L2-Q1",
+        "type": "mc",
+        "text": "Which method adds a single item to the end of a list?",
+        "options": ["append()", "add()", "push()", "extendOne()"],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["list", "append"]
+      },
+      {
+        "id": "U4-L2-Q2",
+        "type": "code",
+        "text": "Append 4 to the list nums.",
+        "prompt": "nums.___(4)",
+        "answer": "append",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["list", "append"]
+      },
+      {
+        "id": "U4-L2-Q3",
+        "type": "mc",
+        "text": "What does pop() usually remove if no index is provided?",
+        "options": ["The first item", "The middle item", "The last item", "Nothing"],
+        "correct": 2,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["list", "pop"]
+      },
+      {
+        "id": "U4-L2-Q4",
+        "type": "code",
+        "text": "Get the length of nums.",
+        "prompt": "len(___)",
+        "answer": "nums",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["list", "len"]
+      },
+      {
+        "id": "U4-L2-Q5",
+        "type": "debug",
+        "text": "Fix the code so it appends 'x' correctly.",
+        "prompt": "letters = ['a']\nletters.append['x']",
+        "answer": "letters = ['a']\nletters.append('x')",
+        "xp": 18,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "list", "append"]
+      }
+    ]
+  },
+  {
+    "id": "U4-L3",
+    "title": "Dictionaries and Tuples",
+    "module": "Unit 4: Collections and Data",
+    "content": "# Dictionaries and Tuples",
+    "slides": [
+      {
+        "id": "u4l3-s1",
+        "type": "intro",
+        "title": "More than one kind of collection",
+        "body": "### Dictionaries and Tuples\n\nPython has more than one kind of collection."
+      },
+      {
+        "id": "u4l3-s2",
+        "type": "concept",
+        "title": "Dictionaries",
+        "body": "## Dictionaries\n\nDictionaries store key-value pairs.\n\n```python\nstudent = {'name': 'Lia', 'age': 16}\nprint(student['name'])\n```"
+      },
+      {
+        "id": "u4l3-s3",
+        "type": "concept",
+        "title": "Tuples",
+        "body": "## Tuples\n\nTuples are ordered like lists, but immutable.\n\n```python\npoint = (4, 7)\nprint(point[0])\n```"
+      },
+      {
+        "id": "u4l3-s4",
+        "type": "tip",
+        "title": "The big difference",
+        "body": "Lists can change.\n\nTuples cannot change after creation.\n\nThat is what **immutable** means."
+      },
+      {
+        "id": "u4l3-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- what dictionaries store\n- how to access values by key\n- what makes tuples different from lists"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "U4-L3-Q1",
+        "type": "mc",
+        "text": "Which literal creates a dictionary?",
+        "options": ["{'a': 1}", "['a', 1]", "('a', 1)", "<'a',1>"],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["dict", "collections"]
+      },
+      {
+        "id": "U4-L3-Q2",
+        "type": "code",
+        "text": "Access the value stored under key 'name' in student.",
+        "prompt": "student[___]",
+        "answer": "'name'",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["dict", "keys"]
+      },
+      {
+        "id": "U4-L3-Q3",
+        "type": "mc",
+        "text": "Which collection is immutable?",
+        "options": ["list", "dict", "tuple", "set in this lesson"],
+        "correct": 2,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["tuple", "collections", "immutability"]
+      },
+      {
+        "id": "U4-L3-Q4",
+        "type": "code",
+        "text": "Access the first item in tuple point.",
+        "prompt": "point[___]",
+        "answer": "0",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["tuple", "indexing"]
+      },
+      {
+        "id": "U4-L3-Q5",
+        "type": "mc",
+        "text": "What does immutable mean here?",
+        "options": [
+          "The data can be sorted only once",
+          "The data cannot be changed after creation",
+          "The data is always numeric",
+          "The data always uses keys"
+        ],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["tuple", "immutability"]
+      }
+    ]
+  },
+  {
+    "id": "U5-L1",
+    "title": "Importing and Using Modules",
+    "module": "Unit 5: Practical Python",
+    "content": "# Importing and Using Modules",
+    "slides": [
+      {
+        "id": "u5l1-s1",
+        "type": "intro",
+        "title": "Modules extend Python",
+        "body": "### Importing and Using Modules\n\nModules let you use extra functionality without writing everything yourself."
+      },
+      {
+        "id": "u5l1-s2",
+        "type": "concept",
+        "title": "Importing a whole module",
+        "body": "## import\n\n```python\nimport math\nprint(math.sqrt(16))\n```"
+      },
+      {
+        "id": "u5l1-s3",
+        "type": "example",
+        "title": "Importing a single tool",
+        "body": "## from ... import ...\n\n```python\nfrom math import sqrt\nprint(sqrt(25))\n```"
+      },
+      {
+        "id": "u5l1-s4",
+        "type": "tip",
+        "title": "Why modules matter",
+        "body": "## Why modules matter\n\nThey make Python more powerful by letting you reuse existing tools."
+      },
+      {
+        "id": "u5l1-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how `import` works\n- how to import a single tool from a module"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "U5-L1-Q1",
+        "type": "mc",
+        "text": "Which line imports the math module?",
+        "options": ["include math", "require math", "import math", "use math"],
+        "correct": 2,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["import", "modules"]
+      },
+      {
+        "id": "U5-L1-Q2",
+        "type": "code",
+        "text": "Complete the line to import sqrt from math.",
+        "prompt": "from math ___ sqrt",
+        "answer": "import",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["import", "modules"]
+      },
+      {
+        "id": "U5-L1-Q3",
+        "type": "mc",
+        "text": "What does math.sqrt(16) return?",
+        "options": ["4", "8", "16", "2"],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["import", "modules", "math"]
+      },
+      {
+        "id": "U5-L1-Q4",
+        "type": "code",
+        "text": "Complete the line to import the whole random module.",
+        "prompt": "___ random",
+        "answer": "import",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["import", "modules"]
+      },
+      {
+        "id": "U5-L1-Q5",
+        "type": "debug",
+        "text": "Fix the import statement.",
+        "prompt": "from math using sqrt",
+        "answer": "from math import sqrt",
+        "xp": 16,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "import", "modules"]
+      }
+    ]
+  },
+  {
+    "id": "U5-L2",
+    "title": "Combining Concepts",
+    "module": "Unit 5: Practical Python",
+    "content": "# Combining Concepts",
+    "slides": [
+      {
+        "id": "u5l2-s1",
+        "type": "intro",
+        "title": "Real programs combine tools",
+        "body": "### Combining Concepts\n\nReal programs combine input, variables, conditions, loops, and functions."
+      },
+      {
+        "id": "u5l2-s2",
+        "type": "example",
+        "title": "A simple combined example",
+        "body": "## Example\n\n```python\ndef greet(name):\n    if name != '':\n        print('Hello', name)\n    else:\n        print('Hello there')\n```"
+      },
+      {
+        "id": "u5l2-s3",
+        "type": "concept",
+        "title": "Thinking like a programmer",
+        "body": "## Thinking like a programmer\n\nA useful workflow is:\n\n1. store values\n2. decide what should happen\n3. repeat steps if needed\n4. package logic in functions"
+      },
+      {
+        "id": "u5l2-s4",
+        "type": "tip",
+        "title": "Why this matters",
+        "body": "Most useful programs are not built from one concept only.\n\nThey mix data, logic, repetition, and reusable functions."
+      },
+      {
+        "id": "u5l2-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how concepts connect together\n- how to reason about multi-step programs"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "U5-L2-Q1",
+        "type": "mc",
+        "text": "Which concept is best for repeating code several times?",
+        "options": ["variable", "loop", "string", "dictionary"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["loops", "problem-solving"]
+      },
+      {
+        "id": "U5-L2-Q2",
+        "type": "code",
+        "text": "Complete the conditional to check if score is above 10.",
+        "prompt": "if score ___ 10:\n    print('high')",
+        "answer": ">",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["if", "comparison", "problem-solving"]
+      },
+      {
+        "id": "U5-L2-Q3",
+        "type": "code",
+        "text": "Complete the function call.",
+        "prompt": "greet(___)",
+        "answer": "name",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["functions", "calls", "problem-solving"]
+      },
+      {
+        "id": "U5-L2-Q4",
+        "type": "trace",
+        "text": "Trace total after each loop step.",
+        "prompt": "total = 0\nfor n in [1, 2, 3]:\n  total += n\n# trace table columns: total",
+        "columns": ["total"],
+        "answer": [["1"], ["3"], ["6"]],
+        "xp": 12,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["trace", "loops", "problem-solving"]
+      },
+      {
+        "id": "U5-L2-Q5",
+        "type": "debug",
+        "text": "Fix the code so the function is called correctly.",
+        "prompt": "def greet(name):\n  print('Hi', name)\ngreet",
+        "answer": "def greet(name):\n  print('Hi', name)\ngreet(name)",
+        "xp": 18,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "functions", "problem-solving"]
+      }
+    ]
+  },
+  {
+    "id": "U5-L3",
+    "title": "Mini Problem Solving",
+    "module": "Unit 5: Practical Python",
+    "content": "# Mini Problem Solving",
+    "slides": [
+      {
+        "id": "u5l3-s1",
+        "type": "intro",
+        "title": "Apply what you know",
+        "body": "### Mini Problem Solving\n\nIn this lesson you apply what you know to short programming situations."
+      },
+      {
+        "id": "u5l3-s2",
+        "type": "concept",
+        "title": "A useful thought process",
+        "body": "## Example thinking process\n\n- What values do I need?\n- Do I need a condition?\n- Do I need repetition?\n- Should I return or print the result?"
+      },
+      {
+        "id": "u5l3-s3",
+        "type": "example",
+        "title": "A compact function",
+        "body": "## Example\n\n```python\ndef is_even(n):\n    return n % 2 == 0\n```\n\nThat function uses arithmetic, comparison, and return in one short piece of code."
+      },
+      {
+        "id": "u5l3-s4",
+        "type": "tip",
+        "title": "Small tasks still combine concepts",
+        "body": "Even simple problems often combine more than one idea.\n\nThat is why structured thinking matters."
+      },
+      {
+        "id": "u5l3-s5",
+        "type": "summary",
+        "title": "Ready to Practice?",
+        "body": "## Summary\n\nYou learned:\n\n- how to combine multiple tools\n- how to think through small coding tasks"
+      }
+    ],
+    "exercises": [
+      {
+        "id": "U5-L3-Q1",
+        "type": "mc",
+        "text": "Which expression checks if n is even?",
+        "options": ["n / 2 == 0", "n % 2 == 0", "n + 2 == 0", "n // 2"],
+        "correct": 1,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["operators", "comparison", "problem-solving"]
+      },
+      {
+        "id": "U5-L3-Q2",
+        "type": "code",
+        "text": "Return whether n is even.",
+        "prompt": "def is_even(n):\n    return n % 2 ___ 0",
+        "answer": "==",
+        "xp": 16,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["return", "comparison", "problem-solving"]
+      },
+      {
+        "id": "U5-L3-Q3",
+        "type": "mc",
+        "text": "When would you use a for loop?",
+        "options": [
+          "When repeating over a sequence",
+          "When defining a variable",
+          "When importing a module",
+          "When returning from a function"
+        ],
+        "correct": 0,
+        "xp": 10,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["for", "loops"]
+      },
+      {
+        "id": "U5-L3-Q4",
+        "type": "code",
+        "text": "Complete the loop variable.",
+        "prompt": "for ___ in nums:\n    print(item)",
+        "answer": "item",
+        "xp": 15,
+        "pool": "core",
+        "difficulty": "easy",
+        "tags": ["for", "loops"]
+      },
+      {
+        "id": "U5-L3-Q5",
+        "type": "debug",
+        "text": "Fix the code so it returns the larger of a and b.",
+        "prompt": "def bigger(a, b):\n  if a > b:\n    print(a)\n  else:\n    print(b)",
+        "answer": "def bigger(a, b):\n  if a > b:\n    return a\n  else:\n    return b",
+        "xp": 20,
+        "pool": "core",
+        "difficulty": "medium",
+        "tags": ["debug", "return", "if", "problem-solving"]
+      }
     ]
   }
 ]

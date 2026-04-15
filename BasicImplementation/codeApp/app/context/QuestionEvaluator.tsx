@@ -10,7 +10,7 @@ export type CodeQuestion = {
   type: "code";
   text: string;
   prompt?: string;
-  answer: string; // expected output / fixed code / correct value
+  answer: string;
   xp: number;
 };
 
@@ -18,8 +18,8 @@ export type TraceQuestion = {
   type: "trace";
   text: string;
   prompt?: string;
-  columns: string[]; // e.g. ["i", "total"]
-  answer: string[][]; // rows of columns: [["1","1"],["2","3"],...]
+  columns: string[];
+  answer: string[][];
   xp: number;
 };
 
@@ -27,7 +27,7 @@ export type DebugQuestion = {
   type: "debug";
   text: string;
   prompt?: string;
-  answer: string; // fixed code (string)
+  answer: string;
   xp: number;
 };
 
@@ -41,121 +41,413 @@ export type EvaluationResult = {
   correct: boolean;
   xpEarned: number;
   feedback?: string;
+  feedbackTitle?: string;
+  answerMode?:
+    | "exact"
+    | "whitespace"
+    | "comma"
+    | "numeric"
+    | "quoted"
+    | "loose"
+    | "normalized"
+    | "contains"
+    | "trace"
+    | null;
+  expectedAnswer?: string;
 };
 
-/**
- * evaluateQuestion:
- * - For `mc` checks index equality.
- * - For `code` does normalized string match (trim + lowercase).
- * - For `trace` compares 2D array cell-by-cell (normalized).
- * - For `debug` forgiving contains/exact match.
- *
- * NOTE: This is local/demo evaluator. Swap to backend API later with same output shape.
- */
+const normalizeBasic = (value: unknown): string => {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase();
+};
+
+const normalizeWhitespace = (value: unknown): string => {
+  return String(value ?? "")
+    .replace(/\r\n/g, "\n")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n+/g, "\n")
+    .trim()
+    .toLowerCase();
+};
+
+const normalizeLoose = (value: unknown): string => {
+  return String(value ?? "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\s+/g, "")
+    .trim()
+    .toLowerCase();
+};
+
+const normalizeCode = (value: unknown): string => {
+  return String(value ?? "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\t/g, "  ")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .join("\n")
+    .trim()
+    .toLowerCase();
+};
+
+const normalizeTraceCell = (value: unknown): string => {
+  return String(value ?? "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLowerCase();
+};
+
+const normalizeQuotedString = (value: string): string => {
+  const trimmed = value.trim();
+
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1).trim().toLowerCase();
+  }
+
+  return trimmed.toLowerCase();
+};
+
+const splitCommaAnswers = (value: string): string[] => {
+  return value
+    .split(",")
+    .map((part) => normalizeWhitespace(part))
+    .filter(Boolean);
+};
+
+const isNumericEquivalent = (a: string, b: string): boolean => {
+  if (a === "" || b === "") return false;
+
+  const numA = Number(a);
+  const numB = Number(b);
+
+  if (Number.isNaN(numA) || Number.isNaN(numB)) return false;
+
+  return Math.abs(numA - numB) < 0.000001;
+};
+
+const compareSingleToken = (expected: string, provided: string): boolean => {
+  if (expected === provided) return true;
+  if (normalizeWhitespace(expected) === normalizeWhitespace(provided))
+    return true;
+  if (normalizeQuotedString(expected) === normalizeQuotedString(provided))
+    return true;
+  if (isNumericEquivalent(expected, provided)) return true;
+  return false;
+};
+
+const compareCommaSeparatedAnswer = (
+  expectedRaw: string,
+  providedRaw: string,
+): boolean => {
+  const expectedParts = splitCommaAnswers(expectedRaw);
+  const providedParts = splitCommaAnswers(providedRaw);
+
+  if (expectedParts.length <= 1) return false;
+  if (expectedParts.length !== providedParts.length) return false;
+
+  for (let i = 0; i < expectedParts.length; i++) {
+    if (!compareSingleToken(expectedParts[i], providedParts[i])) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const compareCodeAnswer = (
+  expectedRaw: string,
+  providedRaw: string,
+): {
+  correct: boolean;
+  mode:
+    | "exact"
+    | "whitespace"
+    | "comma"
+    | "numeric"
+    | "quoted"
+    | "loose"
+    | null;
+} => {
+  const expectedBasic = normalizeBasic(expectedRaw);
+  const providedBasic = normalizeBasic(providedRaw);
+
+  if (!providedBasic) {
+    return { correct: false, mode: null };
+  }
+
+  if (expectedBasic === providedBasic) {
+    return { correct: true, mode: "exact" };
+  }
+
+  if (normalizeWhitespace(expectedRaw) === normalizeWhitespace(providedRaw)) {
+    return { correct: true, mode: "whitespace" };
+  }
+
+  if (
+    normalizeQuotedString(expectedRaw) === normalizeQuotedString(providedRaw)
+  ) {
+    return { correct: true, mode: "quoted" };
+  }
+
+  if (compareCommaSeparatedAnswer(expectedRaw, providedRaw)) {
+    return { correct: true, mode: "comma" };
+  }
+
+  if (isNumericEquivalent(expectedBasic, providedBasic)) {
+    return { correct: true, mode: "numeric" };
+  }
+
+  if (normalizeLoose(expectedRaw) === normalizeLoose(providedRaw)) {
+    return { correct: true, mode: "loose" };
+  }
+
+  return { correct: false, mode: null };
+};
+
+const compareDebugAnswer = (
+  expectedRaw: string,
+  providedRaw: string,
+): { correct: boolean; mode: "exact" | "normalized" | "contains" | null } => {
+  const expectedCode = normalizeCode(expectedRaw);
+  const providedCode = normalizeCode(providedRaw);
+
+  if (!providedCode) {
+    return { correct: false, mode: null };
+  }
+
+  if (expectedCode === providedCode) {
+    return { correct: true, mode: "exact" };
+  }
+
+  const expectedLoose = normalizeLoose(expectedRaw);
+  const providedLoose = normalizeLoose(providedRaw);
+
+  if (expectedLoose === providedLoose) {
+    return { correct: true, mode: "normalized" };
+  }
+
+  const expectedLength = expectedLoose.length;
+  const providedLength = providedLoose.length;
+
+  const isReasonablyCloseInSize =
+    Math.abs(expectedLength - providedLength) <= 16 &&
+    Math.min(expectedLength, providedLength) >=
+      Math.max(expectedLength, providedLength) * 0.65;
+
+  if (
+    isReasonablyCloseInSize &&
+    (providedLoose.includes(expectedLoose) ||
+      expectedLoose.includes(providedLoose))
+  ) {
+    return { correct: true, mode: "contains" };
+  }
+
+  return { correct: false, mode: null };
+};
+
+const compareTraceAnswer = (
+  expected: string[][],
+  provided: unknown,
+): {
+  correct: boolean;
+  feedback: string;
+  mismatchCount: number;
+} => {
+  const rows = Array.isArray(provided) ? provided : [];
+
+  if (!Array.isArray(rows) || rows.length !== expected.length) {
+    return {
+      correct: false,
+      feedback: `❌ Expected ${expected.length} row${expected.length === 1 ? "" : "s"} in the trace table.`,
+      mismatchCount: expected.length,
+    };
+  }
+
+  const mismatches: string[] = [];
+
+  for (let r = 0; r < expected.length; r++) {
+    const expectedRow = expected[r] ?? [];
+    const providedRow = Array.isArray(rows[r]) ? rows[r] : [];
+
+    if (providedRow.length !== expectedRow.length) {
+      mismatches.push(`row ${r + 1} column count`);
+      continue;
+    }
+
+    for (let c = 0; c < expectedRow.length; c++) {
+      const expectedCell = normalizeTraceCell(expectedRow[c]);
+      const providedCell = normalizeTraceCell(providedRow[c]);
+
+      if (
+        expectedCell !== providedCell &&
+        !isNumericEquivalent(expectedCell, providedCell)
+      ) {
+        mismatches.push(`row ${r + 1}, col ${c + 1}`);
+      }
+    }
+  }
+
+  if (mismatches.length === 0) {
+    return {
+      correct: true,
+      feedback: "✅ Trace correct!",
+      mismatchCount: 0,
+    };
+  }
+
+  if (mismatches.length === 1) {
+    return {
+      correct: false,
+      feedback: `❌ Almost there — check ${mismatches[0]}.`,
+      mismatchCount: mismatches.length,
+    };
+  }
+
+  return {
+    correct: false,
+    feedback: `❌ Check these cells: ${mismatches.slice(0, 5).join("; ")}`,
+    mismatchCount: mismatches.length,
+  };
+};
+
+const buildCodeFeedbackTitle = (
+  mode:
+    | "exact"
+    | "whitespace"
+    | "comma"
+    | "numeric"
+    | "quoted"
+    | "loose"
+    | null,
+): string => {
+  switch (mode) {
+    case "exact":
+      return "Perfect";
+    case "whitespace":
+      return "Correct";
+    case "quoted":
+      return "Accepted";
+    case "comma":
+      return "Correct";
+    case "numeric":
+      return "Correct";
+    case "loose":
+      return "Accepted";
+    default:
+      return "Not quite";
+  }
+};
+
 export const evaluateQuestion = (
   question: Question,
-  userAnswer: any,
+  userAnswer: unknown,
 ): EvaluationResult => {
-  if (!question)
-    return { correct: false, xpEarned: 0, feedback: "No question" };
-
-  // MCQ
-  if (question.type === "mc") {
-    const correct = userAnswer === (question as MCQQuestion).correct;
+  if (!question) {
     return {
-      correct,
-      xpEarned: correct ? (question as MCQQuestion).xp : 0,
-      feedback: correct ? "✅ Correct!" : "❌ Incorrect — try again",
+      correct: false,
+      xpEarned: 0,
+      feedback: "No question found.",
+      feedbackTitle: "Error",
+      answerMode: null,
     };
   }
 
-  // TRACE
+  if (question.type === "mc") {
+    const providedIndex =
+      typeof userAnswer === "number" ? userAnswer : Number(userAnswer);
+
+    const correct = providedIndex === question.correct;
+
+    return {
+      correct,
+      xpEarned: correct ? question.xp : 0,
+      feedback: correct ? "✅ Correct!" : "❌ Not quite — try again.",
+      feedbackTitle: correct ? "Nice" : "Try again",
+      answerMode: null,
+    };
+  }
+
   if (question.type === "trace") {
-    const expected = (question as TraceQuestion).answer || [];
-    const provided: string[][] = Array.isArray(userAnswer) ? userAnswer : [];
+    const result = compareTraceAnswer(question.answer ?? [], userAnswer);
 
-    // quick shape check
-    if (!Array.isArray(provided) || provided.length !== expected.length) {
-      return {
-        correct: false,
-        xpEarned: 0,
-        feedback: `❌ Incorrect shape: expected ${expected.length} rows.`,
-      };
-    }
+    return {
+      correct: result.correct,
+      xpEarned: result.correct ? question.xp : 0,
+      feedback: result.feedback,
+      feedbackTitle: result.correct ? "Trace locked in" : "Trace mismatch",
+      answerMode: result.correct ? "trace" : null,
+    };
+  }
 
-    // compare cell-by-cell normalized
-    const mismatches: string[] = [];
-    for (let r = 0; r < expected.length; r++) {
-      const expRow = expected[r] || [];
-      const provRow = provided[r] || [];
-      if (provRow.length !== expRow.length) {
-        mismatches.push(`row ${r + 1} column count`);
-        continue;
-      }
-      for (let c = 0; c < expRow.length; c++) {
-        const e = String(expRow[c] ?? "")
-          .trim()
-          .toLowerCase();
-        const p = String(provRow[c] ?? "")
-          .trim()
-          .toLowerCase();
-        if (e !== p) {
-          mismatches.push(`row ${r + 1}, col ${c + 1}`);
-        }
-      }
-    }
+  if (question.type === "debug") {
+    const providedRaw = String(userAnswer ?? "");
+    const result = compareDebugAnswer(question.answer ?? "", providedRaw);
 
-    if (mismatches.length === 0) {
+    if (result.correct) {
       return {
         correct: true,
-        xpEarned: (question as TraceQuestion).xp,
-        feedback: "✅ Trace correct!",
-      };
-    } else {
-      return {
-        correct: false,
-        xpEarned: 0,
-        feedback: `❌ Wrong cells: ${mismatches.slice(0, 6).join("; ")}`,
+        xpEarned: question.xp,
+        feedback:
+          result.mode === "contains"
+            ? "✅ Very close to the expected fix — accepted."
+            : "✅ Fixed!",
+        feedbackTitle: "Bug fixed",
+        answerMode: result.mode,
+        expectedAnswer: question.answer,
       };
     }
-  }
 
-  // DEBUG (forgiving) and CODE (exact)
-  if (question.type === "debug") {
-    const expected =
-      (question as DebugQuestion).answer?.trim().toLowerCase() ?? "";
-    const provided = String(userAnswer ?? "")
-      .trim()
-      .toLowerCase();
-    const correct =
-      provided === expected ||
-      provided.includes(expected) ||
-      expected.includes(provided);
     return {
-      correct,
-      xpEarned: correct ? (question as DebugQuestion).xp : 0,
-      feedback: correct
-        ? "✅ Fixed!"
-        : `❌ Incorrect. Expected to include: ${(question as DebugQuestion).answer}`,
+      correct: false,
+      xpEarned: 0,
+      feedback: "❌ That fix isn’t quite right yet.",
+      feedbackTitle: "Still broken",
+      answerMode: null,
+      expectedAnswer: question.answer,
     };
   }
 
-  // CODE regular exact match
   if (question.type === "code") {
-    const expected =
-      (question as CodeQuestion).answer?.trim().toLowerCase() ?? "";
-    const provided = String(userAnswer ?? "")
-      .trim()
-      .toLowerCase();
-    const correct = provided === expected;
+    const providedRaw = String(userAnswer ?? "");
+    const result = compareCodeAnswer(question.answer ?? "", providedRaw);
+
+    if (result.correct) {
+      return {
+        correct: true,
+        xpEarned: question.xp,
+        feedback:
+          result.mode === "loose"
+            ? "✅ Correct — formatting differences ignored."
+            : "✅ Correct!",
+        feedbackTitle: buildCodeFeedbackTitle(result.mode),
+        answerMode: result.mode,
+        expectedAnswer: question.answer,
+      };
+    }
+
+    const expectedPreview = String(question.answer ?? "").trim();
+
     return {
-      correct,
-      xpEarned: correct ? (question as CodeQuestion).xp : 0,
-      feedback: correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Expected: ${(question as CodeQuestion).answer}`,
+      correct: false,
+      xpEarned: 0,
+      feedback: expectedPreview
+        ? `❌ Incorrect. Expected: ${expectedPreview}`
+        : "❌ Incorrect.",
+      feedbackTitle: "Not quite",
+      answerMode: null,
+      expectedAnswer: question.answer,
     };
   }
 
-  return { correct: false, xpEarned: 0, feedback: "Unknown question type" };
+  return {
+    correct: false,
+    xpEarned: 0,
+    feedback: "Unknown question type.",
+    feedbackTitle: "Error",
+    answerMode: null,
+  };
 };

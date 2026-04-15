@@ -1,7 +1,19 @@
 import React, { useContext, useMemo } from "react";
-import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  FlatList,
+  SafeAreaView,
+  Image,
+  ScrollView,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { LeaderboardContext } from "../context/LeaderboardContext";
+import { getCountryName } from "../data/countries";
+import CountryFlag from "../Components/common/CountryFlag";
 
 const getTier = (xp: number) => {
   if (xp >= 10000) return "diamond";
@@ -29,91 +41,162 @@ const tierColor = (tier: string) => {
   }
 };
 
+const getNextTierXP = (xp: number) => {
+  if (xp < 500) return 500;
+  if (xp < 1000) return 1000;
+  if (xp < 2000) return 2000;
+  if (xp < 5000) return 5000;
+  if (xp < 10000) return 10000;
+  return xp;
+};
+
 export default function UserProfile() {
   const { userId } = useLocalSearchParams<{ userId: string }>();
   const router = useRouter();
-  const { users } = useContext(LeaderboardContext);
+  const { users, currentUserId } = useContext(LeaderboardContext);
 
   const user = users.find((u) => u.id === userId);
 
   if (!user) {
     return (
-      <View style={styles.center}>
-        <Text>User not found</Text>
+      <SafeAreaView style={styles.center}>
+        <Text style={styles.notFoundTitle}>User not found</Text>
         <Pressable onPress={() => router.back()} style={styles.button}>
           <Text style={styles.buttonText}>Back</Text>
         </Pressable>
-      </View>
+      </SafeAreaView>
     );
   }
 
+  const isCurrent = user.id === currentUserId;
   const tier = getTier(user.allTimeXP);
+  const nextTierXP = useMemo(
+    () => getNextTierXP(user.allTimeXP),
+    [user.allTimeXP],
+  );
 
-  const nextTierXP = useMemo(() => {
-    if (user.allTimeXP < 500) return 500;
-    if (user.allTimeXP < 1000) return 1000;
-    if (user.allTimeXP < 2000) return 2000;
-    if (user.allTimeXP < 5000) return 5000;
-    if (user.allTimeXP < 10000) return 10000;
-    return user.allTimeXP;
-  }, [user.allTimeXP]);
-
-  const progress = tier === "diamond" ? 1 : user.allTimeXP / nextTierXP;
+  const progress =
+    tier === "diamond" ? 1 : Math.min(user.allTimeXP / nextTierXP, 1);
 
   return (
-    <View style={styles.container}>
-      {/* Close */}
-      <Pressable style={styles.close} onPress={() => router.back()}>
-        <Text style={styles.closeText}>✕</Text>
-      </Pressable>
+    <LinearGradient colors={["#A0E7E5", "#FFAEBC"]} style={{ flex: 1 }}>
+      <SafeAreaView style={styles.safe}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={{ paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <Pressable style={styles.close} onPress={() => router.back()}>
+            <Text style={styles.closeText}>✕</Text>
+          </Pressable>
 
-      {/* Header Card */}
-      <View style={styles.headerCard}>
-        <Text style={styles.username}>
-          {user.anonymous ? "Anonymous" : user.username}
-        </Text>
-
-        <View style={[styles.tierBadge, { backgroundColor: tierColor(tier) }]}>
-          <Text style={styles.tierText}>{tier.toUpperCase()}</Text>
-        </View>
-
-        <Text style={styles.country}>{user.country ?? "—"}</Text>
-
-        {/* Progress Bar */}
-        {tier !== "diamond" && (
-          <View style={styles.progressContainer}>
-            <View
-              style={[styles.progressFill, { width: `${progress * 100}%` }]}
-            />
-          </View>
-        )}
-      </View>
-
-      {/* XP Stats */}
-      <View style={styles.statRow}>
-        <Stat label="Weekly" value={user.weeklyXP} />
-        <Stat label="Monthly" value={user.monthlyXP} />
-        <Stat label="All-time" value={user.allTimeXP} />
-      </View>
-
-      {/* Badges */}
-      <Text style={styles.sectionTitle}>Badges</Text>
-
-      {user.badges && user.badges.length > 0 ? (
-        <FlatList
-          data={user.badges}
-          keyExtractor={(b, idx) => `${user.id}-badge-${idx}`}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <View style={styles.badgeCard}>
-              <Text style={styles.badgeText}>🏅 {item}</Text>
+          <View style={styles.headerCard}>
+            <View style={styles.avatarWrap}>
+              {user.photoURL ? (
+                <Image source={{ uri: user.photoURL }} style={styles.avatar} />
+              ) : (
+                <View style={styles.avatarFallback}>
+                  <Text style={styles.avatarFallbackText}>
+                    {(user.anonymous
+                      ? "A"
+                      : user.username.charAt(0)
+                    ).toUpperCase()}
+                  </Text>
+                </View>
+              )}
             </View>
-          )}
-        />
-      ) : (
-        <Text style={styles.noBadges}>No badges yet</Text>
-      )}
-    </View>
+
+            <Text style={styles.username}>
+              {user.anonymous ? "Anonymous" : user.username}
+            </Text>
+
+            {isCurrent && <Text style={styles.youTag}>This is you</Text>}
+
+            {!!user.equippedTitle && !user.anonymous && (
+              <Text style={styles.equippedTitle}>{user.equippedTitle}</Text>
+            )}
+
+            <View
+              style={[styles.tierBadge, { backgroundColor: tierColor(tier) }]}
+            >
+              <Text style={styles.tierText}>{tier.toUpperCase()}</Text>
+            </View>
+
+            {!user.anonymous && (
+              <View style={styles.countryRow}>
+                <CountryFlag countryCode={user.country} size={20} />
+                <Text style={styles.country}>
+                  {getCountryName(user.country)}
+                </Text>
+              </View>
+            )}
+
+            {tier !== "diamond" && (
+              <>
+                <View style={styles.progressContainer}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      { width: `${progress * 100}%` },
+                    ]}
+                  />
+                </View>
+                <Text style={styles.progressText}>
+                  {nextTierXP - user.allTimeXP} XP to next tier
+                </Text>
+              </>
+            )}
+          </View>
+
+          <View style={styles.statRow}>
+            <Stat label="Weekly" value={user.weeklyXP} />
+            <Stat label="Monthly" value={user.monthlyXP} />
+            <Stat label="All-time" value={user.allTimeXP} />
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.sectionTitle}>Profile Snapshot</Text>
+            <Text style={styles.snapshotText}>
+              {user.anonymous
+                ? "This user is currently shown anonymously on public rankings."
+                : `${user.username} is competing publicly on the leaderboard.`}
+            </Text>
+            <Text style={styles.snapshotText}>
+              Tier:{" "}
+              <Text style={[styles.boldText, { color: tierColor(tier) }]}>
+                {tier}
+              </Text>
+            </Text>
+            <Text style={styles.snapshotText}>
+              Badges earned:{" "}
+              <Text style={styles.boldText}>{user.badges?.length ?? 0}</Text>
+            </Text>
+          </View>
+
+          <View style={styles.badgesSection}>
+            <Text style={styles.sectionTitle}>Badges</Text>
+
+            {user.badges && user.badges.length > 0 ? (
+              <FlatList
+                data={user.badges}
+                keyExtractor={(b, idx) => `${user.id}-badge-${idx}`}
+                numColumns={2}
+                scrollEnabled={false}
+                renderItem={({ item }) => (
+                  <View style={styles.badgeCard}>
+                    <Text style={styles.badgeText}>🏅 {item}</Text>
+                  </View>
+                )}
+              />
+            ) : (
+              <View style={styles.emptyBadgeCard}>
+                <Text style={styles.noBadges}>No badges yet</Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -127,52 +210,121 @@ function Stat({ label, value }: { label: string; value: number }) {
 }
 
 const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+
   container: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
     padding: 18,
   },
+
   center: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    padding: 24,
+    backgroundColor: "#fff",
   },
+
+  notFoundTitle: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#111827",
+  },
+
   close: {
-    position: "absolute",
-    right: 16,
-    top: 16,
-    padding: 8,
+    alignSelf: "flex-end",
     backgroundColor: "#FF6B6B",
-    borderRadius: 8,
-    zIndex: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
   },
+
   closeText: {
     color: "#fff",
-    fontWeight: "700",
+    fontWeight: "800",
+    fontSize: 18,
   },
 
   headerCard: {
     backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 18,
+    padding: 22,
+    borderRadius: 22,
     alignItems: "center",
-    marginTop: 40,
-    marginBottom: 20,
-    elevation: 4,
+    marginTop: 8,
+    marginBottom: 18,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+
+  avatarWrap: {
+    marginBottom: 10,
+  },
+
+  avatar: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+  },
+
+  avatarFallback: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: "#E5E7EB",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  avatarFallbackText: {
+    fontSize: 34,
+    fontWeight: "900",
+    color: "#374151",
   },
 
   username: {
-    fontSize: 24,
+    fontSize: 26,
+    fontWeight: "900",
+    color: "#111827",
+    textAlign: "center",
+  },
+
+  youTag: {
+    marginTop: 4,
+    fontSize: 12,
     fontWeight: "800",
+    color: "#6C63FF",
+  },
+
+  equippedTitle: {
+    marginTop: 8,
+    color: "#6C63FF",
+    fontWeight: "800",
+    fontSize: 14,
+    textAlign: "center",
+  },
+
+  countryRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginTop: 10,
   },
 
   country: {
-    marginTop: 6,
     color: "#666",
+    fontWeight: "600",
   },
 
   tierBadge: {
-    marginTop: 12,
+    marginTop: 14,
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 20,
@@ -180,53 +332,89 @@ const styles = StyleSheet.create({
 
   tierText: {
     color: "#fff",
-    fontWeight: "700",
+    fontWeight: "800",
+    letterSpacing: 0.5,
   },
 
   progressContainer: {
-    marginTop: 14,
+    marginTop: 16,
     width: "100%",
-    height: 8,
-    backgroundColor: "#eee",
-    borderRadius: 6,
+    height: 10,
+    backgroundColor: "#E5E7EB",
+    borderRadius: 999,
     overflow: "hidden",
   },
 
   progressFill: {
-    height: 8,
+    height: 10,
     backgroundColor: "#FFB703",
+  },
+
+  progressText: {
+    marginTop: 8,
+    fontSize: 12,
+    color: "#6B7280",
+    fontWeight: "700",
   },
 
   statRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 18,
+    gap: 8,
   },
 
   stat: {
     backgroundColor: "#fff",
     flex: 1,
-    marginHorizontal: 4,
     padding: 16,
-    borderRadius: 14,
+    borderRadius: 16,
     alignItems: "center",
-    elevation: 3,
+    elevation: 2,
   },
 
   statNum: {
     fontSize: 20,
-    fontWeight: "800",
+    fontWeight: "900",
+    color: "#111827",
   },
 
   statLabel: {
     marginTop: 4,
     color: "#666",
+    fontWeight: "700",
+    fontSize: 12,
+  },
+
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    padding: 18,
+    marginBottom: 18,
+    elevation: 2,
+  },
+
+  badgesSection: {
+    marginBottom: 10,
   },
 
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: "900",
+    color: "#111827",
     marginBottom: 10,
+  },
+
+  snapshotText: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: "#4B5563",
+    marginBottom: 6,
+  },
+
+  boldText: {
+    fontWeight: "800",
+    color: "#111827",
   },
 
   badgeCard: {
@@ -240,11 +428,21 @@ const styles = StyleSheet.create({
   },
 
   badgeText: {
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#111827",
+    textAlign: "center",
+  },
+
+  emptyBadgeCard: {
+    backgroundColor: "#fff",
+    padding: 18,
+    borderRadius: 16,
   },
 
   noBadges: {
     color: "#777",
+    fontWeight: "700",
   },
 
   button: {
