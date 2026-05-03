@@ -202,7 +202,7 @@ export default function LoginScreen() {
             <Text style={styles.brandTitle}>Learn Python. Build momentum.</Text>
             <Text style={styles.brandSubtitle}>
               Guided lessons, syntax drills, review practice, daily goals,
-              projects, and unlocks — all designed to make progress feel clear.
+              projects, and unlocks, all designed to make progress feel clear.
             </Text>
           </View>
 

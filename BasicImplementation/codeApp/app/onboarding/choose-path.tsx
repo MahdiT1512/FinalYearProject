@@ -40,12 +40,17 @@ export default function ChoosePathOnboardingScreen() {
       }
 
       if (path === "syntax") {
-        router.replace("//Components/screens/syntax");
+        router.replace("/Components/screens/syntax");
         return;
       }
 
       if (path === "profile") {
-        router.replace("/User/MyProfile");
+        router.replace({
+          pathname: "/User/MyProfile",
+          params: {
+            entry: "onboarding",
+          },
+        });
         return;
       }
 

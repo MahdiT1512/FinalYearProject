@@ -219,11 +219,16 @@ export default function MyProfile() {
 
   const handleClose = () => {
     if (entry === "onboarding") {
-      router.replace("/onboarding/welcome");
+      router.replace("/Components/screens");
       return;
     }
 
-    router.replace("/");
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+
+    router.replace("/Components/screens");
   };
 
   const handleSpin = async () => {
