@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  FlatList,
   SafeAreaView,
   Image,
   ScrollView,
@@ -14,6 +13,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { LeaderboardContext } from "../context/LeaderboardContext";
 import { getCountryName } from "../data/countries";
 import CountryFlag from "../Components/common/CountryFlag";
+import {
+  getUnlockedBadgeDefinitions,
+  BadgeDefinition,
+} from "../../services/badges";
 
 const getTier = (xp: number) => {
   if (xp >= 10000) return "diamond";
@@ -77,6 +80,10 @@ export default function UserProfile() {
 
   const progress =
     tier === "diamond" ? 1 : Math.min(user.allTimeXP / nextTierXP, 1);
+
+  const unlockedBadges = useMemo<BadgeDefinition[]>(() => {
+    return getUnlockedBadgeDefinitions(user.badges);
+  }, [user.badges]);
 
   return (
     <LinearGradient colors={["#A0E7E5", "#FFAEBC"]} style={{ flex: 1 }}>
@@ -169,28 +176,45 @@ export default function UserProfile() {
             </Text>
             <Text style={styles.snapshotText}>
               Badges earned:{" "}
-              <Text style={styles.boldText}>{user.badges?.length ?? 0}</Text>
+              <Text style={styles.boldText}>{unlockedBadges.length}</Text>
             </Text>
           </View>
 
           <View style={styles.badgesSection}>
             <Text style={styles.sectionTitle}>Badges</Text>
 
-            {user.badges && user.badges.length > 0 ? (
-              <FlatList
-                data={user.badges}
-                keyExtractor={(b, idx) => `${user.id}-badge-${idx}`}
-                numColumns={2}
-                scrollEnabled={false}
-                renderItem={({ item }) => (
-                  <View style={styles.badgeCard}>
-                    <Text style={styles.badgeText}>🏅 {item}</Text>
+            {unlockedBadges.length > 0 ? (
+              <View style={styles.badgesGrid}>
+                {unlockedBadges.map((badge) => (
+                  <View
+                    key={`${user.id}-badge-${badge.id}`}
+                    style={[
+                      styles.badgeCard,
+                      { borderColor: badge.accent + "55" },
+                    ]}
+                  >
+                    <View
+                      style={[
+                        styles.badgeIconWrap,
+                        { backgroundColor: badge.accent + "22" },
+                      ]}
+                    >
+                      <Text style={styles.badgeIcon}>{badge.icon}</Text>
+                    </View>
+
+                    <Text style={styles.badgeName}>{badge.name}</Text>
+                    <Text style={styles.badgeDescription}>
+                      {badge.description}
+                    </Text>
                   </View>
-                )}
-              />
+                ))}
+              </View>
             ) : (
               <View style={styles.emptyBadgeCard}>
                 <Text style={styles.noBadges}>No badges yet</Text>
+                <Text style={styles.noBadgesSub}>
+                  Keep learning and using the app to unlock your first badge.
+                </Text>
               </View>
             )}
           </View>
@@ -417,21 +441,47 @@ const styles = StyleSheet.create({
     color: "#111827",
   },
 
+  badgesGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+
   badgeCard: {
-    flex: 1,
+    width: "48%",
     backgroundColor: "#fff",
     padding: 14,
-    borderRadius: 14,
-    margin: 6,
-    alignItems: "center",
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 1.5,
     elevation: 2,
   },
 
-  badgeText: {
+  badgeIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+
+  badgeIcon: {
+    fontSize: 22,
+  },
+
+  badgeName: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "900",
     color: "#111827",
-    textAlign: "center",
+    marginBottom: 6,
+  },
+
+  badgeDescription: {
+    fontSize: 12,
+    lineHeight: 18,
+    color: "#4B5563",
+    fontWeight: "600",
   },
 
   emptyBadgeCard: {
@@ -441,8 +491,17 @@ const styles = StyleSheet.create({
   },
 
   noBadges: {
-    color: "#777",
-    fontWeight: "700",
+    color: "#111827",
+    fontWeight: "800",
+    fontSize: 15,
+  },
+
+  noBadgesSub: {
+    marginTop: 6,
+    color: "#6B7280",
+    fontWeight: "600",
+    fontSize: 13,
+    lineHeight: 19,
   },
 
   button: {

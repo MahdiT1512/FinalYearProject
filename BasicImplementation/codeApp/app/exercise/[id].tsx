@@ -12,6 +12,8 @@ import {
   ScrollView,
   Platform,
   StatusBar,
+  KeyboardAvoidingView,
+  LayoutChangeEvent,
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { XPContext } from "../context/XPContext";
@@ -64,6 +66,7 @@ export default function ExercisePage() {
   const reviewMode = params.reviewMode === "1";
 
   const router = useRouter();
+  const scrollRef = useRef<ScrollView | null>(null);
 
   const {
     addXP,
@@ -104,6 +107,9 @@ export default function ExercisePage() {
   const [reviewWrongCount, setReviewWrongCount] = useState(0);
 
   const [exitModalVisible, setExitModalVisible] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  const [answerSectionY, setAnswerSectionY] = useState(0);
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -139,7 +145,33 @@ export default function ExercisePage() {
     setSessionWrong(0);
     setReviewCorrectCount(0);
     setReviewWrongCount(0);
+
+    fadeAnim.setValue(1);
+    scaleAnim.setValue(1);
+    shakeAnim.setValue(0);
+    feedbackSlide.setValue(30);
+    feedbackOpacity.setValue(0);
   }, [lesson?.id, reviewMode, lessonPool.length]);
+
+  useEffect(() => {
+    const showEvent =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const showSub = Keyboard.addListener(showEvent, () => {
+      setKeyboardVisible(true);
+    });
+
+    const hideSub = Keyboard.addListener(hideEvent, () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   const q = sessionExercises[idx] as SessionQ | undefined;
 
@@ -161,8 +193,6 @@ export default function ExercisePage() {
     setFeedbackTone("idle");
 
     shakeAnim.setValue(0);
-    scaleAnim.setValue(1);
-    fadeAnim.setValue(1);
     feedbackSlide.setValue(30);
     feedbackOpacity.setValue(0);
 
@@ -190,17 +220,26 @@ export default function ExercisePage() {
     } else {
       setTraceInputs([]);
     }
-  }, [
-    idx,
-    lesson?.id,
-    q,
-    fadeAnim,
-    scaleAnim,
-    shakeAnim,
-    feedbackSlide,
-    feedbackOpacity,
-    progressPulse,
-  ]);
+  }, [idx, lesson?.id]);
+
+  useEffect(() => {
+    fadeAnim.setValue(1);
+    scaleAnim.setValue(1);
+  }, [idx]);
+
+  const scrollToAnswerArea = () => {
+    setTimeout(() => {
+      if (!scrollRef.current) return;
+      scrollRef.current.scrollTo({
+        y: Math.max(answerSectionY - 120, 0),
+        animated: true,
+      });
+    }, 120);
+  };
+
+  const handleAnswerAreaLayout = (event: LayoutChangeEvent) => {
+    setAnswerSectionY(event.nativeEvent.layout.y);
+  };
 
   if (!lesson) {
     return (
@@ -274,9 +313,9 @@ export default function ExercisePage() {
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
-        toValue: 1.03,
+        toValue: 1.01,
         useNativeDriver: true,
-        friction: 5,
+        friction: 6,
       }),
       Animated.sequence([
         Animated.timing(feedbackOpacity, {
@@ -295,6 +334,12 @@ export default function ExercisePage() {
         toValue: 0,
         duration: 260,
         useNativeDriver: true,
+      }).start();
+
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        friction: 7,
       }).start();
     });
   };
@@ -344,33 +389,32 @@ export default function ExercisePage() {
   };
 
   const animateQuestionTransition = (onDone: () => void) => {
-    Animated.sequence([
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 170,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: 0.985,
-          duration: 170,
-          useNativeDriver: true,
-        }),
-      ]),
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 120,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 0.985,
+        duration: 120,
+        useNativeDriver: true,
+      }),
     ]).start(() => {
       onDone();
       fadeAnim.setValue(0);
       scaleAnim.setValue(0.985);
+
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 220,
+          duration: 180,
           useNativeDriver: true,
         }),
         Animated.spring(scaleAnim, {
           toValue: 1,
           useNativeDriver: true,
-          friction: 6,
+          friction: 7,
         }),
       ]).start();
     });
@@ -608,289 +652,330 @@ export default function ExercisePage() {
   return (
     <>
       <SafeAreaView style={styles.safe}>
-        <View style={styles.container}>
-          <View style={styles.topRow}>
-            <View style={styles.topXpWrap}>
-              <XPBar />
+        <KeyboardAvoidingView
+          style={styles.safe}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
+        >
+          <View style={styles.container}>
+            <View style={styles.topRow}>
+              <View style={styles.topXpWrap}>
+                <XPBar />
+              </View>
+
+              <Pressable style={styles.exitCircle} onPress={onExitPress}>
+                <Text style={styles.exitCircleText}>✕</Text>
+              </Pressable>
             </View>
 
-            <Pressable style={styles.exitCircle} onPress={onExitPress}>
-              <Text style={styles.exitCircleText}>✕</Text>
-            </Pressable>
-          </View>
+            <ScrollView
+              ref={scrollRef}
+              style={styles.scrollArea}
+              contentContainerStyle={[
+                styles.scrollContent,
+                { paddingBottom: keyboardVisible ? 44 : 130 },
+              ]}
+              keyboardShouldPersistTaps="handled"
+              keyboardDismissMode="interactive"
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.heroCard}>
+                <View style={styles.heroTopRow}>
+                  <View style={styles.lessonTitleWrap}>
+                    <Text style={styles.heroEyebrow}>
+                      {reviewMode ? "Review Run" : "Lesson Run"}
+                    </Text>
+                    <Text style={styles.title}>{lesson.title}</Text>
+                    <Text style={styles.subtitle}>
+                      {reviewMode
+                        ? "Sharpen memory and chase the review reward."
+                        : "Push through the lesson and finish strong."}
+                    </Text>
+                  </View>
 
-          <View style={styles.heroCard}>
-            <View style={styles.heroTopRow}>
-              <View style={styles.lessonTitleWrap}>
-                <Text style={styles.heroEyebrow}>
-                  {reviewMode ? "Review Run" : "Lesson Run"}
-                </Text>
-                <Text style={styles.title}>{lesson.title}</Text>
-                <Text style={styles.subtitle}>
-                  {reviewMode
-                    ? "Sharpen memory and chase the review reward."
-                    : "Push through the lesson and finish strong."}
-                </Text>
+                  <Animated.View
+                    style={[
+                      styles.progressBadge,
+                      { transform: [{ scale: progressPulse }] },
+                    ]}
+                  >
+                    <Text style={styles.progressBadgeText}>
+                      {idx + 1}/{totalQuestions}
+                    </Text>
+                  </Animated.View>
+                </View>
+
+                <View style={styles.metricsRow}>
+                  <View style={styles.metricPill}>
+                    <Text style={styles.metricLabel}>❤️ Hearts</Text>
+                    <Text style={styles.metricValue}>{hearts}</Text>
+                  </View>
+
+                  <View style={styles.metricPill}>
+                    <Text style={styles.metricLabel}>⚡ Session XP</Text>
+                    <Text style={styles.metricValue}>
+                      {reviewMode ? 0 : sessionXP}
+                    </Text>
+                  </View>
+
+                  <View style={styles.metricPill}>
+                    <Text style={styles.metricLabel}>🔥 Combo</Text>
+                    <Text style={styles.metricValue}>{comboStreak}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.streakStrip}>
+                  <Text style={styles.streakStripText}>{streakLabel}</Text>
+                  {secondsUntilNextHeart !== null && (
+                    <Text style={styles.streakHint}>
+                      Next heart in ≈ {secondsUntilNextHeart}s
+                    </Text>
+                  )}
+                </View>
+
+                <View style={styles.progressTrack}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      { width: `${progressPercent}%` },
+                    ]}
+                  />
+                </View>
               </View>
 
               <Animated.View
                 style={[
-                  styles.progressBadge,
-                  { transform: [{ scale: progressPulse }] },
+                  styles.card,
+                  {
+                    transform: [
+                      { translateX: shakeAnim },
+                      { scale: scaleAnim },
+                    ],
+                    opacity: fadeAnim,
+                  },
                 ]}
               >
-                <Text style={styles.progressBadgeText}>
-                  {idx + 1}/{totalQuestions}
-                </Text>
+                <View style={styles.questionTopRow}>
+                  <View style={styles.typePill}>
+                    <Text style={styles.typePillText}>
+                      {q?.type === "mc"
+                        ? "Multiple Choice"
+                        : q?.type === "code"
+                          ? "Code"
+                          : q?.type === "debug"
+                            ? "Debug"
+                            : "Trace"}
+                    </Text>
+                  </View>
+
+                  <View style={styles.xpRewardPill}>
+                    <Text style={styles.xpRewardText}>+{q?.xp ?? 0} XP</Text>
+                  </View>
+                </View>
+
+                <Text style={styles.question}>{q?.text}</Text>
+
+                {q?.type === "mc" &&
+                  q.options.map((opt, i) => (
+                    <Pressable
+                      key={`${q.sessionId}-option-${i}`}
+                      onPress={() => onMCQPress(i)}
+                      style={({ pressed }) => [
+                        optionStyle(i),
+                        pressed && !locked && styles.pressedOption,
+                      ]}
+                    >
+                      <View style={styles.optionBadge}>
+                        <Text style={styles.optionBadgeText}>
+                          {String.fromCharCode(65 + i)}
+                        </Text>
+                      </View>
+                      <Text style={styles.optionText}>{opt}</Text>
+                    </Pressable>
+                  ))}
+
+                {(q?.type === "code" || q?.type === "debug") && (
+                  <View onLayout={handleAnswerAreaLayout}>
+                    {"prompt" in q && q.prompt ? (
+                      <View style={styles.promptBox}>
+                        <Text style={styles.codePrompt}>{q.prompt}</Text>
+                      </View>
+                    ) : null}
+
+                    {traceHint(q) ? (
+                      <Text style={styles.inlineHint}>{traceHint(q)}</Text>
+                    ) : null}
+
+                    <View style={styles.answerAreaCard}>
+                      <Text style={styles.answerAreaTitle}>Your answer</Text>
+
+                      <TextInput
+                        style={[
+                          styles.input,
+                          q.type === "debug" && styles.debugInput,
+                        ]}
+                        value={codeAnswer}
+                        onChangeText={setCodeAnswer}
+                        editable={!locked}
+                        placeholder={
+                          q.type === "debug"
+                            ? "Type the corrected code here"
+                            : "Type answer here"
+                        }
+                        placeholderTextColor="#9CA3AF"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        returnKeyType="done"
+                        multiline
+                        scrollEnabled
+                        textAlignVertical={
+                          q.type === "debug" ? "top" : "center"
+                        }
+                        onFocus={scrollToAnswerArea}
+                      />
+                    </View>
+
+                    <Pressable
+                      onPress={onSubmitCode}
+                      style={({ pressed }) => [
+                        styles.submitBtn,
+                        pressed && styles.pressedOption,
+                      ]}
+                    >
+                      <Text style={styles.submitText}>
+                        {locked ? "Checking..." : "Submit Answer"}
+                      </Text>
+                    </Pressable>
+                  </View>
+                )}
+
+                {q?.type === "trace" &&
+                  q.columns &&
+                  Array.isArray(q.answer) && (
+                    <View onLayout={handleAnswerAreaLayout}>
+                      {"prompt" in q && q.prompt ? (
+                        <View style={styles.promptBox}>
+                          <Text style={styles.codePrompt}>{q.prompt}</Text>
+                        </View>
+                      ) : null}
+
+                      <Text style={styles.inlineHint}>{traceHint(q)}</Text>
+
+                      <View style={styles.answerAreaCard}>
+                        <Text style={styles.answerAreaTitle}>Trace table</Text>
+
+                        <View style={styles.traceTable}>
+                          <View style={styles.traceRow}>
+                            {q.columns.map((col: string, colIdx: number) => (
+                              <View
+                                key={`${q.sessionId}-header-${colIdx}`}
+                                style={[styles.traceCell, styles.traceHeader]}
+                              >
+                                <Text style={styles.traceHeaderText}>
+                                  {col}
+                                </Text>
+                              </View>
+                            ))}
+                          </View>
+
+                          {q.answer.map((row: any[], rowIdx: number) => (
+                            <View
+                              key={`${q.sessionId}-row-${rowIdx}`}
+                              style={styles.traceRow}
+                            >
+                              {row.map((_: any, colIdx: number) => (
+                                <TextInput
+                                  key={`${q.sessionId}-cell-${rowIdx}-${colIdx}`}
+                                  style={styles.traceCellInput}
+                                  value={traceInputs[rowIdx]?.[colIdx] ?? ""}
+                                  onChangeText={(text) => {
+                                    const copy = traceInputs.map((r) =>
+                                      r.slice(),
+                                    );
+                                    if (!copy[rowIdx]) copy[rowIdx] = [];
+                                    copy[rowIdx][colIdx] = text;
+                                    setTraceInputs(copy);
+                                  }}
+                                  editable={!locked}
+                                  placeholder=""
+                                  returnKeyType="done"
+                                  onFocus={scrollToAnswerArea}
+                                />
+                              ))}
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+
+                      <Pressable
+                        onPress={onSubmitTrace}
+                        style={({ pressed }) => [
+                          styles.submitBtn,
+                          { marginTop: 8 },
+                          pressed && styles.pressedOption,
+                        ]}
+                      >
+                        <Text style={styles.submitText}>
+                          {locked ? "Checking..." : "Submit Trace"}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
               </Animated.View>
-            </View>
+            </ScrollView>
 
-            <View style={styles.metricsRow}>
-              <View style={styles.metricPill}>
-                <Text style={styles.metricLabel}>❤️ Hearts</Text>
-                <Text style={styles.metricValue}>{hearts}</Text>
-              </View>
-
-              <View style={styles.metricPill}>
-                <Text style={styles.metricLabel}>⚡ Session XP</Text>
-                <Text style={styles.metricValue}>
-                  {reviewMode ? 0 : sessionXP}
-                </Text>
-              </View>
-
-              <View style={styles.metricPill}>
-                <Text style={styles.metricLabel}>🔥 Combo</Text>
-                <Text style={styles.metricValue}>{comboStreak}</Text>
-              </View>
-            </View>
-
-            <View style={styles.streakStrip}>
-              <Text style={styles.streakStripText}>{streakLabel}</Text>
-              {secondsUntilNextHeart !== null && (
-                <Text style={styles.streakHint}>
-                  Next heart in ≈ {secondsUntilNextHeart}s
-                </Text>
-              )}
-            </View>
-
-            <View style={styles.progressTrack}>
-              <View
-                style={[styles.progressFill, { width: `${progressPercent}%` }]}
-              />
-            </View>
-          </View>
-
-          <ScrollView
-            style={styles.scrollArea}
-            contentContainerStyle={styles.scrollContent}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
             <Animated.View
+              pointerEvents="none"
               style={[
-                styles.card,
+                styles.confetti,
                 {
-                  transform: [{ translateX: shakeAnim }, { scale: scaleAnim }],
-                  opacity: fadeAnim,
+                  transform: [{ scale: confettiScale }],
+                  opacity: confettiScale,
                 },
               ]}
             >
-              <View style={styles.questionTopRow}>
-                <View style={styles.typePill}>
-                  <Text style={styles.typePillText}>
-                    {q?.type === "mc"
-                      ? "Multiple Choice"
-                      : q?.type === "code"
-                        ? "Code"
-                        : q?.type === "debug"
-                          ? "Debug"
-                          : "Trace"}
+              <Text style={styles.confettiText}>🎉</Text>
+            </Animated.View>
+
+            {!keyboardVisible && (
+              <Animated.View
+                style={[
+                  styles.feedbackBar,
+                  feedbackTone === "correct" && styles.feedbackCorrect,
+                  feedbackTone === "wrong" && styles.feedbackWrong,
+                  {
+                    opacity: feedbackOpacity,
+                    transform: [{ translateY: feedbackSlide }],
+                  },
+                ]}
+              >
+                <View style={styles.feedbackLeft}>
+                  <Text style={styles.feedbackLabel}>
+                    {feedbackTone === "correct"
+                      ? "Nice work"
+                      : feedbackTone === "wrong"
+                        ? "Not quite"
+                        : "Ready"}
+                  </Text>
+                  <Text style={styles.feedbackText}>
+                    {feedback ??
+                      (reviewMode
+                        ? "Review carefully and keep the streak alive."
+                        : "Stay focused and keep the run moving.")}
                   </Text>
                 </View>
 
-                <View style={styles.xpRewardPill}>
-                  <Text style={styles.xpRewardText}>+{q?.xp ?? 0} XP</Text>
+                <View style={styles.feedbackMeta}>
+                  <Text style={styles.feedbackMetaText}>
+                    {reviewMode
+                      ? "Review"
+                      : `${sessionQuestionXP + (q?.xp ?? 0)} potential`}
+                  </Text>
                 </View>
-              </View>
-
-              <Text style={styles.question}>{q?.text}</Text>
-
-              {q?.type === "mc" &&
-                q.options.map((opt, i) => (
-                  <Pressable
-                    key={`${q.sessionId}-option-${i}`}
-                    onPress={() => onMCQPress(i)}
-                    style={({ pressed }) => [
-                      optionStyle(i),
-                      pressed && !locked && styles.pressedOption,
-                    ]}
-                  >
-                    <View style={styles.optionBadge}>
-                      <Text style={styles.optionBadgeText}>
-                        {String.fromCharCode(65 + i)}
-                      </Text>
-                    </View>
-                    <Text style={styles.optionText}>{opt}</Text>
-                  </Pressable>
-                ))}
-
-              {(q?.type === "code" || q?.type === "debug") && (
-                <>
-                  {"prompt" in q && q.prompt ? (
-                    <View style={styles.promptBox}>
-                      <Text style={styles.codePrompt}>{q.prompt}</Text>
-                    </View>
-                  ) : null}
-
-                  {traceHint(q) ? (
-                    <Text style={styles.inlineHint}>{traceHint(q)}</Text>
-                  ) : null}
-
-                  <TextInput
-                    style={[
-                      styles.input,
-                      q.type === "debug" && styles.debugInput,
-                    ]}
-                    value={codeAnswer}
-                    onChangeText={setCodeAnswer}
-                    editable={!locked}
-                    placeholder={
-                      q.type === "debug"
-                        ? "Type the corrected code here"
-                        : "Type answer here"
-                    }
-                    placeholderTextColor="#9CA3AF"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    onSubmitEditing={onSubmitCode}
-                    returnKeyType="done"
-                    multiline
-                  />
-
-                  <Pressable
-                    onPress={onSubmitCode}
-                    style={({ pressed }) => [
-                      styles.submitBtn,
-                      pressed && styles.pressedOption,
-                    ]}
-                  >
-                    <Text style={styles.submitText}>
-                      {locked ? "Checking..." : "Submit Answer"}
-                    </Text>
-                  </Pressable>
-                </>
-              )}
-
-              {q?.type === "trace" && q.columns && Array.isArray(q.answer) && (
-                <>
-                  {"prompt" in q && q.prompt ? (
-                    <View style={styles.promptBox}>
-                      <Text style={styles.codePrompt}>{q.prompt}</Text>
-                    </View>
-                  ) : null}
-
-                  <Text style={styles.inlineHint}>{traceHint(q)}</Text>
-
-                  <View style={styles.traceTable}>
-                    <View style={styles.traceRow}>
-                      {q.columns.map((col: string, colIdx: number) => (
-                        <View
-                          key={`${q.sessionId}-header-${colIdx}`}
-                          style={[styles.traceCell, styles.traceHeader]}
-                        >
-                          <Text style={styles.traceHeaderText}>{col}</Text>
-                        </View>
-                      ))}
-                    </View>
-
-                    {q.answer.map((row: any[], rowIdx: number) => (
-                      <View
-                        key={`${q.sessionId}-row-${rowIdx}`}
-                        style={styles.traceRow}
-                      >
-                        {row.map((_: any, colIdx: number) => (
-                          <TextInput
-                            key={`${q.sessionId}-cell-${rowIdx}-${colIdx}`}
-                            style={styles.traceCellInput}
-                            value={traceInputs[rowIdx]?.[colIdx] ?? ""}
-                            onChangeText={(text) => {
-                              const copy = traceInputs.map((r) => r.slice());
-                              if (!copy[rowIdx]) copy[rowIdx] = [];
-                              copy[rowIdx][colIdx] = text;
-                              setTraceInputs(copy);
-                            }}
-                            editable={!locked}
-                            placeholder=""
-                            returnKeyType="done"
-                          />
-                        ))}
-                      </View>
-                    ))}
-                  </View>
-
-                  <Pressable
-                    onPress={onSubmitTrace}
-                    style={({ pressed }) => [
-                      styles.submitBtn,
-                      { marginTop: 8 },
-                      pressed && styles.pressedOption,
-                    ]}
-                  >
-                    <Text style={styles.submitText}>
-                      {locked ? "Checking..." : "Submit Trace"}
-                    </Text>
-                  </Pressable>
-                </>
-              )}
-            </Animated.View>
-          </ScrollView>
-
-          <Animated.View
-            pointerEvents="none"
-            style={[
-              styles.confetti,
-              { transform: [{ scale: confettiScale }], opacity: confettiScale },
-            ]}
-          >
-            <Text style={styles.confettiText}>🎉</Text>
-          </Animated.View>
-
-          <Animated.View
-            style={[
-              styles.feedbackBar,
-              feedbackTone === "correct" && styles.feedbackCorrect,
-              feedbackTone === "wrong" && styles.feedbackWrong,
-              {
-                opacity: feedbackOpacity,
-                transform: [{ translateY: feedbackSlide }],
-              },
-            ]}
-          >
-            <View>
-              <Text style={styles.feedbackLabel}>
-                {feedbackTone === "correct"
-                  ? "Nice work"
-                  : feedbackTone === "wrong"
-                    ? "Not quite"
-                    : "Ready"}
-              </Text>
-              <Text style={styles.feedbackText}>
-                {feedback ??
-                  (reviewMode
-                    ? "Review carefully and keep the streak alive."
-                    : "Stay focused and keep the run moving.")}
-              </Text>
-            </View>
-
-            <View style={styles.feedbackMeta}>
-              <Text style={styles.feedbackMetaText}>
-                {reviewMode
-                  ? "Review"
-                  : `${sessionQuestionXP + (q?.xp ?? 0)} potential`}
-              </Text>
-            </View>
-          </Animated.View>
-        </View>
+              </Animated.View>
+            )}
+          </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
 
       <Modal visible={exitModalVisible} transparent animationType="fade">
@@ -1160,7 +1245,7 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
-    paddingBottom: 110,
+    paddingBottom: 130,
   },
 
   card: {
@@ -1291,12 +1376,28 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
+  answerAreaCard: {
+    backgroundColor: "#F8FAFC",
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    marginBottom: 12,
+  },
+
+  answerAreaTitle: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#6B7280",
+    textTransform: "uppercase",
+    marginBottom: 8,
+  },
+
   input: {
     borderWidth: 1.5,
     borderColor: "#D1D5DB",
     padding: 14,
     borderRadius: 14,
-    marginBottom: 12,
     backgroundColor: "#fff",
     minHeight: 52,
     maxHeight: 180,
@@ -1328,7 +1429,6 @@ const styles = StyleSheet.create({
     borderColor: "#E5E7EB",
     borderRadius: 12,
     overflow: "hidden",
-    marginBottom: 8,
     backgroundColor: "#fff",
   },
 
@@ -1411,6 +1511,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FEE2E2",
   },
 
+  feedbackLeft: {
+    flex: 1,
+    paddingRight: 10,
+  },
+
   feedbackLabel: {
     fontSize: 12,
     fontWeight: "900",
@@ -1425,7 +1530,6 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: "700",
     color: "#111827",
-    maxWidth: "82%",
   },
 
   feedbackMeta: {

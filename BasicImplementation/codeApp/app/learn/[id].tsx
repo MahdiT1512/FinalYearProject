@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
+  ScrollView,
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import Markdown from "react-native-markdown-display";
@@ -164,7 +165,7 @@ export default function LessonPage() {
     Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
-          toValue: 1.012,
+          toValue: 1.01,
           duration: 900,
           useNativeDriver: true,
         }),
@@ -289,111 +290,121 @@ export default function LessonPage() {
           </View>
         </View>
 
-        <FlatList
-          ref={flatListRef}
-          data={slides}
-          keyExtractor={(item) => item.id}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          decelerationRate="fast"
-          bounces={false}
-          onMomentumScrollEnd={handleMomentumEnd}
-          getItemLayout={(_, index) => ({
-            length: SCREEN_WIDTH,
-            offset: SCREEN_WIDTH * index,
-            index,
-          })}
-          renderItem={({ item, index }) => {
-            const accent = slideAccent(item.type);
-            const isSummary = item.type === "summary";
+        <View style={styles.carouselArea}>
+          <FlatList
+            ref={flatListRef}
+            data={slides}
+            keyExtractor={(item) => item.id}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            decelerationRate="fast"
+            bounces={false}
+            onMomentumScrollEnd={handleMomentumEnd}
+            getItemLayout={(_, index) => ({
+              length: SCREEN_WIDTH,
+              offset: SCREEN_WIDTH * index,
+              index,
+            })}
+            renderItem={({ item, index }) => {
+              const accent = slideAccent(item.type);
+              const isSummary = item.type === "summary";
 
-            return (
-              <View style={styles.pageOuter}>
-                <View style={styles.pageWrap}>
-                  <Animated.View
-                    style={[
-                      styles.pageCard,
-                      { backgroundColor: accent.bg },
-                      index === currentPage
-                        ? { transform: [{ scale: pulseAnim }] }
-                        : null,
-                    ]}
-                  >
-                    <View style={styles.pageTopRow}>
-                      <Text style={styles.pageCounter}>
-                        Page {index + 1} / {slides.length}
-                      </Text>
-
-                      <View
-                        style={[
-                          styles.typePill,
-                          { backgroundColor: accent.pillBg },
-                        ]}
+              return (
+                <View style={styles.pageOuter}>
+                  <View style={styles.pageWrap}>
+                    <Animated.View
+                      style={[
+                        styles.pageCard,
+                        { backgroundColor: accent.bg },
+                        index === currentPage
+                          ? { transform: [{ scale: pulseAnim }] }
+                          : null,
+                      ]}
+                    >
+                      <ScrollView
+                        style={styles.pageScroll}
+                        contentContainerStyle={styles.pageScrollContent}
+                        showsVerticalScrollIndicator={false}
                       >
-                        <Text
-                          style={[
-                            styles.typePillText,
-                            { color: accent.pillText },
-                          ]}
-                        >
-                          {item.type === "intro"
-                            ? "Intro"
-                            : item.type === "concept"
-                              ? "Concept"
-                              : item.type === "example"
-                                ? "Example"
-                                : item.type === "tip"
-                                  ? "Tip"
-                                  : item.type === "recap"
-                                    ? "Recap"
-                                    : "Finish"}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <Text style={styles.pageTitle}>{item.title}</Text>
-
-                    <View style={styles.markdownWrap}>
-                      <Markdown style={markdownStyles}>{item.body}</Markdown>
-                    </View>
-
-                    {isSummary && (
-                      <View style={styles.summaryFooter}>
-                        <Pressable
-                          style={[
-                            styles.startButton,
-                            !exerciseUnlocked && styles.startButtonLocked,
-                          ]}
-                          onPress={startExercise}
-                          disabled={!exerciseUnlocked}
-                        >
-                          <Text style={styles.startButtonText}>
-                            {reviewMode === "1"
-                              ? "Start Review"
-                              : "Start Exercise"}
+                        <View style={styles.pageTopRow}>
+                          <Text style={styles.pageCounter}>
+                            Page {index + 1} / {slides.length}
                           </Text>
-                        </Pressable>
 
-                        {!exerciseUnlocked && (
-                          <Text style={styles.unlockHint}>
-                            Reach the final page to unlock the exercise.
-                          </Text>
+                          <View
+                            style={[
+                              styles.typePill,
+                              { backgroundColor: accent.pillBg },
+                            ]}
+                          >
+                            <Text
+                              style={[
+                                styles.typePillText,
+                                { color: accent.pillText },
+                              ]}
+                            >
+                              {item.type === "intro"
+                                ? "Intro"
+                                : item.type === "concept"
+                                  ? "Concept"
+                                  : item.type === "example"
+                                    ? "Example"
+                                    : item.type === "tip"
+                                      ? "Tip"
+                                      : item.type === "recap"
+                                        ? "Recap"
+                                        : "Finish"}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <Text style={styles.pageTitle}>{item.title}</Text>
+
+                        <View style={styles.markdownWrap}>
+                          <Markdown style={markdownStyles}>
+                            {item.body}
+                          </Markdown>
+                        </View>
+
+                        {isSummary && (
+                          <View style={styles.summaryFooter}>
+                            <Pressable
+                              style={[
+                                styles.startButton,
+                                !exerciseUnlocked && styles.startButtonLocked,
+                              ]}
+                              onPress={startExercise}
+                              disabled={!exerciseUnlocked}
+                            >
+                              <Text style={styles.startButtonText}>
+                                {reviewMode === "1"
+                                  ? "Start Review"
+                                  : "Start Exercise"}
+                              </Text>
+                            </Pressable>
+
+                            {!exerciseUnlocked && (
+                              <Text style={styles.unlockHint}>
+                                Reach the final page to unlock the exercise.
+                              </Text>
+                            )}
+
+                            {exerciseUnlocked && (
+                              <Text style={styles.unlockReady}>
+                                ✅ Exercise unlocked
+                              </Text>
+                            )}
+                          </View>
                         )}
-
-                        {exerciseUnlocked && (
-                          <Text style={styles.unlockReady}>
-                            ✅ Exercise unlocked
-                          </Text>
-                        )}
-                      </View>
-                    )}
-                  </Animated.View>
+                      </ScrollView>
+                    </Animated.View>
+                  </View>
                 </View>
-              </View>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        </View>
 
         <View style={styles.bottomBar}>
           <View style={styles.dotsRow}>
@@ -677,6 +688,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
+  carouselArea: {
+    flex: 1,
+  },
+
   pageOuter: {
     width: SCREEN_WIDTH,
     paddingHorizontal: 16,
@@ -690,13 +705,21 @@ const styles = StyleSheet.create({
   pageCard: {
     flex: 1,
     borderRadius: 22,
-    padding: 20,
-    minHeight: 440,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.08,
     shadowRadius: 6,
     elevation: 4,
+    overflow: "hidden",
+  },
+
+  pageScroll: {
+    flex: 1,
+  },
+
+  pageScrollContent: {
+    padding: 20,
+    paddingBottom: 28,
   },
 
   pageTopRow: {
@@ -731,7 +754,7 @@ const styles = StyleSheet.create({
   },
 
   markdownWrap: {
-    flex: 1,
+    flexShrink: 1,
   },
 
   summaryFooter: {
