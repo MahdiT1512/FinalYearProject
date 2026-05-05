@@ -36,6 +36,8 @@ const formatMinutes = (minutes?: number) => {
   return rem === 0 ? `${hours} hr` : `${hours} hr ${rem} min`;
 };
 
+//This screen is the basis of all project brief and detail screens, allowing for users
+//to mark milestones and make reflections on their projects
 export default function ProjectDetail() {
   const { projectId } = useLocalSearchParams<{ projectId: string }>();
   const router = useRouter();
@@ -64,6 +66,7 @@ export default function ProjectDetail() {
     setReflection(progress?.reflection ?? "");
   }, [progress?.reflection]);
 
+  //Ensures that the user can access the selected project
   const accessible = project
     ? isAccessible(project, userSkillLevel, completedLessons.length)
     : false;
@@ -82,6 +85,8 @@ export default function ProjectDetail() {
   const stageProgress =
     totalStages > 0 ? Math.round((completedStageCount / totalStages) * 100) : 0;
 
+  //Ensures that all project stages or milestones have been ticked off before user can get
+  //the XP reward for marking as complete
   const canMarkComplete =
     !!project &&
     accessible &&
@@ -98,7 +103,7 @@ export default function ProjectDetail() {
       </SafeAreaView>
     );
   }
-
+  //Saves the user's notes without marking the project as completed
   const handleSaveReflection = async () => {
     try {
       setSavingReflection(true);
@@ -109,6 +114,7 @@ export default function ProjectDetail() {
     }
   };
 
+  //Marks the project as complete if no error is experienced
   const handleCompleteProject = async () => {
     if (!canMarkComplete || !project) return;
 

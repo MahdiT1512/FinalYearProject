@@ -1,4 +1,3 @@
-// context/ProjectContext.tsx
 import React, {
   createContext,
   useContext,
@@ -88,6 +87,7 @@ type ProjectsContextType = {
   resetAllProjects: () => Promise<void>;
 };
 
+//Provides project data along with progress and access rules
 export const ProjectsContext = createContext<ProjectsContextType>({
   projects: [],
   getProjectById: () => undefined,
@@ -183,6 +183,8 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     return projectProgressMap[id] ?? defaultProgress();
   };
 
+  //Determines if user can access projects at all or if a specific project should be unlocked
+  //based on skill and progress in learning
   const isAccessible = (
     project: Project,
     skillLevelOverride?: SkillLevel,
@@ -208,6 +210,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     return true;
   };
 
+  //Provides user readable reasons why a project is locked if not accessible to then be displayed in the UI
   const getProjectLockReason = (
     project: Project,
     skillLevelOverride?: SkillLevel,
@@ -237,7 +240,8 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
 
     return null;
   };
-
+  //Provides recommendation list for users, prioritising projects that are unfinished, or are partially completed.
+  //Does not recommend projects that are locked based on the users skill level and progress in learning to avoid frustration.
   const getRecommendedProjects = (limit: number = 3) => {
     const ranked = [...projects].sort((a, b) => {
       const aAccessible = isAccessible(a) ? 1 : 0;
@@ -278,7 +282,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
 
     return grouped;
   };
-
+  //Toggling and completing milestones for any given project
   const toggleProjectStage = async (
     projectId: string,
     stageId: string,
@@ -313,7 +317,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
       });
     });
   };
-
+  //Saving a users reflection and notes in firestore as they work through a project
   const saveProjectReflection = async (
     projectId: string,
     reflection: string,
@@ -344,6 +348,7 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  //Marks a project as completed awarding appropriate XP and titles.
   const markProjectDone = async (id: string) => {
     if (!user) {
       return {

@@ -7,6 +7,9 @@ export type UserBadge = {
   unlockedAt: number | null;
 };
 
+
+//The badge definitions that set the critera and achievement for each badge. 
+//These include an icon representing a colour and a description of how to unlock the badge.
 export const BADGE_DEFS = [
   {
     id: "first_lesson",
@@ -75,6 +78,8 @@ type BadgeSourceUser = {
   badges?: UserBadge[] | string[];
 };
 
+//For converting older badge system to new ones
+//Kept for reference and stability as older accounts may have been created using the old badge system.
 const toBadgeMap = (badges: BadgeSourceUser["badges"]) => {
   const map: Record<string, UserBadge> = {};
 
@@ -111,6 +116,8 @@ export const getUnlockedBadgeDefinitions = (badges: UserBadge[] | string[] | und
   return BADGE_DEFS.filter((badge) => badgeMap[badge.id]?.unlocked);
 };
 
+//Syncs up user progress against all existing badge conditions.
+// To ensure that all badges that are unlocked are correctly awarded and applied to user account.
 export const syncUserBadges = async (uid: string) => {
   const userRef = doc(db, "users", uid);
   const snap = await getDoc(userRef);
@@ -120,6 +127,7 @@ export const syncUserBadges = async (uid: string) => {
   const data = snap.data() as BadgeSourceUser;
   const existing = toBadgeMap(data.badges);
 
+  //Each of the badges functional or mathematical condition is defined below.
   const shouldUnlock = (badgeId: string) => {
     switch (badgeId) {
       case "first_lesson":

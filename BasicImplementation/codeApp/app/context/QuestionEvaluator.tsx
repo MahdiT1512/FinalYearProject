@@ -56,6 +56,7 @@ export type EvaluationResult = {
   expectedAnswer?: string;
 };
 
+//Functions for normalisation and comparison of user answers to the expected answer, with different modes of acceptance and feedback depending on the type of question and answer.
 const normalizeBasic = (value: unknown): string => {
   return String(value ?? "")
     .trim()
@@ -118,6 +119,7 @@ const splitCommaAnswers = (value: string): string[] => {
     .filter(Boolean);
 };
 
+//Compares two numeric answers for near equivalence, allowing for minor formatting differences and floating point imprecision.
 const isNumericEquivalent = (a: string, b: string): boolean => {
   if (a === "" || b === "") return false;
 
@@ -139,6 +141,8 @@ const compareSingleToken = (expected: string, provided: string): boolean => {
   return false;
 };
 
+//Compares two comma-separated answers, allowing for minor formatting differences in each part.
+//But requiring the same number of parts and the parts to be in the same order.
 const compareCommaSeparatedAnswer = (
   expectedRaw: string,
   providedRaw: string,
@@ -158,6 +162,7 @@ const compareCommaSeparatedAnswer = (
   return true;
 };
 
+//Comparing exercise answers for each type of question, and returning a detailed evaluation result including whether the answer is correct.
 const compareCodeAnswer = (
   expectedRaw: string,
   providedRaw: string,
@@ -342,6 +347,7 @@ const buildCodeFeedbackTitle = (
   }
 };
 
+//Routes each exercise type to the correct comparison function.
 export const evaluateQuestion = (
   question: Question,
   userAnswer: unknown,

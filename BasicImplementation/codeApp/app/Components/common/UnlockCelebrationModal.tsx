@@ -53,6 +53,8 @@ type Props = {
   onClose: () => void;
 };
 
+//This component is used as an animated pop up for the user
+// It takes what GlobalUnlockModal does and adds celebration animations to it.
 export default function UnlockCelebrationModal({
   visible,
   item,

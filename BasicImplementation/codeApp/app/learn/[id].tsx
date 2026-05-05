@@ -51,6 +51,7 @@ type BuiltLessonSlide = LessonSlide & {
   source: "structured" | "generated";
 };
 
+//Builds lesson cards or slides from the raw markdown content in lessons.json
 function buildGeneratedSlides(lesson: Lesson): BuiltLessonSlide[] {
   const raw = lesson.content?.trim() ?? "";
 
@@ -140,6 +141,8 @@ function slideAccent(type: BuiltLessonSlide["type"]) {
   }
 }
 
+//The default or bulk of the lesson page, showing a carousel or continuous scroll of lesson slides for that
+//particular lesson. At the end of the slides, the user can start the exercise which will then lock the lesson until they complete it.
 export default function LessonPage() {
   const { id, reviewMode } = useLocalSearchParams<{
     id: string;
@@ -151,12 +154,15 @@ export default function LessonPage() {
 
   const lesson = (lessonsData as Lesson[]).find((l) => l.id === id);
 
+  //Builds slides when given lesson has been identified
   const slides = useMemo(() => {
     if (!lesson) return [];
     return buildSlides(lesson);
   }, [lesson]);
 
   const [currentPage, setCurrentPage] = useState(0);
+
+  //Tracks the end of the lesson to allow the user to navigate to exericies
   const [furthestPageSeen, setFurthestPageSeen] = useState(0);
 
   useEffect(() => {
@@ -199,6 +205,8 @@ export default function LessonPage() {
       ? Math.round(((currentPage + 1) / slides.length) * 100)
       : 0;
 
+  //Handles starting exercises. Either can happen normally or the lesson
+  // was chosen from the Lesson Deck, it will start the exercise in review mode
   const startExercise = () => {
     router.push({
       pathname: `/exercise/${lesson.id}`,
@@ -206,6 +214,7 @@ export default function LessonPage() {
     });
   };
 
+  //Allows safe movement acros to specific pages and updates if a page has been viewed
   const goToPage = (index: number) => {
     const safeIndex = Math.max(0, Math.min(index, lastPageIndex));
     flatListRef.current?.scrollToIndex({

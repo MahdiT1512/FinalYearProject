@@ -22,6 +22,7 @@ import CountryFlag from "../../Components/common/CountryFlag";
 
 type Timeframe = "weekly" | "monthly" | "allTime";
 
+//Converts users all-time XP into related leaderboard tier based on latest passed threshhold
 const getTier = (xp: number) => {
   if (xp >= 10000) return "diamond";
   if (xp >= 5000) return "platinum";
@@ -58,6 +59,7 @@ type RankedUser = LeaderboardUser & {
   tier: string;
 };
 
+//Shows the top three users in a larger poduim layout above the main rankings
 function PodiumCard({
   user,
   place,
@@ -132,6 +134,7 @@ function PodiumCard({
   );
 }
 
+//The leaderboard or ranking screen allowing users to view each others profiles and XP values
 export default function LeaderboardScreen() {
   const router = useRouter();
   const { users, currentUserId, loading } = useContext(LeaderboardContext);

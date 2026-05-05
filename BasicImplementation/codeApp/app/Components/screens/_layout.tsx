@@ -3,6 +3,7 @@ import { Tabs } from "expo-router";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
+//Tab icon component that keeps each tab with the same label and styling
 function TabIcon({
   focused,
   color,
@@ -42,6 +43,7 @@ function TabIcon({
   );
 }
 
+// This layout is shared by all tabs that are in the tabs directory. These tabs are for the main features of the app(Syntax, Projects, Leaderboard and Learning)
 export default function TabsLayout() {
   return (
     <Tabs

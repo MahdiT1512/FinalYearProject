@@ -14,6 +14,8 @@ import XPBar from "../Components/common/XPBar";
 import { XPContext } from "../context/XPContext";
 import { useDailyGoals } from "../context/dailyGoalsContext";
 
+//A screen that contains users progress related stats all in one
+// Also has access to daily goal features
 export default function ProgressScreen() {
   const router = useRouter();
   const {
@@ -47,6 +49,7 @@ export default function ProgressScreen() {
 
   const xpModifier = getLessonXPModifier();
 
+  //Claims the daily log in reward, and prevents the user from claiming more than once daily
   const handleClaimDailyReward = async () => {
     try {
       setClaimingDailyReward(true);
@@ -66,6 +69,7 @@ export default function ProgressScreen() {
     }
   };
 
+  //Claims an individual daily goal XP reward
   const handleClaimGoalReward = async (goalId: string) => {
     try {
       setClaimingGoalId(goalId);
@@ -85,6 +89,7 @@ export default function ProgressScreen() {
     }
   };
 
+  //Claims all extra bonus XP after daily goals completed
   const handleClaimAllGoalsReward = async () => {
     try {
       setClaimingAllBonus(true);

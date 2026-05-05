@@ -30,6 +30,7 @@ const BADGE_ICONS: Record<string, string> = {
   review_1: "🛡️",
 };
 
+//Formats the unlock date for a given badge to make it short and easily readable
 function formatUnlockedDate(timestamp?: number | null) {
   if (!timestamp) return null;
 
@@ -44,6 +45,8 @@ function formatUnlockedDate(timestamp?: number | null) {
   }
 }
 
+//The badge collection screen that is reached from My Profile, it shows the locked and unlocked badges for the user
+//Unlocked badges have the unlock date attached as well
 export default function Badges() {
   const { user } = useAuth();
   const router = useRouter();

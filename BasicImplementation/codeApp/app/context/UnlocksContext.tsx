@@ -58,6 +58,7 @@ type ProjectMeta = {
   awardTitle?: string | null;
 };
 
+//Creats a map of the project metadata to allow for easy look up.
 const projectMetaMap = (projectsData as ProjectMeta[]).reduce<
   Record<string, ProjectMeta>
 >((acc, project) => {
@@ -65,6 +66,8 @@ const projectMetaMap = (projectsData as ProjectMeta[]).reduce<
   return acc;
 }, {});
 
+//For development purposes
+//Normalises the different old and new formats of badges, and filters out any invalid string-based entries.
 const normalizeUnlockedBadges = (badges: BadgeLike[] = []) => {
   return badges
     .filter((badge) => {
@@ -85,6 +88,8 @@ const normalizeTitles = (titles: string[] = []) => {
 
 const unique = (items: string[]) => Array.from(new Set(items));
 
+//Detects unlocks such as badges, titles and completed projects
+// Uses a queue system to queue up all the modals that appear celebrating the users achievement.
 export const UnlocksProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
 

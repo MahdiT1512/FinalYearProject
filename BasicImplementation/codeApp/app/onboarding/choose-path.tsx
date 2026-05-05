@@ -19,6 +19,7 @@ export default function ChoosePathOnboardingScreen() {
   const { user } = useAuth();
   const [saving, setSaving] = useState(false);
 
+  //Saves completed onboarding state and preferred start before routing to the appropriate screen.
   const finishOnboarding = async (path: StartPath) => {
     if (!user) {
       router.replace("/");
@@ -44,6 +45,7 @@ export default function ChoosePathOnboardingScreen() {
         return;
       }
 
+      //Also passes an entry parameter to allow profile screen to close when opened initially from onboarding
       if (path === "profile") {
         router.replace({
           pathname: "/User/MyProfile",

@@ -23,6 +23,7 @@ export type DailyGoalDef = {
   rewardXP: number;
 };
 
+//A constant of the daily goals that users can complete each day for rewards.
 export const DAILY_GOALS: DailyGoalDef[] = [
   {
     id: "lesson_1",
@@ -49,6 +50,9 @@ export const DAILY_GOALS: DailyGoalDef[] = [
 
 export const ALL_GOALS_REWARD_XP = 30;
 
+
+//Daily goals use a date key to track the days.
+//This allows daily goal progress to reset each day based on UTC.
 export const getUTCDateKey = (date = new Date()) => {
   const y = date.getUTCFullYear();
   const m = String(date.getUTCMonth() + 1).padStart(2, "0");
@@ -69,6 +73,8 @@ export const makeEmptyDailyActivity = (
   allGoalsRewardClaimed: false,
 });
 
+//Ensures that any missing or older daily activity data is cleaned and replaced with 
+//the new activity object for today
 export const normalizeDailyActivity = (raw: any): DailyActivity => {
   const today = getUTCDateKey();
 
@@ -88,6 +94,8 @@ export const normalizeDailyActivity = (raw: any): DailyActivity => {
   };
 };
 
+//This function allows the daily goal progress to be capped out at 100% so if the user does exceed it, 
+// it doesn't display or break the UI.
 export const getGoalProgress = (
   goal: DailyGoalDef,
   activity: DailyActivity,
@@ -141,6 +149,7 @@ export type RecordDailyProgressArgs = {
   xpEarned?: number;
 };
 
+//Applies the XP reward to all relevant user XP totals, and then ensures spillover can also occur when a daily reward is claimed.
 const addXPToUserTotals = (data: any, rewardXP: number) => {
   const currentXP = data.xp ?? 0;
   const currentLevel = data.level ?? 1;
@@ -166,6 +175,8 @@ const addXPToUserTotals = (data: any, rewardXP: number) => {
   };
 };
 
+//Uses transactions to ensure concurrent updates do not overwrite one another and 
+//that all updates are based on the most recent available data
 export const recordDailyProgress = async (
   uid: string,
   update: RecordDailyProgressArgs,
@@ -196,6 +207,8 @@ export const recordDailyProgress = async (
   });
 };
 
+
+//Claims a single rward if the goal has been completed and has not already been claimed
 export const claimDailyGoalReward = async (
   uid: string,
   goalId: DailyGoalDef["id"],
@@ -229,6 +242,9 @@ export const claimDailyGoalReward = async (
   return rewardedXP;
 };
 
+
+//Claims the bonus all daily goal reward which is available only when all goals are completed
+//and when it has not already been claimed.
 export const claimAllDailyGoalsReward = async (
   uid: string,
 ): Promise<number> => {

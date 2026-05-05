@@ -61,6 +61,8 @@ type SpinMeta = {
   titleUnlocked?: string | null;
 } | null;
 
+//Accessible through clicking profile picture, my profile shows account and profile based features
+//The avatar spin station is here as well as other tabs or navigation to user progress such as the Avatar and Badge collections
 export default function MyProfile() {
   const { user } = useAuth();
   const router = useRouter();

@@ -16,6 +16,7 @@ type Lesson = {
   module?: string;
 };
 
+//Screen that appears when the user completes a lesson prompting them to continue to next or return to main screen
 export default function LessonComplete() {
   const { id, nextId, earnedXP } = useLocalSearchParams<{
     id: string;

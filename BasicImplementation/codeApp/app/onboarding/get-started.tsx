@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 
+//The introductory screen in the onboarding flow that gives an inital overview of the apps main features and recommended first steps.
 export default function GetStartedOnboardingScreen() {
   return (
     <LinearGradient

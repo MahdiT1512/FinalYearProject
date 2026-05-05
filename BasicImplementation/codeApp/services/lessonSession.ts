@@ -8,6 +8,7 @@ type BuildLessonSessionOptions = {
   sessionLength?: number;
 };
 
+//Responsible for shuffling exercise order between different lesson sessions.
 function shuffleArray<T>(items: T[]) {
   const copy = [...items];
 
@@ -19,6 +20,7 @@ function shuffleArray<T>(items: T[]) {
   return copy;
 }
 
+// Builds a session of exercies for the lesson using the shuffled order
 export function buildLessonSession<T extends Record<string, any>>(
   lessonId: string,
   exercises: T[],

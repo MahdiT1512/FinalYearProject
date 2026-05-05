@@ -60,6 +60,8 @@ type Lesson = {
 
 type FeedbackTone = "idle" | "correct" | "wrong";
 
+//The default or basis of the exercise pages, considering the logic and
+//handling for all exercises such as code tracing, code-fill and debugging
 export default function ExercisePage() {
   const params = useLocalSearchParams<{ id: string; reviewMode?: string }>();
   const id = params.id;
@@ -119,6 +121,7 @@ export default function ExercisePage() {
   const feedbackOpacity = useRef(new Animated.Value(0)).current;
   const progressPulse = useRef(new Animated.Value(1)).current;
 
+  //Builds a session from the lesson's exercise pool and resets all session-specific values
   useEffect(() => {
     if (!lesson) {
       setSessionExercises([]);
@@ -153,6 +156,7 @@ export default function ExercisePage() {
     feedbackOpacity.setValue(0);
   }, [lesson?.id, reviewMode, lessonPool.length]);
 
+  //Tracks keyboard visibility so the feedback bar is not covered by the users keyboard
   useEffect(() => {
     const showEvent =
       Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
@@ -185,6 +189,9 @@ export default function ExercisePage() {
       .reduce((sum, item) => sum + (item.xp ?? 0), 0);
   }, [sessionExercises, idx]);
 
+  //Whenever the user moves onto another question the answer state is reset.
+  //This is done so that all questions are not auto-answered on the first questions answer
+  //Due to the exercise page only being a single page, this is necessary.
   useEffect(() => {
     setSelected(null);
     setCodeAnswer("");
@@ -209,6 +216,7 @@ export default function ExercisePage() {
       }),
     ]).start();
 
+    //Trace table questions need an input grid that matches the expected output size
     if (q && q.type === "trace") {
       const expected: string[][] = q.answer ?? [];
       const rows = expected.length;
@@ -227,6 +235,7 @@ export default function ExercisePage() {
     scaleAnim.setValue(1);
   }, [idx]);
 
+  //Greater mobile screen support allowing for the screen to scroll down so that they mobile keyboard doesn't hide the answer boxes
   const scrollToAnswerArea = () => {
     setTimeout(() => {
       if (!scrollRef.current) return;
@@ -305,6 +314,7 @@ export default function ExercisePage() {
     );
   }
 
+  //Animations the exercise page for aspects such as correct and incorrect answers
   const animateCorrect = () => {
     Animated.parallel([
       Animated.timing(confettiScale, {
@@ -420,6 +430,7 @@ export default function ExercisePage() {
     });
   };
 
+  //Calculates if the user has met the performance standard for the review reward XP
   const finishReviewMode = async () => {
     const total = reviewCorrectCount + reviewWrongCount;
     const accuracy =
@@ -513,7 +524,7 @@ export default function ExercisePage() {
       setIdx((prev) => prev + 1);
     });
   };
-
+  //Records answer and updates stats displaying feedback
   const handleResult = async (result: EvaluationResult) => {
     await recordLessonAttempt(lesson.id);
     await recordLessonAnswerResult(lesson.id, result.correct);
@@ -547,6 +558,8 @@ export default function ExercisePage() {
     }
   };
 
+  //Feedback or submission of each activity,
+  //This includes question evaluation
   const onMCQPress = async (i: number) => {
     if (locked || q?.type !== "mc") return;
 
@@ -608,6 +621,7 @@ export default function ExercisePage() {
     }, 900);
   };
 
+  //Highlights correct option when question is wrong, as well as celebrating when user gets question right
   const optionStyle = (i: number) => {
     if (selected === null || q?.type !== "mc") return styles.option;
     if (i === q.correct) return [styles.option, styles.correct];

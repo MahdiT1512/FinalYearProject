@@ -1,4 +1,3 @@
-// Components/common/SessionSummaryModal.tsx
 import React from "react";
 import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";

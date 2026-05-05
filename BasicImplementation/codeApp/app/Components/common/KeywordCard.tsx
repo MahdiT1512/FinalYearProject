@@ -10,6 +10,9 @@ type KeywordCardProps = {
   remainingExercises?: number;
 };
 
+//DEPRICATED OR OLD, ONLY KEPT FOR STABILITY IF SOMETHING IS AFFECTED BY ITS DELETION
+//A keyword card component used to display the users mastery of the given keyword.
+//It includes an animated progress bar and a button to allow for practice.
 export default function KeywordCard({
   name,
   mastery,

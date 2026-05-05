@@ -7,6 +7,8 @@ type Props = {
   size?: number;
 };
 
+//Displays a country flag based on the provided country code.
+//If the code is invalid or missing, it shows a placeholder.
 export default function CountryFlag({ countryCode, size = 18 }: Props) {
   const normalized = normalizeCountryCode(countryCode);
   const uri = getCountryFlagUrl(normalized);

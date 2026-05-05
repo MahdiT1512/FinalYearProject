@@ -5,11 +5,14 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useAuth } from "./context/AuthContext";
 
+//Records if user has completed onbaording and their preferred path.
 type UserDoc = {
   hasCompletedOnboarding?: boolean;
   preferredStartPath?: "lessons" | "syntax" | "profile" | null;
 };
 
+// The entry point of the app. This initially checks if the user is logged in and if they have completed onboarding.
+// It then based on this redirects them to the appropriate screen.
 export default function Index() {
   const { user, loading } = useAuth();
   const [checking, setChecking] = useState(true);

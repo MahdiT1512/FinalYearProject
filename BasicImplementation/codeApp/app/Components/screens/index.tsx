@@ -32,6 +32,8 @@ type ModuleCard = {
   unlocked: boolean;
 };
 
+//The main app screen when opened after login, showing the users progress, pending reviews and
+// allowing then access to the different unlocked units
 export default function LearnScreen() {
   const router = useRouter();
 
@@ -53,6 +55,7 @@ export default function LearnScreen() {
   const lessons = lessonsData as Lesson[];
   const xpModifier = getLessonXPModifier();
 
+  //Groups lessons by their unit and determines if unit is unlocked based on the users progression
   const modules = useMemo<ModuleCard[]>(() => {
     const map: Record<string, Lesson[]> = {};
 
@@ -69,6 +72,7 @@ export default function LearnScreen() {
     }));
   }, [lessons, level]);
 
+  //Determines severity of review backlog to encourage user to complete pending reviews
   const getPressureLabel = () => {
     if (pendingReviewCount >= 10) {
       return { text: "Heavy review backlog", color: "#b42318" };

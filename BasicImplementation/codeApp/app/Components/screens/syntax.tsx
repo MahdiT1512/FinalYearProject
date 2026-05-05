@@ -19,6 +19,7 @@ import {
 import XPBar from "../../Components/common/XPBar";
 import ProfileButton from "../../Components/common/ProfileButton";
 
+// The animated progress bars for categories
 function CategoryProgressBar({
   progress,
   color,
@@ -54,6 +55,7 @@ function CategoryProgressBar({
   );
 }
 
+//Progress/mastery bar for each keyword card
 function KeywordMasteryBar({
   mastery,
   color,
@@ -89,6 +91,7 @@ function KeywordMasteryBar({
   );
 }
 
+//Reusable button for starting category wide syntax practice
 function CategoryActionButton({
   title,
   subtitle,
@@ -161,6 +164,8 @@ function CategoryActionButton({
   );
 }
 
+//The keyword card for the individual keyword.
+//Elements such as if the card is locked and the mastery is displayed here
 function KeywordCard({
   keyword,
   accentColor,
@@ -315,6 +320,7 @@ function getBestCategoryStartKeyword(
   )[0];
 }
 
+//Renders a whole category/unit
 function CategorySection({
   category,
   onPracticeKeyword,
@@ -444,6 +450,7 @@ function CategorySection({
   );
 }
 
+//The syntax screen that shows progress in both category and keywords
 export default function SyntaxScreen() {
   const router = useRouter();
   const { level, streakCount } = useContext(XPContext);
@@ -477,6 +484,7 @@ export default function SyntaxScreen() {
     };
   }, [categories]);
 
+  //Allows practice of a single keyword
   const handlePracticeKeyword = (keywordId: string) => {
     router.push({
       pathname: "/syntax/SyntaxPractice",
@@ -487,6 +495,8 @@ export default function SyntaxScreen() {
     });
   };
 
+  //Allows user to pracice a category based on one of three options(whole category, pick up where left off
+  //weakest keyword in category)
   const handlePracticeCategory = (
     categoryId: string,
     mode: "category" | "continue" | "weakest",

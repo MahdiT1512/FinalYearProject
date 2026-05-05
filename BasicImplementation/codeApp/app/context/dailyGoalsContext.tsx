@@ -59,6 +59,7 @@ const DailyGoalsContext = createContext<DailyGoalsContextType | undefined>(
   undefined,
 );
 
+//Provides daily goal and progress state information and actions for recording progress and claiming rewards.
 export const DailyGoalsProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const { pushUnlock } = useUnlocks();
@@ -69,6 +70,7 @@ export const DailyGoalsProvider = ({ children }: { children: ReactNode }) => {
   const [seenDailyCompleteKey, setSeenDailyCompleteKey] = useState("");
   const [seenAllGoalsClaimKey, setSeenAllGoalsClaimKey] = useState("");
 
+  //Listens for changes in daily progress and updates instantly when exercises or syntax is completed.
   useEffect(() => {
     if (!user) {
       setActivity(makeEmptyDailyActivity());
@@ -127,6 +129,7 @@ export const DailyGoalsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [activity.allGoalsRewardClaimed, seenAllGoalsClaimKey, pushUnlock]);
 
+  //Maps raw daily goal data into UI friendly goal cards
   const goals = useMemo(() => {
     return DAILY_GOALS.map((goal) => ({
       id: goal.id,
@@ -154,6 +157,7 @@ export const DailyGoalsProvider = ({ children }: { children: ReactNode }) => {
     return claimAllDailyGoalsReward(user.uid);
   };
 
+  //Helpers for letting different app features update at same daily goal record consistently
   const recordLessonComplete = async (xpEarned = 0) => {
     if (!user) return;
 

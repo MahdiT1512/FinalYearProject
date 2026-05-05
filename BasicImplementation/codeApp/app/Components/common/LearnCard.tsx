@@ -3,6 +3,7 @@ import { Pressable, Text, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import { XPContext } from "../../context/XPContext";
 
+//DEPRICATED OR OLD, ONLY KEPT FOR STABILITY IF SOMETHING IS AFFECTED BY ITS DELETION
 type CardProps = {
   id: string;
   title: string;
@@ -10,6 +11,7 @@ type CardProps = {
   locked?: boolean;
 };
 
+//Reusable card component for lessons and units
 export default function Card({ id, title, route, locked }: CardProps) {
   const router = useRouter();
   const { completedLessons } = useContext(XPContext);

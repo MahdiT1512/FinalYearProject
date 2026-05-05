@@ -38,6 +38,7 @@ export type SpinResult = {
   titleUnlocked: string | null;
 };
 
+//Resets free spins if it's a new day based on the spinResetDateKey and the current date.
 const resetIfNewDay = (data: UserDoc) => {
   const today = getUTCDateKey();
   if ((data.spinResetDateKey ?? "") !== today) {
@@ -50,6 +51,7 @@ const resetIfNewDay = (data: UserDoc) => {
   return data;
 };
 
+//Synchronises the user's free spin count at the start of each day
 export const syncDailySpinReset = async (uid: string) => {
   const userRef = doc(db, "users", uid);
 
@@ -69,6 +71,9 @@ export const syncDailySpinReset = async (uid: string) => {
   });
 };
 
+//Handles the full logic for spinning for an avatar 
+//This includes deciding if its a free or XP based spin and then awarding and storing 
+//the generated avatar.
 export const spinAvatar = async (uid: string): Promise<SpinResult> => {
   const userRef = doc(db, "users", uid);
 
@@ -139,6 +144,7 @@ export const spinAvatar = async (uid: string): Promise<SpinResult> => {
   return result;
 };
 
+//Calculates the remaining time until new UTC daily reset
 export const getTimeUntilNextReset = () => {
   const now = new Date();
   const next = new Date();

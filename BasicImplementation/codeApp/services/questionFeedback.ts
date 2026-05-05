@@ -11,6 +11,8 @@ export type EnhancedFeedback = {
   likelyMistakeType?: "syntax" | "logic" | "format" | "concept" | null;
 };
 
+//Converts a raw evaluation into a more user friendly and detailed feedback message 
+//that can be used for guiding the user
 export const buildEnhancedFeedback = (
   question: Question,
   result: EvaluationResult,

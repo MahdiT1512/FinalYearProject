@@ -20,7 +20,7 @@
             "xp": 10,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["print", "output"]
+            "tags": ["output"]
           },
           {
             "id": "print-2",
@@ -49,7 +49,7 @@
             "xp": 8,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["int", "types"]
+            "tags": ["types"]
           },
           {
             "id": "int-2",
@@ -78,7 +78,7 @@
             "xp": 8,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["str", "strings", "types"]
+            "tags": ["strings", "types"]
           },
           {
             "id": "str-2",
@@ -145,7 +145,7 @@
             "xp": 10,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["if", "conditionals"]
+            "tags": ["conditionals"]
           },
           {
             "id": "if-2",
@@ -156,7 +156,7 @@
             "xp": 15,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["if", "comparison", "conditionals"]
+            "tags": ["comparison", "conditionals"]
           }
         ]
       },
@@ -174,7 +174,7 @@
             "xp": 8,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["else", "conditionals"]
+            "tags": ["conditionals"]
           },
           {
             "id": "else-2",
@@ -185,7 +185,7 @@
             "xp": 12,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["else", "conditionals"]
+            "tags": ["conditionals"]
           }
         ]
       },
@@ -203,7 +203,7 @@
             "xp": 9,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["elif", "conditionals"]
+            "tags": ["conditionals"]
           },
           {
             "id": "elif-2",
@@ -214,7 +214,7 @@
             "xp": 12,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["elif", "conditionals"]
+            "tags": ["conditionals"]
           }
         ]
       }
@@ -241,7 +241,7 @@
             "xp": 10,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["for", "loops", "range"]
+            "tags": ["loops", "range"]
           },
           {
             "id": "for-2",
@@ -270,7 +270,7 @@
             "xp": 9,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["while", "loops"]
+            "tags": ["loops"]
           },
           {
             "id": "while-2",

@@ -53,11 +53,14 @@ const getNextTierXP = (xp: number) => {
   return xp;
 };
 
+//The user profile that is accessible from the Learderboard, with no relation to my profile.
+//It allows other users to view each others tiers(meaning a visual indicator for XP threshold), badges and avatars
 export default function UserProfile() {
   const { userId } = useLocalSearchParams<{ userId: string }>();
   const router = useRouter();
   const { users, currentUserId } = useContext(LeaderboardContext);
 
+  //This pulls the selected users profile data from the leaderboard context in real time
   const user = users.find((u) => u.id === userId);
 
   if (!user) {

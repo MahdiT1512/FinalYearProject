@@ -47,6 +47,8 @@ type SessionPlanItem = {
   exercise: Exercise;
 };
 
+//REDUNDANT AS TRACE TABLE EXERCISES FOR SYNTAX WAS CUT.
+//It is only still here because it was originally planned couldn't be implemented so it breaks code later
 function isTraceExercise(
   exercise: Exercise,
 ): exercise is Extract<Exercise, { type: "trace" }> {
@@ -71,12 +73,14 @@ function getTraceHint(exercise: Exercise) {
   return null;
 }
 
+//Limits syntax exercises to just a few exercises in the range
 function clampSessionLength(poolSize: number) {
   if (poolSize <= 0) return 0;
   if (poolSize <= MIN_SESSION_QUESTIONS) return poolSize;
   return Math.min(MAX_SESSION_QUESTIONS, poolSize);
 }
 
+//Creates a hash used for seeded randomisation
 function hashString(input: string) {
   let hash = 0;
   for (let i = 0; i < input.length; i += 1) {
@@ -94,6 +98,7 @@ function createSeededRandom(seedString: string) {
   };
 }
 
+//Shuffles syntax exercises using the random generator
 function shuffleArray<T>(items: T[], seedString: string): T[] {
   const result = [...items];
   const random = createSeededRandom(seedString);
@@ -115,6 +120,7 @@ function pickSessionCount(poolSize: number, seedString: string) {
   return MIN_SESSION_QUESTIONS + Math.floor(random() * span);
 }
 
+//Scores exercises so the different practice modes will prioritise different keywords(weakest will give the lowest mastery)
 function getKeywordExercisePriority(
   keyword: Keyword,
   exercise: Exercise,
@@ -252,6 +258,7 @@ function buildPracticeSessionPlan(args: {
   }));
 }
 
+//The basis for the syntax practice or exercise screens, orignally based off of ExercisePage but modified heavily to fit syntax feature
 export default function SyntaxPractice() {
   const router = useRouter();
   const {
@@ -467,6 +474,7 @@ export default function SyntaxPractice() {
     );
   };
 
+  //Animations for syntax exercise screens
   const animateFeedbackIn = () => {
     Animated.parallel([
       Animated.timing(feedbackOpacity, {
@@ -569,6 +577,7 @@ export default function SyntaxPractice() {
     finishSession();
   };
 
+  //Checks if new categories unlock after a correctly answered question
   const processMilestones = async (baseXpEarned: number) => {
     if (!category || !keyword) return;
 

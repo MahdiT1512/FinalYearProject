@@ -21,6 +21,8 @@ type Props = {
   label?: string;
 };
 
+//A field component that allows users to select a country from a list of options
+//Created due to issues with existing react narive country picker libaries not being updated
 export default function CountryPickerField({
   value,
   onChange,

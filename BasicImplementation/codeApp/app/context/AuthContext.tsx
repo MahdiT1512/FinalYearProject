@@ -18,10 +18,13 @@ export const AuthContext = createContext<AuthContextType | undefined>(
   undefined,
 );
 
+//Provides authentication state and logging out functionality.
+//Wrapping the entire app in this provider allows any component to access the current user and auth loading state.
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  //Listens for changes in firebase auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);

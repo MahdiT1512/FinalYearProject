@@ -1,4 +1,3 @@
-// context/SessionSummaryContext.tsx
 import React, {
   createContext,
   ReactNode,
@@ -40,6 +39,7 @@ const SessionSummaryContext = createContext<
   SessionSummaryContextType | undefined
 >(undefined);
 
+//Centralises an end of session summary so both learn and syntax exercises can access and use the same modal.
 export const SessionSummaryProvider = ({
   children,
 }: {
@@ -48,6 +48,7 @@ export const SessionSummaryProvider = ({
   const [state, setState] = useState<SessionSummaryState>(null);
   const closeCallbackRef = useRef<(() => void) | undefined>(undefined);
 
+  //Stores the summary data for the modal
   const showSessionSummary = (
     summary: SessionSummaryData,
     options?: SessionSummaryOptions,

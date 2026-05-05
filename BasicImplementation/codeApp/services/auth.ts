@@ -50,6 +50,7 @@ export const changePasswordWithCurrentPassword = async (
   await updatePassword(user, newPassword);
 };
 
+// Converts the firebase auth error codes into user readable messages to display.
 export const getFriendlyAuthError = (err: any) => {
   const code = err?.code || "";
 

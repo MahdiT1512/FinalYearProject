@@ -27,6 +27,7 @@ const difficultyColor = (difficulty?: string) => {
   }
 };
 
+//Converts minutes into compact display for project selection cards
 const formatMinutes = (minutes?: number) => {
   if (!minutes) return "Flexible";
   if (minutes < 60) return `${minutes} min`;
@@ -37,6 +38,9 @@ const formatMinutes = (minutes?: number) => {
 
 type FilterMode = "all" | "open" | "completed" | "locked";
 
+//The project features tab, that includes all projects that are available to select
+//Those not able to be selected are locked due to either not an appropriate user skill level for the project
+//or the user hasn't unlocked the first project yet and needs to do the first three lessons and exercises
 export default function ProjectsScreen() {
   const router = useRouter();
 
@@ -52,6 +56,7 @@ export default function ProjectsScreen() {
 
   const [filter, setFilter] = useState<FilterMode>("all");
 
+  //Gets the suggested projects based on context provided by Project Context
   const recommendedProjects = useMemo(
     () => getRecommendedProjects(3),
     [getRecommendedProjects],
@@ -98,6 +103,7 @@ export default function ProjectsScreen() {
     filter,
   ]);
 
+  //Bulds each project card that is either then in the recommended projects or is in the base project library
   const renderProjectCard = (item: Project, compact: boolean = false) => {
     const accessible = isAccessible(
       item,

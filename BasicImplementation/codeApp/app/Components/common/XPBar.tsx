@@ -8,6 +8,8 @@ type XPBarProps = {
   disableNavigation?: boolean;
 };
 
+//A progress bar component that can be clicked on to take the user to the progress screen.
+//The component itself is also the progress bar, showing basic XP and level info
 export default function XPBar({
   maxXP = 100,
   disableNavigation = false,

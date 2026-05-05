@@ -23,6 +23,7 @@ type CreateUserDocArgs = {
   userSkillLevel: SkillLevel;
 };
 
+//Creates the starting user document for Firestore with all default values and fields when a new user signs up.
 export const createUserDoc = async (
   uid: string,
   data: CreateUserDocArgs,
@@ -94,6 +95,8 @@ export const addAvatarToUser = async (uid: string, avatar: UserAvatarSkin) => {
   });
 };
 
+//Allows user to change or 'equip' an avatar they have already unlocked,
+// which will update their profile picture and any displayed avatar to the selected one.
 export const equipAvatar = async (uid: string, avatarId: string) => {
   const userRef = doc(db, "users", uid);
   const snap = await getDoc(userRef);
@@ -115,6 +118,7 @@ export const equipAvatar = async (uid: string, avatarId: string) => {
   });
 };
 
+//Used fot testing and development purposes only to reset a user's avatar collection back to the default state with just the starter avatar.
 export const resetUserAvatars = async (uid: string) => {
   const defaultAvatar = makeDefaultAvatarSkin(uid);
 

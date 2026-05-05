@@ -51,6 +51,7 @@ export default function LoginScreen() {
 
   const passwordLooksValid = password.length >= 6;
 
+  //Validation checks for enabling the login and signup buttons
   const signupReady =
     emailLooksValid &&
     passwordLooksValid &&
@@ -112,6 +113,7 @@ export default function LoginScreen() {
     return true;
   };
 
+  //Handlers for login and user sign up that call the appropriate services and handle loading and error states.
   const handleLogin = async () => {
     if (!loginReady) {
       Alert.alert(
@@ -155,6 +157,8 @@ export default function LoginScreen() {
     }
   };
 
+  //Handler for resetting password that first validates an email given, and
+  //then calls the appropriate service to send the reset password email.
   const handleForgotPassword = async () => {
     if (!emailTrimmed) {
       Alert.alert(

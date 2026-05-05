@@ -3,6 +3,7 @@ export type CountryOption = {
   name: string;
 };
 
+//Included many(not all) country options along with their given code
 export const COUNTRIES: CountryOption[] = [
   { code: "DZ", name: "Algeria" },
   { code: "AR", name: "Argentina" },
@@ -98,6 +99,7 @@ export const COUNTRIES: CountryOption[] = [
   { code: "VN", name: "Vietnam" },
 ];
 
+//Allows user-entered names for commonly different country aliases for the same country to be recognised 
 const COUNTRY_ALIASES: Record<string, string> = {
   uk: "GB",
   gb: "GB",
@@ -151,6 +153,7 @@ export const getCountryName = (code?: string): string => {
   return COUNTRIES.find((c) => c.code === normalized)?.name ?? normalized;
 };
 
+//Builds external flag image using CountryFlag API
 export const getCountryFlagUrl = (code?: string) => {
   const normalized = normalizeCountryCode(code);
   if (!normalized) return "";

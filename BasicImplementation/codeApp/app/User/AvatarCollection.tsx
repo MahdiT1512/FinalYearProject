@@ -30,6 +30,9 @@ type AvatarRarity = "common" | "rare" | "epic" | "legendary";
 
 const RARITY_ORDER: AvatarRarity[] = ["legendary", "epic", "rare", "common"];
 
+//Avatar collection screen where users are shown their avatars/skins
+//The user can group by rarity or see all of them at once
+//The user can click on an avatar to equip
 export default function AvatarCollection() {
   const { user } = useAuth();
   const router = useRouter();
@@ -98,6 +101,7 @@ export default function AvatarCollection() {
     return avatars.find((avatar) => avatar.id === equippedId) || null;
   }, [avatars, equippedId]);
 
+  //Equips the selected or pressed avatar unless already active
   const handleEquip = async (id: string) => {
     if (!user) return;
     if (id === equippedId) return;

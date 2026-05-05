@@ -7,9 +7,7 @@ export const AVATAR_STYLES = [
 ] as const;
 
 export type AvatarStyle = (typeof AVATAR_STYLES)[number];
-
 export type AvatarRarity = "common" | "rare" | "epic" | "legendary";
-
 export type UserAvatarSkin = {
   id: string;
   avatarStyle: AvatarStyle;
@@ -22,8 +20,10 @@ export type UserAvatarSkin = {
   accentColor: string;
 };
 
+// The default avatar style that all users start with. 
 export const DEFAULT_AVATAR_STYLE: AvatarStyle = "bottts";
 
+//Metadata for every rarity level, such as XP required, the colours and visual differences.
 export const RARITY_META: Record<
   AvatarRarity,
   {
@@ -69,6 +69,7 @@ export const RARITY_META: Record<
   },
 };
 
+//Uses the Dicebear Avatars API to generate avatar URLs using the avatar's style and seed.
 export const buildAvatarUrl = (
   style: AvatarStyle,
   seed: string,
@@ -104,6 +105,7 @@ export const randomAvatarSeed = (base: string = "") => {
   return `${base}-${Math.random().toString(36).slice(2, 10)}-${Date.now()}`;
 };
 
+// Fetches the list of avatar raritys the user can spin for based on their total XP.
 export const getUnlockedRarities = (totalXP: number): AvatarRarity[] => {
   const rarities: AvatarRarity[] = ["common"];
   if (totalXP >= RARITY_META.rare.unlockXP) rarities.push("rare");
@@ -146,6 +148,8 @@ const pickRandom = <T,>(items: T[]) => {
   return items[Math.floor(Math.random() * items.length)];
 };
 
+// Handles logic for a weighted but random selection, allowing for rarites to be more or less rare based on the defined weights. 
+//For example Common is more likely to appear even if Rare is unlocked.
 export const pickSpinRarity = (available: AvatarRarity[]) => {
   const pool = available.map((rarity) => ({
     rarity,

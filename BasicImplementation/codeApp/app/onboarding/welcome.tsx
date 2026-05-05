@@ -33,6 +33,9 @@ type UserDoc = {
   preferredStartPath?: "lessons" | "syntax" | "profile" | null;
 };
 
+//Handles the welcome screen that is given when the user is first loaded in after creating the account
+//It generates for them their first avatar, presents their given profile information,
+//From here the user goes to get started or view their profile first
 export default function WelcomeOnboardingScreen() {
   const { user } = useAuth();
 

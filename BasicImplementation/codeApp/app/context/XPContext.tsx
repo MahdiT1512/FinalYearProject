@@ -121,6 +121,8 @@ const REGEN_INTERVAL_MS = 60 * 1000;
 const DEFAULT_MAX_HEARTS = 5;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+//Calculates regenerated hearts from stored count and the last updated time
+//Ensures hearts are capped and also updated even if user is offline
 function computeHeartState(
   baseHearts: number,
   maxHearts: number,
@@ -171,6 +173,7 @@ function computeHeartState(
   };
 }
 
+//Checks if two timestamps are a day apart, allowing for daily reward and streak tracking
 function isYesterday(timestampA?: number | null, timestampB?: number | null) {
   if (!timestampA || !timestampB) return false;
 
@@ -183,6 +186,7 @@ function isYesterday(timestampA?: number | null, timestampB?: number | null) {
   return bUTC - aUTC === DAY_MS;
 }
 
+//Main context provider for user progress and experience points(XP)
 export const XPProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
 
@@ -289,7 +293,7 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
       setBaseHearts(computed.syncedHearts);
       setMaxHearts(firestoreMaxHearts);
       setHeartsUpdatedAt(computed.syncedUpdatedAt);
-
+      //If enough time has lapsed, regenerate hearts and update Firestore to keep in sync, even if user is offline
       if (computed.changed) {
         await updateDoc(userRef, {
           hearts: computed.syncedHearts,
@@ -307,6 +311,7 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
     return computeHeartState(baseHearts, maxHearts, heartsUpdatedAt, nowTick);
   }, [baseHearts, maxHearts, heartsUpdatedAt, nowTick]);
 
+  //Count of completed lessons that still have an available review reward today
   const pendingReviewCount = useMemo(() => {
     return Object.values(lessonStats).filter(
       (stat) =>
@@ -316,6 +321,8 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
     ).length;
   }, [lessonStats]);
 
+  //Modifies and disinsentivises user from continuing too dar while pending reviews are available
+  //encouraging them to return to previous lessons through review mode
   const getLessonXPModifier = () => {
     if (pendingReviewCount >= 10) return 0.7;
     if (pendingReviewCount >= 6) return 0.8;
@@ -323,6 +330,8 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
     return 1;
   };
 
+  //Updates the daily activity streak and last active time
+  //The streak can only be increased once per day and is reset if user misses a day
   const recordDailyActivity = async () => {
     if (!user) return;
 
@@ -356,6 +365,7 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
     await syncUserBadges(user.uid);
   };
 
+  //Adds experience points to the user, handling level ups and ensuring all related stats are updated in Firestore
   const addXP = async (amount: number) => {
     if (!user || amount <= 0) return;
 
@@ -395,6 +405,7 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
     await syncUserBadges(user.uid);
   };
 
+  //Completes a lesson once and applies any modifiers and saves the performance stats for it
   const completeLesson = async (lessonId: string, xpAmount: number = 10) => {
     if (!user || !lessonId) return 0;
 
@@ -476,6 +487,7 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
     return earnedXP;
   };
 
+  //Records that the lesson was attempted so the Lesson Deck can track practice history
   const recordLessonAttempt = async (lessonId: string) => {
     if (!user || !lessonId) return;
 
@@ -511,6 +523,7 @@ export const XPProvider = ({ children }: { children: ReactNode }) => {
     await recordDailyActivity();
   };
 
+  //Saves the performance of a lesson attempt, for later prioritisation in the Lesson Deck
   const recordLessonAnswerResult = async (
     lessonId: string,
     wasCorrect: boolean,

@@ -21,6 +21,7 @@ const DEFAULT_BADGE_META: Record<string, { icon: string; accent: string }> = {
   review_1: { icon: "📘", accent: "#6366F1" },
 };
 
+//The generic modal for the unlocking of global rewards such as badges other profile related items
 export default function GlobalUnlockModal({ visible, item, onClose }: Props) {
   const celebrationItem = useMemo<UnlockCelebrationItem | null>(() => {
     if (!item) return null;

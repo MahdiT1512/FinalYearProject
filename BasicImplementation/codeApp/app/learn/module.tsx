@@ -27,7 +27,7 @@ type Lesson = {
   title: string;
   module?: string;
 };
-
+//The main screen for a module or unit, showing the users progress through the lessons in that module.
 export default function ModuleScreen() {
   const { module } = useLocalSearchParams<{ module?: string }>();
   const router = useRouter();
@@ -35,6 +35,8 @@ export default function ModuleScreen() {
   const { completedLessons, pendingReviewCount, getLessonXPModifier } =
     useContext(XPContext);
 
+  //Filter lessons to only those in the current unit(Unit 1 lesson 1, Unit 1 lesson 2),
+  // Defaulting to "General" if no unit specified
   const lessons = (lessonsData as Lesson[]).filter(
     (l) => (l.module || "General") === module,
   );
@@ -44,6 +46,7 @@ export default function ModuleScreen() {
 
   const xpModifier = getLessonXPModifier();
 
+  //Calculates module progression through users completed lesson IDs
   const progress = useMemo(() => {
     const completedCount = lessons.filter((lesson) =>
       completedLessons.includes(lesson.id),
@@ -59,6 +62,8 @@ export default function ModuleScreen() {
     };
   }, [lessons, completedLessons]);
 
+  //Finds first incomplete or unlocked new lesson so the user can identify where they are in the unit.
+  //If all lessons are completed, it defaults to the last lesson as the current one to encourage review and mastery.
   const firstIncompleteIndex = useMemo(() => {
     const index = lessons.findIndex(
       (lesson) => !completedLessons.includes(lesson.id),

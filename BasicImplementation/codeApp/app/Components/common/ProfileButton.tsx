@@ -16,6 +16,8 @@ type UserProfileDoc = {
   avatars?: UserAvatarSkin[];
 };
 
+//A profile button component that shows the users current avatar and takes them to their profile when clicked.
+//The avatar is synced in real time as user makes changes to the user profile.
 export default function ProfileButton() {
   const router = useRouter();
   const { user } = useAuth();

@@ -158,6 +158,9 @@ export const SyntaxContext = createContext<SyntaxContextType>({
   getCategoryById: () => undefined,
 });
 
+//Helper functions for normalising and also consistency
+//clampMastery helping with ensuring mastery values are always between 0 and 100
+//normalizeExercise ensuring all exercises have the necessary fields with default values if they are missing, and generating a unique ID if one is not provided.
 function clampMastery(value: number) {
   return Math.max(0, Math.min(100, value));
 }
@@ -199,12 +202,15 @@ function getCategoryStatus(
   return "available";
 }
 
+//Context for managing the syntax learning system
+//This includes details like the keywords and categories.
 export const SyntaxProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const [syntaxProgress, setSyntaxProgress] = useState<SyntaxProgressMap>({});
   const [syntaxCategoryRewards, setSyntaxCategoryRewards] =
     useState<SyntaxCategoryRewardMap>({});
 
+  //Loads the statis syntax content from JSON and normalises the exercises
   const baseCategories = useMemo(() => {
     return (syntaxCategoriesData as SyntaxCategorySeed[]).map((category) => ({
       ...category,
@@ -221,6 +227,7 @@ export const SyntaxProvider = ({ children }: { children: ReactNode }) => {
     }));
   }, []);
 
+  //Loads every keyword to its category and exercise count, to allow for fast progress updates in future uses
   const baseKeywordLookup = useMemo(() => {
     const map = new Map<
       string,
@@ -266,6 +273,7 @@ export const SyntaxProvider = ({ children }: { children: ReactNode }) => {
     return unsubscribe;
   }, [user]);
 
+  //Builds the visible category structure, including unlock status and progress in percentage
   const categories = useMemo<SyntaxCategory[]>(() => {
     const computedCategories: SyntaxCategory[] = [];
 
@@ -377,6 +385,8 @@ export const SyntaxProvider = ({ children }: { children: ReactNode }) => {
     return categories.find((category) => category.id === id);
   };
 
+  //Updates mastery and remaining exercise count for a syntax keyword
+  //based on practice of the keyword.
   const updateKeyword = async (
     id: string,
     masteryInc: number,
@@ -419,6 +429,8 @@ export const SyntaxProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  //Handles claiming category completion reward.
+  // Ensures that the reward can only be claimed once and that the user has completed the category before claiming
   const claimCategoryCompletionReward = async (
     categoryId: string,
     xpAwarded: number,

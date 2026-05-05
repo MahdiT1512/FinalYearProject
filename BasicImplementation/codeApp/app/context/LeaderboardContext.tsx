@@ -36,6 +36,8 @@ export const LeaderboardContext = createContext<LeaderboardContextType>({
   loading: true,
 });
 
+//For development purposes
+//Normalises all badge data so both old and new formats are rendered correctly on the leaderboard. F
 function normalizeBadges(raw: any): string[] {
   if (!Array.isArray(raw)) return [];
 
@@ -49,6 +51,7 @@ function normalizeBadges(raw: any): string[] {
     .filter(Boolean);
 }
 
+//Provides real time leaderboard data by listening to all user dockuments in Firestore
 export const LeaderboardProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
 

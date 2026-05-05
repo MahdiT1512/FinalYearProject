@@ -13,9 +13,9 @@ import { SessionSummaryProvider } from "./context/SessionSummaryContext";
 
 import LoginScreen from "./auth/login";
 
+//Blocks the app until Firebase Authentication has finished checking the user's auth state.
 function AppGate() {
   const { user, loading } = useAuth();
-
   if (loading) {
     return (
       <View
@@ -38,6 +38,7 @@ function AppGate() {
   return <Slot />;
 }
 
+//Wraps the app in all the context providers to allow for global state management.
 export default function RootLayout() {
   return (
     <AuthProvider>
