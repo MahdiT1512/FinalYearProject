@@ -23,6 +23,8 @@ Clone the repository:
 
 git clone https://github.com/MahdiT1512/FinalYearProject.git
 
+Open in VS Code
+
 cd BasicImplementation/codeApp
 
 Then with npm:
