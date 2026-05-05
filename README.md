@@ -45,6 +45,6 @@ Switch from development build to Expo Go in terminal by pressing s
 
 Use the Expo Go app to scan the given QR code.
 
-Once page has loaded press on the familiar directory ending in /codeApp that appears(may be confusing due to phone formatting, but the button with the directory is clickable)
+Once page where you can see a "you are loading" and a directory ending in "codeApp" SCROLL DOWN and click on the button for loading the app using Expo Go(may be confusing due to phone formatting, but the button is there)
 
 This opens CodeSpark on the phone.
