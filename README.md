@@ -37,6 +37,8 @@ To access CodeSpark as a website you can simply go to (UI may break or not be as
 
 http://localhost:8081/
 
+Loading may take some time but it will load if left alone
+
 To access CodeSpark on a mobile device download the Expo Go app:
 
 Switch from development build to Expo Go in terminal by pressing s 
