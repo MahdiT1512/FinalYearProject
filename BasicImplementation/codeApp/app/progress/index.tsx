@@ -93,7 +93,7 @@ export default function ProgressScreen() {
       if (reward <= 0) {
         Alert.alert(
           "Bonus unavailable",
-          "The all-goals bonus has already been claimed or is not ready yet.",
+          "The all-goals bonus has already been claimed or all goals have not been met yet.",
         );
         return;
       }
@@ -127,8 +127,8 @@ export default function ProgressScreen() {
               Daily goals, rewards, and run health
             </Text>
             <Text style={styles.heroSubtitle}>
-              This is your central place for daily progress, claims, streak
-              tracking, and pacing signals.
+              This is your hub for your daily progress and streaks. Additional
+              info such as hearts and XP is also available here too.
             </Text>
 
             <View style={styles.heroStatsRow}>
@@ -154,7 +154,8 @@ export default function ProgressScreen() {
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Daily Login Reward</Text>
             <Text style={styles.cardText}>
-              Separate from daily goals. This is your once-per-day login reward.
+              Keep your daily login streak alive! Earn an XP reward for showing
+              up.
             </Text>
 
             <View style={styles.infoPillRow}>
@@ -192,8 +193,7 @@ export default function ProgressScreen() {
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Daily Goals</Text>
             <Text style={styles.cardText}>
-              Goal rewards are separate from login reward and must be claimed
-              individually once completed.
+              Goal rewards must be claimed individually once completed.
             </Text>
 
             {goals.map((goal) => {
@@ -285,7 +285,7 @@ export default function ProgressScreen() {
           <View style={styles.card}>
             <Text style={styles.cardTitle}>All Goals Bonus</Text>
             <Text style={styles.cardText}>
-              Complete all daily goals, then claim the bonus reward.
+              Complete your goals for the day, then claim a special bonus!
             </Text>
 
             <View style={styles.infoPillRow}>

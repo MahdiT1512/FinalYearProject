@@ -212,10 +212,10 @@ export default function MyProfile() {
       : `Need ${xpNeededForExtraSpin} more XP`;
 
   const spinHelperText = canFreeSpin
-    ? "Your next spin is free."
+    ? "Your next spin is on us."
     : canExtraSpin
-      ? `Free spins used up. Next spin will cost ${EXTRA_SPIN_COST_XP} XP.`
-      : `No free spins left. Earn ${xpNeededForExtraSpin} more XP to spin again.`;
+      ? `Free spins for today used up. The next spin will cost ${EXTRA_SPIN_COST_XP} XP.`
+      : `No free spins left for today. Earn ${xpNeededForExtraSpin} more XP to spin again.`;
 
   const handleClose = () => {
     if (entry === "onboarding") {
@@ -237,7 +237,7 @@ export default function MyProfile() {
     if (!canSpin) {
       Alert.alert(
         "Not enough XP",
-        `You have no free spins left. Earn ${xpNeededForExtraSpin} more XP to buy an extra spin.`,
+        `You have no free spins for today left. Earn ${xpNeededForExtraSpin} more XP to buy an extra spin.`,
       );
       return;
     }
@@ -422,7 +422,7 @@ export default function MyProfile() {
               </Text>
             ) : (
               <Text style={styles.cardText}>
-                You already unlocked the top rarity.
+                You have already unlocked Legendary rarity.
               </Text>
             )}
           </LinearGradient>

@@ -91,7 +91,7 @@ export default function EditProfile() {
     if (trimmedUsername.length > 20)
       return "Username must be 20 characters or fewer.";
     if (!USERNAME_REGEX.test(trimmedUsername)) {
-      return "Use only letters, numbers, and underscores.";
+      return "Use only letters, numbers, and the underscore special character(_).";
     }
     return "";
   }, [trimmedUsername]);
@@ -220,7 +220,7 @@ export default function EditProfile() {
           <Text style={styles.eyebrow}>Account</Text>
           <Text style={styles.title}>Edit Profile</Text>
           <Text style={styles.subtitle}>
-            Tune how you appear, learn, and sign in.
+            Edit your profiles appearance or change account details.
           </Text>
         </View>
 
@@ -232,7 +232,7 @@ export default function EditProfile() {
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Profile Details</Text>
         <Text style={styles.cardHint}>
-          This is what shapes your identity across the app.
+          This is shapes your identity across the app.
         </Text>
 
         <Text style={styles.label}>Email</Text>
@@ -272,7 +272,7 @@ export default function EditProfile() {
 
         <Text style={styles.label}>Skill Level</Text>
         <Text style={styles.sectionSubcopy}>
-          This helps guide recommendations and difficulty.
+          This changes what projects are available to you immediately.
         </Text>
         <View style={styles.skillRow}>
           {(["Beginner", "Intermediate", "Advanced"] as SkillLevel[]).map(
@@ -307,8 +307,8 @@ export default function EditProfile() {
             <Text style={styles.visibilityTitle}>Leaderboard privacy</Text>
             <Text style={styles.visibilityText}>
               {anonymous
-                ? "You appear anonymously on public boards."
-                : "Your username and country can appear on public boards."}
+                ? "You appear anonymously on leaderboards."
+                : "Your username and country appear on the leaderboards."}
             </Text>
           </View>
 

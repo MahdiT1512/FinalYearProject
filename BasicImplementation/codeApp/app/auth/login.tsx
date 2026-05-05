@@ -201,8 +201,9 @@ export default function LoginScreen() {
             <Text style={styles.brandEyebrow}>CodeSpark</Text>
             <Text style={styles.brandTitle}>Learn Python. Build momentum.</Text>
             <Text style={styles.brandSubtitle}>
-              Guided lessons, syntax drills, review practice, daily goals,
-              projects, and unlocks, all designed to make progress feel clear.
+              Complete lessons, develop syntax fluency, build projects and
+              compete worldwide. All designed to engage and boost motivation.
+              Learning programming has never been easier.
             </Text>
           </View>
 
@@ -229,8 +230,8 @@ export default function LoginScreen() {
 
             <Text style={styles.subtitle}>
               {mode === "login"
-                ? "Log in to continue learning, protect your streak, and pick up exactly where you left off."
-                : "Create your account, choose your current level, and get a smoother CodeSpark start."}
+                ? "Log in to continue learning, picking up where you left off."
+                : "Create your account, and begin your coding journey."}
             </Text>
 
             <View style={styles.modeRow}>
@@ -335,7 +336,7 @@ export default function LoginScreen() {
                 <View style={styles.inputWrap}>
                   <Text style={styles.inputLabel}>Confirm Password</Text>
                   <TextInput
-                    placeholder="Retype password"
+                    placeholder="Confirm password"
                     secureTextEntry
                     style={styles.input}
                     value={confirmPassword}
@@ -350,7 +351,9 @@ export default function LoginScreen() {
                   )}
                 </View>
 
-                <Text style={styles.sectionLabel}>Your starting level</Text>
+                <Text style={styles.sectionLabel}>
+                  Your current skill level
+                </Text>
                 <View style={styles.skillRow}>
                   {(
                     ["Beginner", "Intermediate", "Advanced"] as SkillLevel[]
@@ -378,14 +381,16 @@ export default function LoginScreen() {
 
                 <View style={styles.levelHelpCard}>
                   <Text style={styles.levelHelpTitle}>
-                    How CodeSpark uses this
+                    How CodeSpark understands this
                   </Text>
                   <Text style={styles.levelHelpText}>
-                    Beginner = more guidance and gentler ramp
+                    Beginner = No experience with programming, starting
+                    completely fresh{"\n"}
+                    Intermediate = Some prior coding experience, but still
+                    struggle with some fundamentals or advanced concepts
                     {"\n"}
-                    Intermediate = some prior coding comfort
-                    {"\n"}
-                    Advanced = faster ramp and tougher starting pace
+                    Advanced = Completely comfortable with most programming
+                    concepts, can build the most complex projects
                   </Text>
                 </View>
               </>

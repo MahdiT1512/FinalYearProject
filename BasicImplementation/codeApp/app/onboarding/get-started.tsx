@@ -18,7 +18,7 @@ export default function GetStartedOnboardingScreen() {
           <Text style={styles.title}>Here’s how progress works</Text>
           <Text style={styles.subtitle}>
             You do not need to learn every system immediately. These are the
-            parts of CodeSpark you will use most often.
+            core features of CodeSpark you're likely to interact with.
           </Text>
 
           <View style={styles.sectionCard}>
@@ -26,8 +26,9 @@ export default function GetStartedOnboardingScreen() {
             <View style={styles.sectionCopy}>
               <Text style={styles.sectionTitle}>Lessons build your base</Text>
               <Text style={styles.sectionText}>
-                Work through guided Python units step by step. This is the main
-                route for structured learning.
+                Work through guided Python units one at a time. This is the main
+                route for learning the basics, highly recommended for beginners
+                to start here.
               </Text>
             </View>
           </View>
@@ -40,7 +41,7 @@ export default function GetStartedOnboardingScreen() {
               </Text>
               <Text style={styles.sectionText}>
                 Review older material so progress does not become shallow. The
-                deck is there to keep knowledge alive.
+                deck is there to keep your foundations stable.
               </Text>
             </View>
           </View>
@@ -50,21 +51,8 @@ export default function GetStartedOnboardingScreen() {
             <View style={styles.sectionCopy}>
               <Text style={styles.sectionTitle}>Syntax sharpens recall</Text>
               <Text style={styles.sectionText}>
-                Short randomized sessions help you lock in keywords, operators,
-                and patterns faster.
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.sectionCard}>
-            <Text style={styles.sectionEmoji}>🎁</Text>
-            <View style={styles.sectionCopy}>
-              <Text style={styles.sectionTitle}>
-                Daily reward ≠ daily goals
-              </Text>
-              <Text style={styles.sectionText}>
-                Logging in gives you a daily login reward. Daily goals are a
-                separate system with their own progress and payouts.
+                Short randomized sessions help you lock in keywords and syntax
+                patterns faster.
               </Text>
             </View>
           </View>
@@ -73,17 +61,17 @@ export default function GetStartedOnboardingScreen() {
             <Text style={styles.sectionEmoji}>🏆</Text>
             <View style={styles.sectionCopy}>
               <Text style={styles.sectionTitle}>
-                XP and streaks show momentum
+                XP and streaks show progression and keep momentum strong
               </Text>
               <Text style={styles.sectionText}>
-                Keep showing up, answer well, and clear reviews to keep your
-                pace strong.
+                Keep showing up to clear reviews and lessons to keep your
+                learning pace strong.
               </Text>
             </View>
           </View>
 
           <View style={styles.tipCard}>
-            <Text style={styles.tipTitle}>Best first-day loop</Text>
+            <Text style={styles.tipTitle}>Recommended first day</Text>
             <Text style={styles.tipText}>
               Do one lesson → clear any review cards → try one short syntax
               session.

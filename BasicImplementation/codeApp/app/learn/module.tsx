@@ -142,7 +142,7 @@ export default function ModuleScreen() {
 
             <View style={styles.headerChipsRow}>
               <View style={styles.infoChip}>
-                <Text style={styles.infoChipLabel}>Reviews waiting</Text>
+                <Text style={styles.infoChipLabel}>Reviews pending</Text>
                 <Text style={styles.infoChipValue}>{pendingReviewCount}</Text>
               </View>
 

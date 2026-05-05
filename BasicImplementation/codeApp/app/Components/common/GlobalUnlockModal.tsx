@@ -39,7 +39,7 @@ export default function GlobalUnlockModal({ visible, item, onClose }: Props) {
         description:
           badgeDef?.description ??
           item.subtitle ??
-          "A new badge has been added to your profile.",
+          "A new badge has been unlocked.",
         icon: badgeMeta.icon,
         accent: badgeMeta.accent,
       };
@@ -58,7 +58,7 @@ export default function GlobalUnlockModal({ visible, item, onClose }: Props) {
       return {
         type: "avatar",
         name: item.subtitle || item.title,
-        description: "A new avatar has been unlocked in your collection.",
+        description: "A new avatar has been added to your collection.",
         accent: item.accent ?? "#06B6D4",
         icon: item.emoji ?? "🎨",
       };
@@ -68,8 +68,7 @@ export default function GlobalUnlockModal({ visible, item, onClose }: Props) {
       return {
         type: "project",
         title: item.title,
-        description:
-          item.subtitle || "A new project is now unlocked and ready to build.",
+        description: item.subtitle || "A new project brief has been unlocked.",
         accent: item.accent ?? "#F59E0B",
         icon: item.emoji ?? "🚀",
       };

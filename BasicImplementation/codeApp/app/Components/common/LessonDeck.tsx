@@ -47,13 +47,13 @@ function buildLessonRecommendation(
   score += (1 - accuracy) * 60;
   score += Math.min(wrongAnswers * 6, 30);
 
-  if (accuracy < 0.5) reason = "You struggled here before";
+  if (accuracy < 0.5) reason = "You have struggled here before";
   else if (accuracy < 0.8) reason = "Worth reviewing again";
 
   if (lastPracticedAt) {
     const daysSince = Math.floor((Date.now() - lastPracticedAt) / DAY_MS);
     score += Math.min(daysSince * 4, 40);
-    if (daysSince >= 7) reason = "You haven’t reviewed this in a while";
+    if (daysSince >= 7) reason = "You haven’t reviewed this for a week";
   } else {
     score += 20;
   }
@@ -65,7 +65,7 @@ function buildLessonRecommendation(
     else if (accuracy >= 0.75) estimatedRewardXP = 15;
     else if (accuracy >= 0.6) estimatedRewardXP = 10;
   } else {
-    reason = "Daily reward already claimed";
+    reason = "Daily review reward was claimed";
   }
 
   return {
@@ -206,7 +206,7 @@ function DeckCard({
               {lesson.rewardAvailableToday
                 ? lesson.estimatedRewardXP > 0
                   ? `Up to ${lesson.estimatedRewardXP} XP`
-                  : "Improve accuracy for XP"
+                  : "Improve accuracy for bonus XP."
                 : "Claimed today"}
             </Text>
           </View>
@@ -320,7 +320,9 @@ export default function LessonDeck() {
       <View style={styles.headerRow}>
         <View>
           <Text style={styles.title}>Lesson Deck</Text>
-          <Text style={styles.subtitle}>Review completed lessons</Text>
+          <Text style={styles.subtitle}>
+            Review and revise completed lessons
+          </Text>
         </View>
 
         <View style={styles.deckCountPill}>
@@ -361,7 +363,9 @@ export default function LessonDeck() {
               Module: {activeLesson?.module ?? "General"}
             </Text>
 
-            <Text style={styles.modalHighlight}>Why this is recommended</Text>
+            <Text style={styles.modalHighlight}>
+              Why this was recommended for you
+            </Text>
             <Text style={styles.modalReason}>
               {activeLesson?.reason ?? "Recommended for review"}
             </Text>
@@ -397,7 +401,7 @@ export default function LessonDeck() {
                 style={[styles.btn, styles.startBtn]}
                 onPress={onStart}
               >
-                <Text style={styles.btnText}>Start Review</Text>
+                <Text style={styles.btnText}>Begin Review</Text>
               </Pressable>
 
               <Pressable

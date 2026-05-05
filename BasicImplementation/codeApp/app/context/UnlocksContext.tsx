@@ -209,7 +209,8 @@ export const UnlocksProvider = ({ children }: { children: ReactNode }) => {
           type: "badge",
           title: badge?.name ?? "Badge Unlocked",
           subtitle:
-            badge?.description ?? "A new badge has been added to your profile.",
+            badge?.description ??
+            "A new badge has been unlocked on your account.",
           accent: badge?.accent ?? "#F59E0B",
           emoji: badge?.icon ?? "🏅",
         });
@@ -235,7 +236,7 @@ export const UnlocksProvider = ({ children }: { children: ReactNode }) => {
           title: project?.name || "Project Completed",
           subtitle: project?.awardTitle
             ? `Completed project and unlocked title: ${project.awardTitle}`
-            : "You finished a project and earned its reward.",
+            : "You completed a project! Reward XP has been added to your account.",
           accent: "#F59E0B",
           emoji: "🚀",
         });

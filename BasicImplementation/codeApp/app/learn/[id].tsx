@@ -65,7 +65,7 @@ function buildGeneratedSlides(lesson: Lesson): BuiltLessonSlide[] {
       id: `${lesson.id}-intro`,
       type: "intro",
       title: lesson.title,
-      body: `### ${lesson.module ?? "Lesson"}\n\nThis lesson has **${lesson.exercises.length} exercise${lesson.exercises.length === 1 ? "" : "s"}** waiting at the end.\n\nMove through each page to unlock the exercise.`,
+      body: `### ${lesson.module ?? "Lesson"}\n\nThis lesson has **${lesson.exercises.length} exercise${lesson.exercises.length === 1 ? "" : "s"}** waiting at the end.\n\nMove through each page to unlock the exercises.`,
       source: "generated",
     },
   ];
@@ -103,7 +103,7 @@ function buildGeneratedSlides(lesson: Lesson): BuiltLessonSlide[] {
     id: `${lesson.id}-summary`,
     type: "summary",
     title: "Ready to Practice?",
-    body: `## Lesson Recap\n\n- **Questions:** ${lesson.exercises.length}\n- **Question XP available:** ${totalQuestionXP}\n- **Completion reward:** extra XP at the end\n\nTake the exercise to lock the lesson in.`,
+    body: `## Lesson Recap\n\n- **Questions:** ${lesson.exercises.length}\n- **Question XP available:** ${totalQuestionXP}\n- **Completion reward:** extra XP at the end\n\nTake the exercise to lock this lesson in!`,
     source: "generated",
   });
 
@@ -386,7 +386,8 @@ export default function LessonPage() {
 
                             {!exerciseUnlocked && (
                               <Text style={styles.unlockHint}>
-                                Reach the final page to unlock the exercise.
+                                Reach the final page to unlock this lessons
+                                exercises.
                               </Text>
                             )}
 

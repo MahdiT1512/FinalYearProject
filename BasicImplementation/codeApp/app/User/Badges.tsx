@@ -119,8 +119,9 @@ export default function Badges() {
         >
           <Text style={styles.heroTitle}>Achievement Board</Text>
           <Text style={styles.heroText}>
-            Earn badges by learning consistently, gaining XP, reviewing lessons,
-            and pushing your streak higher.
+            Earn badges by hitting milestones and achieving the specified
+            objectives. Show off your skills and achievements as you progress on
+            your profile.
           </Text>
 
           <View style={styles.heroStatsRow}>
@@ -165,8 +166,8 @@ export default function Badges() {
           <View style={styles.emptyCard}>
             <Text style={styles.emptyTitle}>No badges yet</Text>
             <Text style={styles.emptyText}>
-              Complete your first lesson, gain XP, spin rewards, and build your
-              streak to start unlocking achievements.
+              Get the ball rolling! Complete your first lesson to get an easy
+              win.
             </Text>
           </View>
         ) : (

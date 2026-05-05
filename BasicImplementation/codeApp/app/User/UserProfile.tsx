@@ -165,7 +165,7 @@ export default function UserProfile() {
             <Text style={styles.sectionTitle}>Profile Snapshot</Text>
             <Text style={styles.snapshotText}>
               {user.anonymous
-                ? "This user is currently shown anonymously on public rankings."
+                ? "This user is currently shown anonymously in user rankings."
                 : `${user.username} is competing publicly on the leaderboard.`}
             </Text>
             <Text style={styles.snapshotText}>
@@ -213,7 +213,8 @@ export default function UserProfile() {
               <View style={styles.emptyBadgeCard}>
                 <Text style={styles.noBadges}>No badges yet</Text>
                 <Text style={styles.noBadgesSub}>
-                  Keep learning and using the app to unlock your first badge.
+                  Keep trying and get your first lesson and exerices done to
+                  unlock your first badge.
                 </Text>
               </View>
             )}

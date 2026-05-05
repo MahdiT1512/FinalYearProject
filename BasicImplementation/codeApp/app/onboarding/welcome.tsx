@@ -128,9 +128,8 @@ export default function WelcomeOnboardingScreen() {
             You’re in, {profile.username || "Coder"} 🎉
           </Text>
           <Text style={styles.subtitle}>
-            Your CodeSpark account is ready. You’ve got your starter profile,
-            level, and learning path — now let’s make the app feel familiar
-            before you jump in.
+            Your account is ready. You’ve got a fresh profile at level 1. Let’s
+            familiarise you with the app's features before you jump in.
           </Text>
 
           <View style={styles.avatarWrap}>
@@ -143,7 +142,7 @@ export default function WelcomeOnboardingScreen() {
           </View>
 
           <View style={styles.metaCard}>
-            <Text style={styles.metaCardTitle}>Your starter setup</Text>
+            <Text style={styles.metaCardTitle}>Your base setup</Text>
 
             <View style={styles.metaRow}>
               <Text style={styles.metaLabel}>Skill level</Text>
@@ -179,7 +178,7 @@ export default function WelcomeOnboardingScreen() {
               📚 Review deck and syntax practice to reinforce memory
             </Text>
             <Text style={styles.rewardText}>
-              🏆 XP, streaks, daily goals, badges, titles, and project unlocks
+              🏆 XP, badges, titles, and avatars
             </Text>
           </View>
 

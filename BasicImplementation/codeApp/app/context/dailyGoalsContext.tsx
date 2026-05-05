@@ -103,7 +103,7 @@ export const DailyGoalsProvider = ({ children }: { children: ReactNode }) => {
         id: `daily-goals-complete-${todayKey}`,
         type: "achievement",
         title: "Daily Goals Complete",
-        subtitle: "You cleared all daily goals for today.",
+        subtitle: "You cleared all todays daily goals.",
         accent: "#10B981",
         emoji: "✅",
       });

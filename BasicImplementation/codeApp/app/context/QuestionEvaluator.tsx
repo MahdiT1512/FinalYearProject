@@ -302,7 +302,7 @@ const compareTraceAnswer = (
   if (mismatches.length === 1) {
     return {
       correct: false,
-      feedback: `❌ Almost there — check ${mismatches[0]}.`,
+      feedback: `❌ Almost there, review ${mismatches[0]}.`,
       mismatchCount: mismatches.length,
     };
   }
@@ -365,7 +365,9 @@ export const evaluateQuestion = (
     return {
       correct,
       xpEarned: correct ? question.xp : 0,
-      feedback: correct ? "✅ Correct!" : "❌ Not quite — try again.",
+      feedback: correct
+        ? "✅ Correct!"
+        : "❌ Keep going! Review the material and try again.",
       feedbackTitle: correct ? "Nice" : "Try again",
       answerMode: null,
     };
@@ -393,7 +395,7 @@ export const evaluateQuestion = (
         xpEarned: question.xp,
         feedback:
           result.mode === "contains"
-            ? "✅ Very close to the expected fix — accepted."
+            ? "✅ Fixed!(Formatting differences ignored)"
             : "✅ Fixed!",
         feedbackTitle: "Bug fixed",
         answerMode: result.mode,
@@ -404,7 +406,7 @@ export const evaluateQuestion = (
     return {
       correct: false,
       xpEarned: 0,
-      feedback: "❌ That fix isn’t quite right yet.",
+      feedback: "❌ That fix isn’t quite right.",
       feedbackTitle: "Still broken",
       answerMode: null,
       expectedAnswer: question.answer,
@@ -421,7 +423,7 @@ export const evaluateQuestion = (
         xpEarned: question.xp,
         feedback:
           result.mode === "loose"
-            ? "✅ Correct — formatting differences ignored."
+            ? "✅ Correct!(formatting differences ignored)"
             : "✅ Correct!",
         feedbackTitle: buildCodeFeedbackTitle(result.mode),
         answerMode: result.mode,

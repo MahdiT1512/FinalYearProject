@@ -521,11 +521,11 @@ export default function SyntaxScreen() {
           <View style={styles.heroCard}>
             <Text style={styles.heroEyebrow}>Syntax Path</Text>
             <Text style={styles.heroTitle}>
-              Build Python fluency one skill at a time.
+              Build your Python syntax fluency, one keyword at a time.
             </Text>
             <Text style={styles.heroSubtitle}>
-              Unlock categories, raise mastery, and keep your syntax knowledge
-              moving forward like a real progression system.
+              Unlock categories and raise your mastery to keep up with your
+              syntactical knowledge.
             </Text>
 
             <View style={styles.heroStatsRow}>
@@ -574,7 +574,7 @@ export default function SyntaxScreen() {
           <View style={styles.sectionHeader}>
             <Text style={styles.pageTitle}>Syntax Categories</Text>
             <Text style={styles.pageSubtitle}>
-              Progress through Python syntax in a guided order.
+              Progress through a curated selection of Python syntax.
             </Text>
           </View>
 

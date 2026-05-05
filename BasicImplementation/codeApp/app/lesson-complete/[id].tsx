@@ -118,7 +118,7 @@ export default function LessonComplete() {
           </View>
 
           <Text style={styles.bodyText}>
-            Great work. Keep momentum high while the lesson is still fresh.
+            Great work! Keep momentum high while the lesson is fresh.
           </Text>
 
           <Pressable

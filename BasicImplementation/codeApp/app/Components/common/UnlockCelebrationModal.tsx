@@ -133,8 +133,7 @@ export default function UnlockCelebrationModal({
       icon = item.icon ?? "👑";
       titleText = "New Title Unlocked!";
       mainText = item.title;
-      bodyText =
-        "You unlocked a new title. You can equip it from your profile.";
+      bodyText = "You've unlocked a new title. Equip it from your profile.";
       break;
 
     case "avatar":
@@ -144,7 +143,7 @@ export default function UnlockCelebrationModal({
       mainText = item.name;
       bodyText =
         item.description ??
-        "A fresh new avatar has been added to your collection.";
+        "An avatar has been added to your collection. Check it out on your profile!";
       break;
 
     case "project":
@@ -161,7 +160,7 @@ export default function UnlockCelebrationModal({
       icon = item.icon ?? "🏆";
       titleText = "Achievement Unlocked!";
       mainText = item.title;
-      bodyText = item.description ?? "You hit a new milestone. Keep it going.";
+      bodyText = item.description ?? "Keep it up! You've hit a new milestone.";
       break;
   }
 

@@ -75,8 +75,9 @@ export default function ChoosePathOnboardingScreen() {
           <Text style={styles.eyebrow}>Your first move</Text>
           <Text style={styles.title}>Where do you want to begin?</Text>
           <Text style={styles.subtitle}>
-            Pick the path that feels best today. This helps CodeSpark feel more
-            intentional from the start.
+            Pick the path that best suits you. This is just a starting point,
+            there is no wrong choice. You can always explore the other features
+            when comfortable.
           </Text>
 
           <Pressable
@@ -91,7 +92,8 @@ export default function ChoosePathOnboardingScreen() {
             <View style={styles.pathCopy}>
               <Text style={styles.pathTitle}>Start with Lessons</Text>
               <Text style={styles.pathText}>
-                Best if you want the main guided learning path first.
+                Best for beginners and those wanting the main learning path
+                first.
               </Text>
             </View>
           </Pressable>
@@ -108,7 +110,8 @@ export default function ChoosePathOnboardingScreen() {
             <View style={styles.pathCopy}>
               <Text style={styles.pathTitle}>Start with Syntax Practice</Text>
               <Text style={styles.pathText}>
-                Best if you want a quick warm-up and fast question reps.
+                Best for intermediate and advanced who want a quick warm-up or
+                burst-style syntax reps.
               </Text>
             </View>
           </Pressable>
@@ -125,8 +128,8 @@ export default function ChoosePathOnboardingScreen() {
             <View style={styles.pathCopy}>
               <Text style={styles.pathTitle}>Check My Profile First</Text>
               <Text style={styles.pathText}>
-                Best if you want to look at your setup, title, and avatar before
-                starting.
+                Check out your profile first, best if you want to look through
+                future badges and acquire your first avatars.
               </Text>
             </View>
           </Pressable>

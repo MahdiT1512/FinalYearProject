@@ -223,7 +223,8 @@ export default function ProjectsScreen() {
           </Text>
         ) : (
           <Text style={styles.openMessage}>
-            🚀 Open the brief, build it outside the app, then mark it complete.
+            🚀 Select this project to build externally. Hit project milestones
+            and reflect on the experience.
           </Text>
         )}
       </TouchableOpacity>
@@ -258,9 +259,9 @@ export default function ProjectsScreen() {
                     Build real things with Python.
                   </Text>
                   <Text style={styles.heroSubtitle}>
-                    Projects are where your lessons turn into something more
-                    serious: mini apps, utilities, games, automation scripts,
-                    and practical coding challenges.
+                    Projects are where concepts become into something more
+                    practical. Build projects such as mini apps, utilities and
+                    coding challenges.
                   </Text>
 
                   <View style={styles.heroStatsRow}>
@@ -293,7 +294,7 @@ export default function ProjectsScreen() {
                         ? beginnerGateRemaining > 0
                           ? `Complete ${beginnerGateRemaining} more lesson${beginnerGateRemaining === 1 ? "" : "s"} to unlock the full Projects track.`
                           : "You have unlocked the full Projects track."
-                        : "Your skill level already gives access to higher-tier projects."}
+                        : "Your skill level already gives access to more advanced projects."}
                     </Text>
                   </View>
                 </View>
@@ -301,7 +302,7 @@ export default function ProjectsScreen() {
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>Recommended for you</Text>
                   <Text style={styles.sectionSubtitle}>
-                    Best next wins based on access and progress
+                    Next best wins based on access and progress.
                   </Text>
                 </View>
 
@@ -348,7 +349,7 @@ export default function ProjectsScreen() {
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>Project Library</Text>
                   <Text style={styles.sectionSubtitle}>
-                    Browse by category and build at your own pace
+                    Browse by category and build projects at your own pace.
                   </Text>
                 </View>
               </>

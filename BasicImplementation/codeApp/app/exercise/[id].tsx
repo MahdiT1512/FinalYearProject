@@ -273,7 +273,7 @@ export default function ExercisePage() {
         <View style={styles.noHeartsWrap}>
           <Text style={styles.noHeartsTitle}>💔 No Hearts Left</Text>
           <Text style={styles.noHeartsText}>
-            Wait for hearts to regenerate or refill to continue this lesson run.
+            Wait for hearts to regenerate to continue this lesson run.
           </Text>
 
           <View style={styles.noHeartsStats}>
@@ -622,7 +622,7 @@ export default function ExercisePage() {
       return "Fill in the trace table cells below.";
     }
     if (question.type === "debug") {
-      return "Provide corrected code. Small formatting differences are accepted.";
+      return "Provide a debugged solution(the corrected code). Small formatting differences are accepted.";
     }
     return null;
   };
@@ -689,7 +689,7 @@ export default function ExercisePage() {
                     <Text style={styles.subtitle}>
                       {reviewMode
                         ? "Sharpen memory and chase the review reward."
-                        : "Push through the lesson and finish strong."}
+                        : "Push through and finish strong."}
                     </Text>
                   </View>
 
@@ -960,8 +960,8 @@ export default function ExercisePage() {
                   <Text style={styles.feedbackText}>
                     {feedback ??
                       (reviewMode
-                        ? "Review carefully and keep the streak alive."
-                        : "Stay focused and keep the run moving.")}
+                        ? "Review carefully and keep your streak up."
+                        : "Stay focused and keep the run alive.")}
                   </Text>
                 </View>
 
@@ -983,8 +983,8 @@ export default function ExercisePage() {
           <View style={styles.exitModalCard}>
             <Text style={styles.exitModalTitle}>Leave lesson?</Text>
             <Text style={styles.exitModalText}>
-              You’ll exit this run now. Any unfinished progress in this lesson
-              flow won’t be completed.
+              You’ll exit this run now. All unfinished progress won’t be
+              completed.
             </Text>
 
             <View style={styles.exitModalStats}>

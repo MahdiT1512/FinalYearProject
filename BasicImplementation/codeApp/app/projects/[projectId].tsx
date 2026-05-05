@@ -256,7 +256,7 @@ export default function ProjectDetail() {
 
           {!!project.steps?.length && (
             <View style={styles.card}>
-              <Text style={styles.sectionTitle}>Suggested Build Steps</Text>
+              <Text style={styles.sectionTitle}>Recommended First Steps</Text>
               {project.steps.map((step, index) => (
                 <View
                   key={`${project.id}-step-${index}`}
@@ -343,7 +343,8 @@ export default function ProjectDetail() {
           <View style={styles.card}>
             <Text style={styles.sectionTitle}>Build Notes</Text>
             <Text style={styles.notesHint}>
-              Write what you built, what was difficult, or what you learned.
+              Reflect on what you've built so far! What did you find difficult
+              and what skills do you think you've gained!
             </Text>
 
             <TextInput
@@ -373,8 +374,10 @@ export default function ProjectDetail() {
               <>
                 <Text style={styles.footerTitle}>Finish outside the app</Text>
                 <Text style={styles.footerText}>
-                  Build this project on a laptop or desktop, complete the
-                  milestones above, then claim the XP reward here.
+                  Build this project in a suitable code environment such as a
+                  code editor on a PC like a laptop or desktop. Hit the
+                  milestones above to mark project as complete and earn your XP
+                  reward!
                 </Text>
 
                 <Pressable

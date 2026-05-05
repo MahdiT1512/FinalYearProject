@@ -205,8 +205,7 @@ export default function AvatarCollection() {
           <View style={styles.emptyCard}>
             <Text style={styles.emptyTitle}>No avatars yet</Text>
             <Text style={styles.emptyText}>
-              Use the spin station in your profile to unlock your first new
-              skin.
+              Use the spin station on your profile to unlock a new skin.
             </Text>
           </View>
         ) : (

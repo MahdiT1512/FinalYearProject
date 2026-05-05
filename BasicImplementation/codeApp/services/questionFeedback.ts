@@ -21,7 +21,7 @@ export const buildEnhancedFeedback = (
         title: "Trace nailed",
         message: "You tracked the changing values correctly.",
         tone: "success",
-        hint: "Nice work following each step carefully.",
+        hint: "Nice work following each trace step carefully.",
         likelyMistakeType: null,
       };
     }
@@ -58,9 +58,9 @@ export const buildEnhancedFeedback = (
   if (question.type === "debug") {
     return {
       title: "Not quite fixed yet",
-      message: "Your answer is close, but the bug still isn’t fully resolved.",
+      message: "Your answer is close, but the bug still isn’t quite resolved yet.",
       tone: "error",
-      hint: "Look for a syntax issue, indentation issue, or a missing keyword.",
+      hint: "Try looking for syntax errors, issues with indentations or for missing keywords.",
       likelyMistakeType: "syntax",
     };
   }
@@ -80,7 +80,7 @@ export const buildEnhancedFeedback = (
       title: "Try again",
       message: "The answer format or keyword is off.",
       tone: "warning",
-      hint: "Check spelling, symbols, quotes, and spacing expectations.",
+      hint: "Check for spelling, quotation mark, or spacing errors.",
       likelyMistakeType: "format",
     };
   }
@@ -89,7 +89,7 @@ export const buildEnhancedFeedback = (
     title: "Incorrect",
     message: "That choice doesn’t match the correct answer.",
     tone: "error",
-    hint: "Re-read the lesson point this question is testing.",
+    hint: "Re-read the lesson point for this question.",
     likelyMistakeType: "concept",
   };
 };

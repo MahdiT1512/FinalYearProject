@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Button, Animated } from "react-native";
 
 type KeywordCardProps = {
   name: string;
-  mastery: number; // 0–100
+  mastery: number;
   onPress: () => void;
-  completed?: boolean; // fully mastered
+  completed?: boolean;
   xpPerExercise?: number;
   remainingExercises?: number;
 };

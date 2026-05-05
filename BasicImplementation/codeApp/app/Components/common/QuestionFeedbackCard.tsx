@@ -31,7 +31,7 @@ export default function QuestionFeedbackCard({
 
       {!!feedback.likelyMistakeType && (
         <Text style={styles.meta}>
-          Likely issue type: {feedback.likelyMistakeType}
+          Likely issue: {feedback.likelyMistakeType}
         </Text>
       )}
     </View>

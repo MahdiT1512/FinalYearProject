@@ -203,8 +203,8 @@ export default function LearnScreen() {
                       📈 Daily Goals & Progress
                     </Text>
                     <Text style={styles.progressShortcutText}>
-                      View goal rewards, claim completed dailies, and check your
-                      overall run stats.
+                      View your goal rewards, claim completed dailies, and check
+                      your overall stats.
                     </Text>
                   </Pressable>
                 </View>
@@ -235,7 +235,7 @@ export default function LearnScreen() {
 
                   <Text style={styles.deckBannerSubtitle}>
                     Clear lesson deck reviews to protect your new lesson rewards
-                    and keep memory strong.
+                    and review previous basics.
                   </Text>
 
                   {xpModifier < 1 ? (
@@ -255,7 +255,7 @@ export default function LearnScreen() {
                 <View style={styles.sectionHeader}>
                   <Text style={styles.title}>Learn Units</Text>
                   <Text style={styles.sectionSubtitle}>
-                    Progress through modules step by step
+                    Progress through units one by one.
                   </Text>
                 </View>
               </>

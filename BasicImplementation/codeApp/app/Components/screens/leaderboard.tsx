@@ -278,7 +278,8 @@ export default function LeaderboardScreen() {
                 <View style={styles.heroCard}>
                   <Text style={styles.title}>Leaderboard</Text>
                   <Text style={styles.subtitle}>
-                    Climb the ranks, hold your streak, and flex your progress.
+                    Climb the ranks and compete against users from around the
+                    world.
                   </Text>
 
                   <View style={styles.heroStatsRow}>
@@ -422,7 +423,7 @@ export default function LeaderboardScreen() {
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>Rankings</Text>
                   <Text style={styles.sectionSubtitle}>
-                    Everyone else on the board
+                    Everyone else on leaderboard
                   </Text>
                 </View>
 

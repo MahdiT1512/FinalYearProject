@@ -1030,8 +1030,8 @@ export default function SyntaxPractice() {
           <View style={styles.modalCard}>
             <Text style={styles.modalTitle}>Leave practice?</Text>
             <Text style={styles.modalMessage}>
-              Your session streak and session XP for this run will be lost from
-              the session view. Earned XP already added to your account stays.
+              Your session streak and session XP from this session will be lost.
+              Earned XP already added to your account stays.
             </Text>
 
             <View style={styles.modalButtonRow}>

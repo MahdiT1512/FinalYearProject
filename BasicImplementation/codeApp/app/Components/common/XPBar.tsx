@@ -56,7 +56,9 @@ export default function XPBar({
       </View>
 
       {!disableNavigation ? (
-        <Text style={styles.tapHint}>Tap to view progress and daily goals</Text>
+        <Text style={styles.tapHint}>
+          Tap to view progress and todays goals
+        </Text>
       ) : null}
     </View>
   );
