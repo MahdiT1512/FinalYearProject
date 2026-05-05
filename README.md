@@ -21,6 +21,7 @@ CodeSpark is a mobile code-learning app that uses gamification to teach programm
 
 Clone the repository:
 git clone https://github.com/MahdiT1512/FinalYearProject.git
+
 cd BasicImplementation/codeApp
 
 Then with npm:
