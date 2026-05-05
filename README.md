@@ -20,6 +20,7 @@ CodeSpark is a mobile code-learning app that uses gamification to teach programm
 ## Installation
 
 Clone the repository:
+
 git clone https://github.com/MahdiT1512/FinalYearProject.git
 
 cd BasicImplementation/codeApp
@@ -31,12 +32,15 @@ Then run the command:
 npx expo start --clear
 
 To access CodeSpark as a website you can simply go to (UI may break or not be as smooth as it is not designed as a website)
+
 http://localhost:8081/
 
 To access CodeSpark on a mobile device download the Expo Go app:
+
 Switch from development build to Expo Go in terminal by pressing s 
 
 Use the Expo Go app to scan the given QR code.
 
 Once page has loaded press on the familiar directory ending in /codeApp that appears(may be confusing due to phone formatting, but the button with the directory is clickable)
+
 This opens CodeSpark on the phone.
