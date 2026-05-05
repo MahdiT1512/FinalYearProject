@@ -9,13 +9,13 @@
         "id": "u1l1-s1",
         "type": "intro",
         "title": "Welcome to Python",
-        "body": "### Python and Variables\n\nPython is a general-purpose programming language known for readable syntax and fast experimentation.\n\nIt is used for web apps, automation, data analysis, machine learning, scripting, and more."
+        "body": "### Python and Variables\n\nPython is a procedural programming language known for its readable syntax and fast experimentation.\n\nIt is used in fields such as web programming(Django), data analysis(Pandas), machine learning(PyTorch) and more!"
       },
       {
         "id": "u1l1-s2",
         "type": "concept",
-        "title": "Why Python feels beginner-friendly",
-        "body": "## What makes Python beginner-friendly?\n\n- It reads close to plain English.\n- You do not need to declare variable types manually.\n- It has a huge standard library.\n- You can test ideas quickly."
+        "title": "Why is Python a great start?",
+        "body": "## What makes Python good for beginners?\n\n- It reads close to plain English.\n- You do not need to manually declare variable types.\n- It has a huge standard library.\n- You can test ideas quickly."
       },
       {
         "id": "u1l1-s3",
@@ -27,7 +27,7 @@
         "id": "u1l1-s4",
         "type": "concept",
         "title": "Common data types",
-        "body": "## Common data types\n\n- `int` → whole numbers like `5`\n- `float` → decimal numbers like `3.14`\n- `str` → text like `'hello'`\n- `bool` → `True` or `False`\n\n```python\nscore = 99\nprice = 8.5\nmessage = 'Hello'\nis_ready = False\n```"
+        "body": "## Common data types\n\n- `int` → whole numbers like `5`\n- `float` → decimal numbers like `3.14`\n- `str` → text like `'hello'`\n- `bool` → `True` or `False`\n\n```python\nscore = 99\nprice = 8.5\nmessage = 'Hello World'\nis_ready = False\n```"
       },
       {
         "id": "u1l1-s5",
@@ -38,8 +38,8 @@
       {
         "id": "u1l1-s6",
         "type": "tip",
-        "title": "Why variables matter",
-        "body": "## Why variables matter\n\nVariables let programs remember information, calculate results, and respond to users.\n\n> Think of a variable like a labelled box. The label is the variable name, and the value is whatever is stored inside."
+        "title": "Why do variables matter",
+        "body": "## Why variables matter\n\nVariables allow programs remember information, and use it to calculate results.\n\n> Think of a variable like a labelled box. The label is the variable name, and the value is what is stored inside."
       },
       {
         "id": "u1l1-s7",
@@ -63,7 +63,7 @@
       {
         "id": "U1-L1-Q2",
         "type": "mc",
-        "text": "Which value is a string?",
+        "text": "Which of the values is a string?",
         "options": ["42", "'42'", "True", "3.5"],
         "correct": 1,
         "xp": 10,
@@ -85,7 +85,7 @@
       {
         "id": "U1-L1-Q4",
         "type": "code",
-        "text": "Print the variable called name.",
+        "text": "Print a variable called name.",
         "prompt": "print(___)",
         "answer": "name",
         "xp": 15,
@@ -96,7 +96,7 @@
       {
         "id": "U1-L1-Q5",
         "type": "mc",
-        "text": "Which of these is a boolean value?",
+        "text": "Which of these options is a boolean?",
         "options": ["'False'", "False", "0", "'True'"],
         "correct": 1,
         "xp": 10,
@@ -108,44 +108,44 @@
   },
   {
     "id": "U1-L2",
-    "title": "Input, Output, and Expressions",
+    "title": "Input and Output",
     "module": "Unit 1: Python Foundations",
-    "content": "# Input, Output, and Expressions",
+    "content": "# Input and Output",
     "slides": [
       {
         "id": "u1l2-s1",
         "type": "intro",
-        "title": "Programs receive and show information",
-        "body": "### Input, Output, and Expressions\n\nPrograms become more useful when they can receive information, process it, and show a result."
+        "title": "Programs receive information to display",
+        "body": "### Input and Output\n\nPrograms become more useful when they can receive information then do something with it to display some a results."
       },
       {
         "id": "u1l2-s2",
         "type": "concept",
         "title": "Output with print()",
-        "body": "## Output with `print()`\n\nUse `print()` to display text, numbers, or variables.\n\n```python\nprint('Hello')\nprint(10)\n```"
+        "body": "## Output with `print()`\n\nUse `print()` to display things such as text, numbers, or variables.\n\n```python\nprint('Hello')\nprint(10)\n```"
       },
       {
         "id": "u1l2-s3",
         "type": "example",
         "title": "Input with input()",
-        "body": "## Input with `input()`\n\nUse `input()` to collect text from a user.\n\n```python\nname = input('What is your name? ')\nprint('Hello,', name)\n```\n\n`input()` always returns text, even if the user types digits."
+        "body": "## Input with `input()`\n\nUse `input()` to collect input text from the user.\n\n```python\nname = input('What is your name? ')\nprint('Hello,', name)\n```\n\n`input()` always returns text, even if the user types digits."
       },
       {
         "id": "u1l2-s4",
         "type": "concept",
         "title": "Expressions produce values",
-        "body": "## Expressions\n\nAn expression is a piece of code that produces a value.\n\nExamples:\n\n```python\n2 + 3\n10 / 2\n'hi' + ' there'\n```"
+        "body": "## Expressions\n\nAn expression is code block or piece that produces some value.\n\nExamples:\n\n```python\n2 + 3\n10 / 2\n'hi' + ' there'\n```"
       },
       {
         "id": "u1l2-s5",
         "type": "example",
         "title": "Convert text to numbers",
-        "body": "## Converting types\n\nIf you want to use input as a number, convert it.\n\n```python\nage = int(input('Enter age: '))\nprint(age + 1)\n```"
+        "body": "## Converting types\n\nIf you want to use input as a number, you must convert it.\n\n```python\nage = int(input('Enter age: '))\nprint(age + 1)\n```"
       },
       {
         "id": "u1l2-s6",
         "type": "tip",
-        "title": "A common beginner mistake",
+        "title": "A rookie mistake",
         "body": "## Useful caution\n\nThis will cause an issue:\n\n```python\nage = input('Age: ')\nprint(age + 1)\n```\n\nThat happens because `age` is text, not a number."
       },
       {
@@ -165,7 +165,7 @@
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["input", "strings", "types"]
+        "tags": ["input", "types"]
       },
       {
         "id": "U1-L2-Q2",
@@ -176,7 +176,7 @@
         "xp": 15,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["input", "int", "conversion"]
+        "tags": ["input", "conversion"]
       },
       {
         "id": "U1-L2-Q3",
@@ -198,7 +198,7 @@
         "xp": 15,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["print", "output"]
+        "tags": ["output"]
       },
       {
         "id": "U1-L2-Q5",
@@ -209,7 +209,7 @@
         "xp": 18,
         "pool": "core",
         "difficulty": "medium",
-        "tags": ["debug", "input", "int", "conversion"]
+        "tags": ["debug", "input", "conversion"]
       }
     ]
   },
@@ -223,7 +223,7 @@
         "id": "u1l3-s1",
         "type": "intro",
         "title": "Working with values",
-        "body": "### Numbers, Strings, and Operators\n\nPython can perform calculations and manipulate text."
+        "body": "### Number and String Operators\n\nPython can perform calculations and manipulate text."
       },
       {
         "id": "u1l3-s2",
@@ -317,39 +317,39 @@
   },
   {
     "id": "U2-L1",
-    "title": "if, elif, and else",
+    "title": "if, else and elif",
     "module": "Unit 2: Decisions and Logic",
     "content": "# if, elif, and else",
     "slides": [
       {
         "id": "u2l1-s1",
         "type": "intro",
-        "title": "Programs make decisions",
-        "body": "### if, elif, and else\n\nPrograms often need to make decisions."
+        "title": "Programs can make decisions",
+        "body": "### if, else and elif\n\nPrograms often need to make decisions."
       },
       {
         "id": "u2l1-s2",
         "type": "concept",
-        "title": "Basic if statement",
+        "title": "A basic if statement",
         "body": "## Basic if statement\n\n```python\nage = 18\nif age >= 18:\n    print('Adult')\n```\n\nThe code inside the block only runs if the condition is `True`."
       },
       {
         "id": "u2l1-s3",
         "type": "example",
-        "title": "Adding an else path",
-        "body": "## else\n\nUse `else` when you want an alternative path.\n\n```python\nif age >= 18:\n    print('Adult')\nelse:\n    print('Minor')\n```"
+        "title": "Adding an else condition",
+        "body": "## else\n\nUse `else` when you want an alternative route.\n\n```python\nif age >= 18:\n    print('Adult')\nelse:\n    print('Minor')\n```"
       },
       {
         "id": "u2l1-s4",
         "type": "example",
-        "title": "Handling multiple cases",
+        "title": "Handling more cases",
         "body": "## elif\n\nUse `elif` when there are multiple possible conditions.\n\n```python\nscore = 82\nif score >= 90:\n    print('A')\nelif score >= 80:\n    print('B')\nelse:\n    print('C or below')\n```"
       },
       {
         "id": "u2l1-s5",
         "type": "tip",
         "title": "Indentation matters",
-        "body": "## Indentation matters\n\nPython uses indentation to define blocks.\n\nIf indentation is wrong, your logic breaks or Python raises an error."
+        "body": "## Indentation matters\n\nPython uses indentation to define blocks.\n\nIf the indentation is wrong then your logic breaks and Python raises an error."
       },
       {
         "id": "u2l1-s6",
@@ -368,7 +368,7 @@
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["if", "conditionals"]
+        "tags": ["conditionals"]
       },
       {
         "id": "U2-L1-Q2",
@@ -379,18 +379,18 @@
         "xp": 15,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["if", "comparison", "operators"]
+        "tags": ["comparison", "operators"]
       },
       {
         "id": "U2-L1-Q3",
         "type": "mc",
-        "text": "Which keyword handles an alternative when the if condition is false?",
+        "text": "Which keyword handles the alternative if the if condition is false?",
         "options": ["elif", "def", "else", "while"],
         "correct": 2,
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["else", "conditionals"]
+        "tags": ["conditionals"]
       },
       {
         "id": "U2-L1-Q4",
@@ -401,12 +401,12 @@
         "xp": 15,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["elif", "conditionals"]
+        "tags": ["conditionals"]
       },
       {
         "id": "U2-L1-Q5",
         "type": "debug",
-        "text": "Fix the indentation in this conditional.",
+        "text": "Fix the indentation in this conditional block.",
         "prompt": "if age >= 18:\nprint('Adult')",
         "answer": "if age >= 18:\n  print('Adult')",
         "xp": 16,
@@ -450,7 +450,7 @@
         "id": "u2l2-s5",
         "type": "tip",
         "title": "Why logic matters",
-        "body": "A single comparison checks one fact.\n\nBoolean logic lets you express richer rules like:\n\n- old enough **and** has ID\n- passed **or** allowed a retake\n- **not** banned"
+        "body": "A single comparison checks one fact.\n\nBoolean logic allows you express much richer rules like:\n\n- old enough **and** has ID\n- passed **or** allowed a retake\n- **not** banned"
       },
       {
         "id": "u2l2-s6",
@@ -474,7 +474,7 @@
       {
         "id": "U2-L2-Q2",
         "type": "mc",
-        "text": "What does and mean in a condition?",
+        "text": "What does the and keyword mean in a condition?",
         "options": [
           "Only one side must be true",
           "Both sides must be true",
@@ -501,13 +501,13 @@
       {
         "id": "U2-L2-Q4",
         "type": "code",
-        "text": "Fill the logical operator so both conditions must be true.",
+        "text": "Fill the logical operator so that both conditions must be true.",
         "prompt": "if age >= 18 ___ has_id:\n    print('ok')",
         "answer": "and",
         "xp": 15,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["boolean", "and", "logic"]
+        "tags": ["boolean", "logic"]
       },
       {
         "id": "U2-L2-Q5",
@@ -576,7 +576,7 @@
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["while", "loops"]
+        "tags": ["loops"]
       },
       {
         "id": "U2-L3-Q2",
@@ -628,14 +628,14 @@
   {
     "id": "U3-L1",
     "title": "Defining Functions",
-    "module": "Unit 3: Functions and Reuse",
+    "module": "Unit 3: Functions and Reusing code",
     "content": "# Defining Functions",
     "slides": [
       {
         "id": "u3l1-s1",
         "type": "intro",
         "title": "Functions group reusable code",
-        "body": "### Defining Functions\n\nFunctions let you group reusable code."
+        "body": "### Defining Functions\n\nFunctions allow you to group reusable code."
       },
       {
         "id": "u3l1-s2",
@@ -672,12 +672,12 @@
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["def", "functions"]
+        "tags": ["functions"]
       },
       {
         "id": "U3-L1-Q2",
         "type": "code",
-        "text": "Name the function greet.",
+        "text": "Define a function named greet.",
         "prompt": "def ___():\n    print('Hello')",
         "answer": "greet",
         "xp": 15,
@@ -721,7 +721,7 @@
         "xp": 16,
         "pool": "core",
         "difficulty": "medium",
-        "tags": ["debug", "def", "functions"]
+        "tags": ["debug", "functions"]
       }
     ]
   },
@@ -735,7 +735,7 @@
         "id": "u3l2-s1",
         "type": "intro",
         "title": "Functions can receive data",
-        "body": "### Parameters and Arguments\n\nFunctions can receive data."
+        "body": "### Parameters and Arguments\n\nFunctions are able to receive data."
       },
       {
         "id": "u3l2-s2",
@@ -747,7 +747,7 @@
         "id": "u3l2-s3",
         "type": "example",
         "title": "Arguments",
-        "body": "## Arguments\n\nAn argument is the actual value passed in.\n\n```python\ngreet('Ava')\n```"
+        "body": "## Arguments\n\nThe argument is the actual value passed in.\n\n```python\ngreet('Ava')\n```"
       },
       {
         "id": "u3l2-s4",
@@ -830,8 +830,8 @@
       {
         "id": "u3l3-s1",
         "type": "intro",
-        "title": "Functions can produce results",
-        "body": "### Returning Values\n\nSome functions produce a result that the rest of your program can use."
+        "title": "Functions are able to produce results",
+        "body": "### Returning Values\n\nSome functions produce a result that the rest of the program can use."
       },
       {
         "id": "u3l3-s2",
@@ -849,7 +849,7 @@
         "id": "u3l3-s4",
         "type": "tip",
         "title": "print vs return",
-        "body": "Without `return`, a function does not send back a useful result.\n\n`print()` displays something.\n\n`return` gives a value back to the rest of the program."
+        "body": "Without `return`, a function does not send back a result to be stored.\n\n`print()` displays something.\n\n`return` gives a value back to the rest of the program."
       },
       {
         "id": "u3l3-s5",
@@ -868,7 +868,7 @@
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["return", "functions"]
+        "tags": ["functions"]
       },
       {
         "id": "U3-L3-Q2",
@@ -879,7 +879,7 @@
         "xp": 18,
         "pool": "core",
         "difficulty": "medium",
-        "tags": ["return", "functions"]
+        "tags": ["functions"]
       },
       {
         "id": "U3-L3-Q3",
@@ -911,7 +911,7 @@
       {
         "id": "U3-L3-Q5",
         "type": "debug",
-        "text": "Fix the function so it returns a + b instead of printing it.",
+        "text": "Fix the function add so that add returns a + b instead of printing it.",
         "prompt": "def add(a, b):\n  print(a + b)",
         "answer": "def add(a, b):\n  return a + b",
         "xp": 18,
@@ -924,14 +924,14 @@
   {
     "id": "U4-L1",
     "title": "Lists and Indexing",
-    "module": "Unit 4: Collections and Data",
+    "module": "Unit 4: Collections and Data Structures",
     "content": "# Lists and Indexing",
     "slides": [
       {
         "id": "u4l1-s1",
         "type": "intro",
-        "title": "Lists store many values",
-        "body": "### Lists and Indexing\n\nLists store multiple values in one variable."
+        "title": "Lists can store many values",
+        "body": "### Lists and Indexing\n\nLists store multiple values in under a single identifier."
       },
       {
         "id": "u4l1-s2",
@@ -984,7 +984,7 @@
       {
         "id": "U4-L1-Q3",
         "type": "mc",
-        "text": "What is the index of the third item in a list?",
+        "text": "What is the index of the third element?",
         "options": ["3", "2", "1", "0"],
         "correct": 1,
         "xp": 10,
@@ -995,7 +995,7 @@
       {
         "id": "U4-L1-Q4",
         "type": "code",
-        "text": "Create a list called nums with values 1, 2, and 3.",
+        "text": "Create the list nums with values 1, 2, 3.",
         "prompt": "nums = ___",
         "answer": "[1, 2, 3]",
         "xp": 18,
@@ -1020,7 +1020,7 @@
   {
     "id": "U4-L2",
     "title": "Changing Lists",
-    "module": "Unit 4: Collections and Data",
+    "module": "Unit 4: Collections and Data Structures",
     "content": "# Changing Lists",
     "slides": [
       {
@@ -1058,13 +1058,13 @@
       {
         "id": "U4-L2-Q1",
         "type": "mc",
-        "text": "Which method adds a single item to the end of a list?",
+        "text": "Which of these methods adds a single item to the end of a list?",
         "options": ["append()", "add()", "push()", "extendOne()"],
         "correct": 0,
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["list", "append"]
+        "tags": ["list"]
       },
       {
         "id": "U4-L2-Q2",
@@ -1075,12 +1075,12 @@
         "xp": 15,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["list", "append"]
+        "tags": ["list"]
       },
       {
         "id": "U4-L2-Q3",
         "type": "mc",
-        "text": "What does pop() usually remove if no index is provided?",
+        "text": "What does pop() remove if no index is provided?",
         "options": ["The first item", "The middle item", "The last item", "Nothing"],
         "correct": 2,
         "xp": 10,
@@ -1091,7 +1091,7 @@
       {
         "id": "U4-L2-Q4",
         "type": "code",
-        "text": "Get the length of nums.",
+        "text": "Get the length of list nums.",
         "prompt": "len(___)",
         "answer": "nums",
         "xp": 15,
@@ -1102,7 +1102,7 @@
       {
         "id": "U4-L2-Q5",
         "type": "debug",
-        "text": "Fix the code so it appends 'x' correctly.",
+        "text": "Debug the code below so it appends 'x' correctly.",
         "prompt": "letters = ['a']\nletters.append['x']",
         "answer": "letters = ['a']\nletters.append('x')",
         "xp": 18,
@@ -1115,7 +1115,7 @@
   {
     "id": "U4-L3",
     "title": "Dictionaries and Tuples",
-    "module": "Unit 4: Collections and Data",
+    "module": "Unit 4: Collections and Data Structures",
     "content": "# Dictionaries and Tuples",
     "slides": [
       {
@@ -1134,7 +1134,7 @@
         "id": "u4l3-s3",
         "type": "concept",
         "title": "Tuples",
-        "body": "## Tuples\n\nTuples are ordered like lists, but immutable.\n\n```python\npoint = (4, 7)\nprint(point[0])\n```"
+        "body": "## Tuples\n\nTuples are ordered like lists, but are immutable.\n\n```python\npoint = (4, 7)\nprint(point[0])\n```"
       },
       {
         "id": "u4l3-s4",
@@ -1164,7 +1164,7 @@
       {
         "id": "U4-L3-Q2",
         "type": "code",
-        "text": "Access the value stored under key 'name' in student.",
+        "text": "Access the value stored with the key 'name' in student.",
         "prompt": "student[___]",
         "answer": "'name'",
         "xp": 15,
@@ -1176,12 +1176,12 @@
         "id": "U4-L3-Q3",
         "type": "mc",
         "text": "Which collection is immutable?",
-        "options": ["list", "dict", "tuple", "set in this lesson"],
+        "options": ["list", "dict", "tuple", "set"],
         "correct": 2,
         "xp": 10,
         "pool": "core",
         "difficulty": "easy",
-        "tags": ["tuple", "collections", "immutability"]
+        "tags": ["collections", "immutability"]
       },
       {
         "id": "U4-L3-Q4",
@@ -1209,297 +1209,6 @@
         "pool": "core",
         "difficulty": "easy",
         "tags": ["tuple", "immutability"]
-      }
-    ]
-  },
-  {
-    "id": "U5-L1",
-    "title": "Importing and Using Modules",
-    "module": "Unit 5: Practical Python",
-    "content": "# Importing and Using Modules",
-    "slides": [
-      {
-        "id": "u5l1-s1",
-        "type": "intro",
-        "title": "Modules extend Python",
-        "body": "### Importing and Using Modules\n\nModules let you use extra functionality without writing everything yourself."
-      },
-      {
-        "id": "u5l1-s2",
-        "type": "concept",
-        "title": "Importing a whole module",
-        "body": "## import\n\n```python\nimport math\nprint(math.sqrt(16))\n```"
-      },
-      {
-        "id": "u5l1-s3",
-        "type": "example",
-        "title": "Importing a single tool",
-        "body": "## from ... import ...\n\n```python\nfrom math import sqrt\nprint(sqrt(25))\n```"
-      },
-      {
-        "id": "u5l1-s4",
-        "type": "tip",
-        "title": "Why modules matter",
-        "body": "## Why modules matter\n\nThey make Python more powerful by letting you reuse existing tools."
-      },
-      {
-        "id": "u5l1-s5",
-        "type": "summary",
-        "title": "Ready to Practice?",
-        "body": "## Summary\n\nYou learned:\n\n- how `import` works\n- how to import a single tool from a module"
-      }
-    ],
-    "exercises": [
-      {
-        "id": "U5-L1-Q1",
-        "type": "mc",
-        "text": "Which line imports the math module?",
-        "options": ["include math", "require math", "import math", "use math"],
-        "correct": 2,
-        "xp": 10,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["import", "modules"]
-      },
-      {
-        "id": "U5-L1-Q2",
-        "type": "code",
-        "text": "Complete the line to import sqrt from math.",
-        "prompt": "from math ___ sqrt",
-        "answer": "import",
-        "xp": 15,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["import", "modules"]
-      },
-      {
-        "id": "U5-L1-Q3",
-        "type": "mc",
-        "text": "What does math.sqrt(16) return?",
-        "options": ["4", "8", "16", "2"],
-        "correct": 0,
-        "xp": 10,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["import", "modules", "math"]
-      },
-      {
-        "id": "U5-L1-Q4",
-        "type": "code",
-        "text": "Complete the line to import the whole random module.",
-        "prompt": "___ random",
-        "answer": "import",
-        "xp": 15,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["import", "modules"]
-      },
-      {
-        "id": "U5-L1-Q5",
-        "type": "debug",
-        "text": "Fix the import statement.",
-        "prompt": "from math using sqrt",
-        "answer": "from math import sqrt",
-        "xp": 16,
-        "pool": "core",
-        "difficulty": "medium",
-        "tags": ["debug", "import", "modules"]
-      }
-    ]
-  },
-  {
-    "id": "U5-L2",
-    "title": "Combining Concepts",
-    "module": "Unit 5: Practical Python",
-    "content": "# Combining Concepts",
-    "slides": [
-      {
-        "id": "u5l2-s1",
-        "type": "intro",
-        "title": "Real programs combine tools",
-        "body": "### Combining Concepts\n\nReal programs combine input, variables, conditions, loops, and functions."
-      },
-      {
-        "id": "u5l2-s2",
-        "type": "example",
-        "title": "A simple combined example",
-        "body": "## Example\n\n```python\ndef greet(name):\n    if name != '':\n        print('Hello', name)\n    else:\n        print('Hello there')\n```"
-      },
-      {
-        "id": "u5l2-s3",
-        "type": "concept",
-        "title": "Thinking like a programmer",
-        "body": "## Thinking like a programmer\n\nA useful workflow is:\n\n1. store values\n2. decide what should happen\n3. repeat steps if needed\n4. package logic in functions"
-      },
-      {
-        "id": "u5l2-s4",
-        "type": "tip",
-        "title": "Why this matters",
-        "body": "Most useful programs are not built from one concept only.\n\nThey mix data, logic, repetition, and reusable functions."
-      },
-      {
-        "id": "u5l2-s5",
-        "type": "summary",
-        "title": "Ready to Practice?",
-        "body": "## Summary\n\nYou learned:\n\n- how concepts connect together\n- how to reason about multi-step programs"
-      }
-    ],
-    "exercises": [
-      {
-        "id": "U5-L2-Q1",
-        "type": "mc",
-        "text": "Which concept is best for repeating code several times?",
-        "options": ["variable", "loop", "string", "dictionary"],
-        "correct": 1,
-        "xp": 10,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["loops", "problem-solving"]
-      },
-      {
-        "id": "U5-L2-Q2",
-        "type": "code",
-        "text": "Complete the conditional to check if score is above 10.",
-        "prompt": "if score ___ 10:\n    print('high')",
-        "answer": ">",
-        "xp": 15,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["if", "comparison", "problem-solving"]
-      },
-      {
-        "id": "U5-L2-Q3",
-        "type": "code",
-        "text": "Complete the function call.",
-        "prompt": "greet(___)",
-        "answer": "name",
-        "xp": 15,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["functions", "calls", "problem-solving"]
-      },
-      {
-        "id": "U5-L2-Q4",
-        "type": "trace",
-        "text": "Trace total after each loop step.",
-        "prompt": "total = 0\nfor n in [1, 2, 3]:\n  total += n\n# trace table columns: total",
-        "columns": ["total"],
-        "answer": [["1"], ["3"], ["6"]],
-        "xp": 12,
-        "pool": "core",
-        "difficulty": "medium",
-        "tags": ["trace", "loops", "problem-solving"]
-      },
-      {
-        "id": "U5-L2-Q5",
-        "type": "debug",
-        "text": "Fix the code so the function is called correctly.",
-        "prompt": "def greet(name):\n  print('Hi', name)\ngreet",
-        "answer": "def greet(name):\n  print('Hi', name)\ngreet(name)",
-        "xp": 18,
-        "pool": "core",
-        "difficulty": "medium",
-        "tags": ["debug", "functions", "problem-solving"]
-      }
-    ]
-  },
-  {
-    "id": "U5-L3",
-    "title": "Mini Problem Solving",
-    "module": "Unit 5: Practical Python",
-    "content": "# Mini Problem Solving",
-    "slides": [
-      {
-        "id": "u5l3-s1",
-        "type": "intro",
-        "title": "Apply what you know",
-        "body": "### Mini Problem Solving\n\nIn this lesson you apply what you know to short programming situations."
-      },
-      {
-        "id": "u5l3-s2",
-        "type": "concept",
-        "title": "A useful thought process",
-        "body": "## Example thinking process\n\n- What values do I need?\n- Do I need a condition?\n- Do I need repetition?\n- Should I return or print the result?"
-      },
-      {
-        "id": "u5l3-s3",
-        "type": "example",
-        "title": "A compact function",
-        "body": "## Example\n\n```python\ndef is_even(n):\n    return n % 2 == 0\n```\n\nThat function uses arithmetic, comparison, and return in one short piece of code."
-      },
-      {
-        "id": "u5l3-s4",
-        "type": "tip",
-        "title": "Small tasks still combine concepts",
-        "body": "Even simple problems often combine more than one idea.\n\nThat is why structured thinking matters."
-      },
-      {
-        "id": "u5l3-s5",
-        "type": "summary",
-        "title": "Ready to Practice?",
-        "body": "## Summary\n\nYou learned:\n\n- how to combine multiple tools\n- how to think through small coding tasks"
-      }
-    ],
-    "exercises": [
-      {
-        "id": "U5-L3-Q1",
-        "type": "mc",
-        "text": "Which expression checks if n is even?",
-        "options": ["n / 2 == 0", "n % 2 == 0", "n + 2 == 0", "n // 2"],
-        "correct": 1,
-        "xp": 10,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["operators", "comparison", "problem-solving"]
-      },
-      {
-        "id": "U5-L3-Q2",
-        "type": "code",
-        "text": "Return whether n is even.",
-        "prompt": "def is_even(n):\n    return n % 2 ___ 0",
-        "answer": "==",
-        "xp": 16,
-        "pool": "core",
-        "difficulty": "medium",
-        "tags": ["return", "comparison", "problem-solving"]
-      },
-      {
-        "id": "U5-L3-Q3",
-        "type": "mc",
-        "text": "When would you use a for loop?",
-        "options": [
-          "When repeating over a sequence",
-          "When defining a variable",
-          "When importing a module",
-          "When returning from a function"
-        ],
-        "correct": 0,
-        "xp": 10,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["for", "loops"]
-      },
-      {
-        "id": "U5-L3-Q4",
-        "type": "code",
-        "text": "Complete the loop variable.",
-        "prompt": "for ___ in nums:\n    print(item)",
-        "answer": "item",
-        "xp": 15,
-        "pool": "core",
-        "difficulty": "easy",
-        "tags": ["for", "loops"]
-      },
-      {
-        "id": "U5-L3-Q5",
-        "type": "debug",
-        "text": "Fix the code so it returns the larger of a and b.",
-        "prompt": "def bigger(a, b):\n  if a > b:\n    print(a)\n  else:\n    print(b)",
-        "answer": "def bigger(a, b):\n  if a > b:\n    return a\n  else:\n    return b",
-        "xp": 20,
-        "pool": "core",
-        "difficulty": "medium",
-        "tags": ["debug", "return", "if", "problem-solving"]
       }
     ]
   }

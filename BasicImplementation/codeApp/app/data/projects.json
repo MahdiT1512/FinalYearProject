@@ -3,8 +3,8 @@
     "id": "proj-0",
     "name": "First Steps CLI App",
     "category": "CLI Apps",
-    "description": "Build a tiny command-line Python app that prints your name and a welcome message.",
-    "instructions": "Create a Python file called main.py. Store your name in a variable, print your name, and print a second welcome line. Run it from the terminal.",
+    "description": "Build a small command-line Python app that prints your name and a welcome message.",
+    "instructions": "Create a Python file called main.py. Store your name in a variable, print your name, and print then the welcome line. Run it from the terminal.",
     "xp": 25,
     "requiredSkillLevel": ["Beginner", "Intermediate", "Advanced"],
     "difficulty": "Beginner",
@@ -12,23 +12,23 @@
     "skills": ["Variables", "Strings", "print()", "Python setup"],
     "goals": [
       "Create and run a Python file",
-      "Use variables to store simple data",
+      "Use variables to store data",
       "Use print() to display output"
     ],
     "steps": [
       "Create a file named main.py",
       "Store your name in a variable",
       "Print the variable",
-      "Print a second welcome line",
+      "Print a second line",
       "Run the file in your terminal"
     ],
     "deliverables": [
       "A Python file that runs without errors",
       "Console output showing your name",
-      "A welcome message printed below it"
+      "A welcome message printed below"
     ],
     "starterTips": [
-      "Keep it simple — the goal is confidence and setup",
+      "Keep it simple, the goal is confidence and setup",
       "Use print(name) rather than typing the name twice",
       "Edit the welcome text and rerun the script to test changes"
     ],
@@ -44,28 +44,28 @@
     "id": "proj-1",
     "name": "Mini Mad Libs Generator",
     "category": "CLI Apps",
-    "description": "Collect words from the user and generate a funny sentence.",
-    "instructions": "Ask the user for a name, verb, adjective, and place. Then print a silly story using those values.",
+    "description": "Collect words from the user to generate a funny sentence.",
+    "instructions": "Ask the user for a values such as a name, verbs, adjectives, and a place. Then print a silly story using those values.",
     "xp": 35,
     "requiredSkillLevel": ["Beginner", "Intermediate", "Advanced"],
     "difficulty": "Beginner",
     "estimatedMinutes": 30,
     "skills": ["input()", "Strings", "Variables", "print()"],
     "goals": [
-      "Collect multiple inputs",
-      "Store them in variables",
-      "Combine them into one output"
+      "Collecting multiple inputs",
+      "Storing those inputs in variables",
+      "Combining them in a single output"
     ],
     "steps": [
-      "Choose 4 or 5 words to collect from the user",
+      "Choose 4 or 5 words to collect from the user input",
       "Store each response in a variable",
-      "Build one final sentence using all responses",
-      "Print the result cleanly"
+      "Build a final sentence using all responses",
+      "Finally print the result for a funny story"
     ],
     "deliverables": [
-      "A script that asks for several words",
-      "A final generated sentence or short story",
-      "Readable output formatting"
+      "A script that asks for several user inputs",
+      "A generated sentence or short story",
+      "In a readable output"
     ],
     "starterTips": [
       "Keep the story short and funny",
@@ -74,7 +74,7 @@
     "stages": [
       { "id": "brief", "label": "Read the brief and choose your word prompts" },
       { "id": "input", "label": "Collect all user inputs" },
-      { "id": "story", "label": "Generate the final sentence" },
+      { "id": "story", "label": "Generate the sentence" },
       { "id": "test", "label": "Run a full test example" }
     ],
     "awardTitle": "Story Spark"
@@ -83,8 +83,8 @@
     "id": "proj-2",
     "name": "Build a Calculator",
     "category": "Utilities",
-    "description": "Create a simple Python calculator that can add, subtract, multiply, and divide.",
-    "instructions": "Build a calculator program in Python. Ask the user for two numbers and an operation, then show the result. Handle invalid operations cleanly.",
+    "description": "Create a simple Python calculator that can do basic arithmetic operations.",
+    "instructions": "Build a calculator program in Python. Ask the user for two numbers and an operation, then print the result. Make sure to handle invalid operations.",
     "xp": 50,
     "requiredSkillLevel": ["Intermediate", "Advanced"],
     "difficulty": "Intermediate",
@@ -93,8 +93,8 @@
     "goals": [
       "Collect user input",
       "Convert text input into numbers",
-      "Use conditionals to choose the right operation",
-      "Return or print the result clearly"
+      "Use conditionals for operation selection",
+      "Return or print the result"
     ],
     "steps": [
       "Ask the user for the first number",
@@ -105,8 +105,8 @@
     ],
     "deliverables": [
       "A working calculator script",
-      "Support for at least four operations",
-      "A clear invalid-operation message"
+      "Support for at least four maths operations",
+      "A working error operation message"
     ],
     "starterTips": [
       "Start without functions, then refactor into functions later",
@@ -114,8 +114,8 @@
       "Test division carefully"
     ],
     "stages": [
-      { "id": "brief", "label": "Read the brief and plan supported operations" },
-      { "id": "input", "label": "Collect both numbers and the operator" },
+      { "id": "brief", "label": "Read the brief and plan the supported operations" },
+      { "id": "input", "label": "Collect both numbers and operator" },
       { "id": "logic", "label": "Implement operation logic with conditionals" },
       { "id": "validation", "label": "Handle invalid input or operators" },
       { "id": "test", "label": "Run at least 3 successful test cases" }
@@ -126,8 +126,8 @@
     "id": "proj-3",
     "name": "Number Guessing Game",
     "category": "Games",
-    "description": "Build a guessing game where the player tries to guess a hidden number.",
-    "instructions": "Generate or choose a target number, collect guesses from the user, and keep looping until the player gets it right.",
+    "description": "Build a guessing game where the player tries to guess the hidden number.",
+    "instructions": "Choose a target number either randomly or hardcoded. Collect user guesses from input. Keep the game going until the player gets the number right.",
     "xp": 55,
     "requiredSkillLevel": ["Intermediate", "Advanced"],
     "difficulty": "Intermediate",
@@ -140,19 +140,19 @@
     ],
     "steps": [
       "Choose a target number",
-      "Ask the user for a guess",
+      "Ask the user for an initial guess",
       "Use a while loop until the guess is correct",
-      "Print hints after each wrong guess",
-      "Celebrate when the guess is correct"
+      "Print hints after wrong guesses",
+      "Print a nice celebrate message when the number is found"
     ],
     "deliverables": [
-      "A playable terminal guessing game",
+      "A playable guessing game in the terminal",
       "Hint messages for wrong guesses",
       "A success message at the end"
     ],
     "starterTips": [
-      "Start with a fixed target number, then randomize it later",
-      "Think carefully about when your loop should stop"
+      "You can get started with a hardcoded or fixed target, then randomize it later",
+      "Think carefully about when and how the loop should end"
     ],
     "stages": [
       { "id": "brief", "label": "Read the game brief" },
@@ -166,8 +166,8 @@
     "id": "proj-4",
     "name": "Study Score Tracker",
     "category": "Data Practice",
-    "description": "Store scores in a list and calculate the average, best score, and lowest score.",
-    "instructions": "Create a list of study scores and write logic that prints useful stats about the list.",
+    "description": "Store study scores in a list. Use them to calculate useful aggregates such the average score or best score and lowest scores.",
+    "instructions": "Create a list of study scores and write logic that prints stats about the list.",
     "xp": 45,
     "requiredSkillLevel": ["Intermediate", "Advanced"],
     "difficulty": "Intermediate",
@@ -183,151 +183,31 @@
       "Calculate the total",
       "Compute the average",
       "Find the highest and lowest score",
-      "Print a clean report"
+      "Print a simple report"
     ],
     "deliverables": [
       "A list of scores",
-      "Average, max, and min output",
+      "The average, the max, and the min output",
       "Readable summary formatting"
     ],
     "starterTips": [
-      "You can do it manually first, then refactor with loops",
+      "You can try manually first, then refactor with loops",
       "Keep variable names very clear"
     ],
     "stages": [
       { "id": "brief", "label": "Read the data challenge brief" },
       { "id": "data", "label": "Create the score list" },
       { "id": "stats", "label": "Calculate average, min, and max" },
-      { "id": "report", "label": "Print the final summary" }
+      { "id": "report", "label": "Print the  summary" }
     ],
     "awardTitle": "Data Tracker"
-  },
-  {
-    "id": "proj-5",
-    "name": "To-Do List CLI",
-    "category": "Utilities",
-    "description": "Create a small command-line to-do list that can show and add tasks.",
-    "instructions": "Use a list to store tasks. Let the user choose options like view tasks and add a task.",
-    "xp": 60,
-    "requiredSkillLevel": ["Intermediate", "Advanced"],
-    "difficulty": "Intermediate",
-    "estimatedMinutes": 60,
-    "skills": ["Lists", "Conditionals", "Input", "Loops"],
-    "goals": [
-      "Model a simple real-world app",
-      "Use lists to store tasks",
-      "Create a basic interaction loop"
-    ],
-    "steps": [
-      "Create an empty list of tasks",
-      "Show a small text menu",
-      "Let the user add a task",
-      "Let the user view tasks",
-      "Allow the user to exit the app"
-    ],
-    "deliverables": [
-      "A task list stored in Python",
-      "At least two menu actions",
-      "A looping interface until quit"
-    ],
-    "starterTips": [
-      "Start with view/add/quit only",
-      "Add task numbering for cleaner output"
-    ],
-    "stages": [
-      { "id": "brief", "label": "Read the app brief" },
-      { "id": "menu", "label": "Build the command menu" },
-      { "id": "add", "label": "Implement task adding" },
-      { "id": "view", "label": "Implement task viewing" },
-      { "id": "loop", "label": "Keep the app running until quit" }
-    ],
-    "awardTitle": "Task Wrangler"
-  },
-  {
-    "id": "proj-6",
-    "name": "FizzBuzz Challenge",
-    "category": "Logic Builders",
-    "description": "Solve the classic FizzBuzz challenge with clean conditional logic.",
-    "instructions": "Print numbers from 1 to 30. For multiples of 3 print Fizz, for multiples of 5 print Buzz, and for both print FizzBuzz.",
-    "xp": 40,
-    "requiredSkillLevel": ["Intermediate", "Advanced"],
-    "difficulty": "Intermediate",
-    "estimatedMinutes": 25,
-    "skills": ["for", "if / elif / else", "% operator"],
-    "goals": [
-      "Use modular arithmetic",
-      "Apply conditional ordering correctly",
-      "Practice a classic logic challenge"
-    ],
-    "steps": [
-      "Loop through numbers 1 to 30",
-      "Check divisibility by 3 and 5",
-      "Handle the combined case first",
-      "Print the correct output for each number"
-    ],
-    "deliverables": [
-      "A complete FizzBuzz solution",
-      "Correct output ordering",
-      "No syntax errors"
-    ],
-    "starterTips": [
-      "Check the both-case before the individual cases",
-      "Use % for divisibility"
-    ],
-    "stages": [
-      { "id": "brief", "label": "Understand the FizzBuzz rules" },
-      { "id": "loop", "label": "Set up the number loop" },
-      { "id": "logic", "label": "Implement all conditions correctly" },
-      { "id": "test", "label": "Verify output for sample numbers" }
-    ],
-    "awardTitle": "Logic Sprinter"
-  },
-  {
-    "id": "proj-7",
-    "name": "File Rename Planner",
-    "category": "Automation",
-    "description": "Plan a small script that renames files using a consistent pattern.",
-    "instructions": "You do not need real files at first. Simulate a list of filenames and write code that outputs their renamed versions using a naming rule.",
-    "xp": 65,
-    "requiredSkillLevel": ["Advanced"],
-    "difficulty": "Advanced",
-    "estimatedMinutes": 70,
-    "skills": ["Lists", "Strings", "Loops", "Formatting"],
-    "goals": [
-      "Practice automation thinking",
-      "Transform strings systematically",
-      "Work through a practical scripting problem"
-    ],
-    "steps": [
-      "Create a list of fake filenames",
-      "Choose a consistent naming pattern",
-      "Loop through the list",
-      "Generate and print the renamed versions",
-      "Keep output readable"
-    ],
-    "deliverables": [
-      "A list of original filenames",
-      "A matching list or output of renamed files",
-      "A clear naming rule"
-    ],
-    "starterTips": [
-      "Start with fake data before touching real files",
-      "This is about thinking like an automator, not filesystem complexity yet"
-    ],
-    "stages": [
-      { "id": "brief", "label": "Choose a rename pattern" },
-      { "id": "data", "label": "Create sample filenames" },
-      { "id": "transform", "label": "Generate renamed versions" },
-      { "id": "report", "label": "Print original and new names clearly" }
-    ],
-    "awardTitle": "Automation Scout"
   },
   {
     "id": "proj-8",
     "name": "Simple Quiz Engine",
     "category": "Games",
-    "description": "Create a mini quiz game with at least three questions and a score counter.",
-    "instructions": "Store a few questions and answers, ask the player each one, and track how many they get right.",
+    "description": "Develop a mini quiz game. It should have at least three questions and a counter to keep scores.",
+    "instructions": "Store the questions and answers, ask the player to answer each question. Use the counter to track how many they get right.",
     "xp": 70,
     "requiredSkillLevel": ["Advanced"],
     "difficulty": "Advanced",
@@ -335,15 +215,15 @@
     "skills": ["Lists", "Dictionaries", "Conditionals", "Loops", "Scoring"],
     "goals": [
       "Build a multi-step terminal app",
-      "Track score through several questions",
+      "Track score throughout different questions",
       "Organize data cleanly"
     ],
     "steps": [
-      "Choose at least 3 questions",
+      "Create at least 3 questions",
       "Store answers in a clean structure",
       "Ask each question one at a time",
       "Check user input against correct answers",
-      "Print a final score summary"
+      "Print a score summary"
     ],
     "deliverables": [
       "A quiz with at least 3 questions",
@@ -351,8 +231,8 @@
       "Final result output"
     ],
     "starterTips": [
-      "You can begin with parallel lists, then upgrade to dictionaries",
-      "Think about lowercase comparison for easier matching"
+      "You can begin with parallel lists, then upgrade the structure to use dictionaries",
+      "Think about including lowercase comparison for easier matching"
     ],
     "stages": [
       { "id": "brief", "label": "Plan the quiz structure" },
@@ -362,87 +242,5 @@
       { "id": "summary", "label": "Show the final result" }
     ],
     "awardTitle": "Quiz Maker"
-  },
-  {
-    "id": "proj-9",
-    "name": "Budget Breakdown Tool",
-    "category": "Data Practice",
-    "description": "Create a small program that totals spending across categories and reports the biggest one.",
-    "instructions": "Use a dictionary where keys are categories and values are amounts. Print the total spend and identify the largest category.",
-    "xp": 65,
-    "requiredSkillLevel": ["Advanced"],
-    "difficulty": "Advanced",
-    "estimatedMinutes": 55,
-    "skills": ["Dictionaries", "Loops", "Numbers", "Comparison"],
-    "goals": [
-      "Practice key-value data structures",
-      "Summarize values across categories",
-      "Extract useful insights from simple data"
-    ],
-    "steps": [
-      "Create a spending dictionary",
-      "Calculate the total of all categories",
-      "Find the category with the largest value",
-      "Print a concise spending report"
-    ],
-    "deliverables": [
-      "A spending dictionary",
-      "Total spend calculation",
-      "Highest spending category output"
-    ],
-    "starterTips": [
-      "Keep categories simple like food, travel, books",
-      "Build the total first, then solve the largest-category part"
-    ],
-    "stages": [
-      { "id": "brief", "label": "Read and understand the brief" },
-      { "id": "data", "label": "Create the category dictionary" },
-      { "id": "total", "label": "Calculate total spend" },
-      { "id": "largest", "label": "Find the largest category" }
-    ],
-    "awardTitle": "Data Analyst"
-  },
-  {
-    "id": "proj-10",
-    "name": "Portfolio Generator",
-    "category": "CLI Apps",
-    "description": "Build a Python-driven project summary tool that prints a mini portfolio in the terminal.",
-    "instructions": "Create a Python script that stores project names, skills, and short descriptions, then prints them in a clean portfolio-style format in the terminal.",
-    "xp": 70,
-    "requiredSkillLevel": ["Advanced"],
-    "difficulty": "Advanced",
-    "estimatedMinutes": 75,
-    "skills": ["Lists", "Dictionaries", "Loops", "Formatting", "Functions"],
-    "goals": [
-      "Represent structured data in Python",
-      "Loop through multiple projects cleanly",
-      "Format output so it feels deliberate and readable",
-      "Build something that resembles a real showcase tool"
-    ],
-    "steps": [
-      "Create a list of project dictionaries",
-      "Give each project a name, description, and list of skills",
-      "Write a function to print one project neatly",
-      "Loop through all projects and print them",
-      "Add a polished heading and section separators"
-    ],
-    "deliverables": [
-      "A script that prints at least three projects",
-      "Each project should include a title and short description",
-      "Each project should show related skills"
-    ],
-    "starterTips": [
-      "A list of dictionaries is a great structure for this",
-      "Try writing one display function and reusing it",
-      "Think of this as preparation for building real portfolio tools later"
-    ],
-    "stages": [
-      { "id": "brief", "label": "Plan the portfolio format" },
-      { "id": "data", "label": "Create the project data structure" },
-      { "id": "display", "label": "Build the display function" },
-      { "id": "loop", "label": "Print all projects cleanly" },
-      { "id": "polish", "label": "Add headings and separators" }
-    ],
-    "awardTitle": "Showcase Builder"
   }
 ]

@@ -2,7 +2,7 @@
   {
     "id": "basics",
     "title": "Basics",
-    "description": "Start with Python fundamentals and the first building blocks of writing code.",
+    "description": "Start with the fundamentals of Python and programming.",
     "unlockThreshold": 0,
     "accentColor": "#6C63FF",
     "keywords": [
@@ -14,7 +14,7 @@
           {
             "id": "print-1",
             "type": "mc",
-            "text": "Which command prints to the console in Python?",
+            "text": "Which keyword prints to the console in Python?",
             "options": ["console.log", "print", "echo", "printf"],
             "correct": 1,
             "xp": 10,
@@ -72,7 +72,7 @@
           {
             "id": "str-1",
             "type": "mc",
-            "text": "What is the correct way to create a string?",
+            "text": "Which of creating a string is correct?",
             "options": ["s = 'hello'", "s = hello", "s = `hello`", "s = (hello)"],
             "correct": 0,
             "xp": 8,
@@ -127,7 +127,7 @@
   {
     "id": "control-flow",
     "title": "Control Flow",
-    "description": "Learn how Python makes decisions and chooses different execution paths.",
+    "description": "Learn control flow with how Python makes decisions.",
     "unlockThreshold": 60,
     "accentColor": "#FF8A65",
     "keywords": [
@@ -139,7 +139,7 @@
           {
             "id": "if-1",
             "type": "mc",
-            "text": "Which keyword starts a conditional block?",
+            "text": "Which keyword starts off a conditional block?",
             "options": ["for", "if", "when", "case"],
             "correct": 1,
             "xp": 10,
@@ -150,7 +150,7 @@
           {
             "id": "if-2",
             "type": "code",
-            "text": "Write an if checking if x equals 5.",
+            "text": "Write an if statement that checks if x equals 5.",
             "prompt": "if x ___ 5:\n    print('yes')",
             "answer": "==",
             "xp": 15,
@@ -168,7 +168,7 @@
           {
             "id": "else-1",
             "type": "mc",
-            "text": "Which keyword runs when an if condition is false?",
+            "text": "Which keyword runs when an if condition is not met(false)?",
             "options": ["elsif", "otherwise", "else", "fallback"],
             "correct": 2,
             "xp": 8,
@@ -179,7 +179,7 @@
           {
             "id": "else-2",
             "type": "code",
-            "text": "Add an else clause to this snippet.",
+            "text": "Add an else statement to this snippet.",
             "prompt": "if x > 10:\n    print('big')\n___:\n    print('small')",
             "answer": "else",
             "xp": 12,
@@ -223,7 +223,7 @@
   {
     "id": "loops",
     "title": "Loops",
-    "description": "Repeat work efficiently using iteration and sequence generation.",
+    "description": "Learn how to use iteration keywords for sequence generation and repeating statements.",
     "unlockThreshold": 60,
     "accentColor": "#00BFA6",
     "keywords": [
@@ -264,7 +264,7 @@
           {
             "id": "while-1",
             "type": "mc",
-            "text": "Which loop runs while a condition holds?",
+            "text": "Which loop runs for as long as a condition holds(indefinite iteration)?",
             "options": ["for", "repeat", "while", "loop"],
             "correct": 2,
             "xp": 9,
@@ -319,7 +319,7 @@
   {
     "id": "functions",
     "title": "Functions",
-    "description": "Package reusable logic with definitions, returns, and smaller expressions.",
+    "description": "Package reusable logic with creating your own functions using these keywords.",
     "unlockThreshold": 60,
     "accentColor": "#AB47BC",
     "keywords": [
@@ -337,7 +337,7 @@
             "xp": 10,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["def", "functions"]
+            "tags": ["functions"]
           },
           {
             "id": "def-2",
@@ -348,12 +348,12 @@
             "xp": 15,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["def", "functions"]
+            "tags": ["functions"]
           },
           {
             "id": "def-3",
             "type": "mc",
-            "text": "Which statement is true about functions?",
+            "text": "Which is the correct statement about functions?",
             "options": [
               "They can return values",
               "They must always print",
@@ -364,7 +364,7 @@
             "xp": 8,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["functions", "def", "return"]
+            "tags": ["functions"]
           }
         ]
       },
@@ -376,7 +376,7 @@
           {
             "id": "return-1",
             "type": "mc",
-            "text": "What does return do inside a function?",
+            "text": "What does the return keyword do in a function?",
             "options": ["Stop function and give back value", "Print value", "Call another function", "Create variable"],
             "correct": 0,
             "xp": 10,
@@ -393,7 +393,7 @@
             "xp": 15,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["return", "functions"]
+            "tags": ["functions"]
           }
         ]
       },
@@ -411,7 +411,7 @@
             "xp": 12,
             "pool": "core",
             "difficulty": "medium",
-            "tags": ["lambda", "functions"]
+            "tags": ["functions"]
           },
           {
             "id": "lambda-2",
@@ -431,14 +431,14 @@
   {
     "id": "data-structures",
     "title": "Data Structures",
-    "description": "Store, organize, and manipulate groups of values in Python.",
+    "description": "Store and manipulate values using data structures in Python.",
     "unlockThreshold": 60,
     "accentColor": "#42A5F5",
     "keywords": [
       {
         "id": "list",
         "name": "list",
-        "description": "Ordered, mutable collection",
+        "description": "AN ordered and mutable collection",
         "exercises": [
           {
             "id": "list-1",
@@ -449,7 +449,7 @@
             "xp": 9,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["list", "collections"]
+            "tags": ["collections"]
           },
           {
             "id": "list-2",
@@ -460,14 +460,14 @@
             "xp": 12,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["list", "append"]
+            "tags": ["list"]
           }
         ]
       },
       {
         "id": "append",
         "name": "append",
-        "description": "List method to add one item at end",
+        "description": "Method to add one item at end of list",
         "exercises": [
           {
             "id": "append-1",
@@ -478,7 +478,7 @@
             "xp": 8,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["append", "list"]
+            "tags": ["list"]
           },
           {
             "id": "append-2",
@@ -489,14 +489,14 @@
             "xp": 10,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["append", "list"]
+            "tags": ["list"]
           }
         ]
       },
       {
         "id": "pop",
         "name": "pop",
-        "description": "List method to remove and return item",
+        "description": "Method to remove and return the last item of a list",
         "exercises": [
           {
             "id": "pop-1",
@@ -523,7 +523,7 @@
             "xp": 12,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["pop", "list"]
+            "tags": ["list"]
           }
         ]
       },
@@ -559,7 +559,7 @@
       {
         "id": "tuple",
         "name": "tuple",
-        "description": "Immutable ordered collection",
+        "description": "An immutable ordered collection",
         "exercises": [
           {
             "id": "tuple-1",
@@ -590,7 +590,7 @@
   {
     "id": "utilities",
     "title": "Utilities",
-    "description": "Use helpful tools that make programs more practical and reusable.",
+    "description": "These are helpful tools that can make coding easier.",
     "unlockThreshold": 60,
     "accentColor": "#FFA726",
     "keywords": [
@@ -608,7 +608,7 @@
             "xp": 10,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["import", "modules"]
+            "tags": ["modules"]
           },
           {
             "id": "import-2",
@@ -619,7 +619,7 @@
             "xp": 12,
             "pool": "core",
             "difficulty": "easy",
-            "tags": ["import", "modules"]
+            "tags": ["modules"]
           }
         ]
       }
