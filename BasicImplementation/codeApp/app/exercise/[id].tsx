@@ -110,8 +110,10 @@ export default function ExercisePage() {
 
   const [exitModalVisible, setExitModalVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const [answerSectionY, setAnswerSectionY] = useState(0);
+  const [questionCardY, setQuestionCardY] = useState(0);
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -163,12 +165,14 @@ export default function ExercisePage() {
     const hideEvent =
       Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
 
-    const showSub = Keyboard.addListener(showEvent, () => {
+    const showSub = Keyboard.addListener(showEvent, (event) => {
       setKeyboardVisible(true);
+      setKeyboardHeight(event.endCoordinates.height);
     });
 
     const hideSub = Keyboard.addListener(hideEvent, () => {
       setKeyboardVisible(false);
+      setKeyboardHeight(0);
     });
 
     return () => {
@@ -237,13 +241,17 @@ export default function ExercisePage() {
 
   //Greater mobile screen support allowing for the screen to scroll down so that they mobile keyboard doesn't hide the answer boxes
   const scrollToAnswerArea = () => {
-    setTimeout(() => {
-      if (!scrollRef.current) return;
-      scrollRef.current.scrollTo({
-        y: Math.max(answerSectionY - 120, 0),
-        animated: true,
-      });
-    }, 120);
+    setTimeout(
+      () => {
+        if (!scrollRef.current) return;
+
+        scrollRef.current.scrollTo({
+          y: Math.max(questionCardY + answerSectionY - 24, 0),
+          animated: true,
+        });
+      },
+      Platform.OS === "android" ? 450 : 120,
+    );
   };
 
   const handleAnswerAreaLayout = (event: LayoutChangeEvent) => {
@@ -668,8 +676,8 @@ export default function ExercisePage() {
       <SafeAreaView style={styles.safe}>
         <KeyboardAvoidingView
           style={styles.safe}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
+          behavior="padding"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 8 : topPad}
         >
           <View style={styles.container}>
             <View style={styles.topRow}>
@@ -687,7 +695,9 @@ export default function ExercisePage() {
               style={styles.scrollArea}
               contentContainerStyle={[
                 styles.scrollContent,
-                { paddingBottom: keyboardVisible ? 44 : 130 },
+                {
+                  paddingBottom: keyboardVisible ? keyboardHeight + 260 : 130,
+                },
               ]}
               keyboardShouldPersistTaps="handled"
               keyboardDismissMode="interactive"
@@ -758,6 +768,9 @@ export default function ExercisePage() {
               </View>
 
               <Animated.View
+                onLayout={(event) => {
+                  setQuestionCardY(event.nativeEvent.layout.y);
+                }}
                 style={[
                   styles.card,
                   {
@@ -983,7 +996,7 @@ export default function ExercisePage() {
                   <Text style={styles.feedbackMetaText}>
                     {reviewMode
                       ? "Review"
-                      : `${sessionQuestionXP + (q?.xp ?? 0)} potential`}
+                      : `${sessionQuestionXP + (q?.xp ?? 0)} XP`}
                   </Text>
                 </View>
               </Animated.View>

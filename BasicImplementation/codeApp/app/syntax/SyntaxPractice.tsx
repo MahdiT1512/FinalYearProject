@@ -9,6 +9,9 @@ import {
   Keyboard,
   Modal,
   ScrollView,
+  Platform,
+  KeyboardAvoidingView,
+  LayoutChangeEvent,
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { XPContext } from "../context/XPContext";
@@ -309,12 +312,17 @@ export default function SyntaxPractice() {
     useState<string>("");
 
   const [exitModalVisible, setExitModalVisible] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [questionCardY, setQuestionCardY] = useState(0);
+  const [answerSectionY, setAnswerSectionY] = useState(0);
 
   const shakeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const confettiScale = useRef(new Animated.Value(0)).current;
   const feedbackTranslateY = useRef(new Animated.Value(80)).current;
   const feedbackOpacity = useRef(new Animated.Value(0)).current;
+  const scrollRef = useRef<ScrollView | null>(null);
 
   const didBuildPlanRef = useRef(false);
   const planRouteKeyRef = useRef("");
@@ -327,6 +335,28 @@ export default function SyntaxPractice() {
   const routePlanKey = `${keywordId ?? ""}|${categoryId ?? ""}|${selectedMode}|${
     exerciseIndexParam ?? "0"
   }`;
+
+  useEffect(() => {
+    const showEvent =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const showSub = Keyboard.addListener(showEvent, (event) => {
+      setKeyboardVisible(true);
+      setKeyboardHeight(event.endCoordinates.height);
+    });
+
+    const hideSub = Keyboard.addListener(hideEvent, () => {
+      setKeyboardVisible(false);
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (planRouteKeyRef.current !== routePlanKey) {
@@ -762,276 +792,310 @@ export default function SyntaxPractice() {
     return [styles.option, styles.dimmedOption];
   };
 
+  const scrollToAnswerArea = () => {
+    setTimeout(
+      () => {
+        if (!scrollRef.current) return;
+
+        scrollRef.current.scrollTo({
+          y: Math.max(questionCardY + answerSectionY - 24, 0),
+          animated: true,
+        });
+      },
+      Platform.OS === "android" ? 450 : 120,
+    );
+  };
+
+  const handleAnswerAreaLayout = (event: LayoutChangeEvent) => {
+    setAnswerSectionY(event.nativeEvent.layout.y);
+  };
   return (
     <>
       <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior="padding"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
         >
-          <Pressable
-            style={styles.backButton}
-            onPress={() => setExitModalVisible(true)}
-          >
-            <Text style={styles.backText}>✕</Text>
-          </Pressable>
-
-          <View style={styles.topRow}>
-            <XPBar />
-          </View>
-
-          <View style={styles.heroCard}>
-            <Text style={styles.heroEyebrow}>Syntax Practice</Text>
-            <Text style={styles.title}>{keyword.name}</Text>
-            <Text style={styles.subtitle}>{keyword.description}</Text>
-
-            <View style={styles.heroMetaRow}>
-              <View style={styles.metaPill}>
-                <Text style={styles.metaLabel}>Category</Text>
-                <Text style={styles.metaValue}>{category.title}</Text>
-              </View>
-
-              <View style={styles.metaPill}>
-                <Text style={styles.metaLabel}>Mastery</Text>
-                <Text style={styles.metaValue}>{keyword.mastery}%</Text>
-              </View>
-            </View>
-
-            <View style={styles.heroStatsRow}>
-              <View style={styles.heroStatCard}>
-                <Text style={styles.heroStatLabel}>Streak</Text>
-                <Text style={styles.heroStatValue}>🔥 {streak}</Text>
-              </View>
-
-              <View style={styles.heroStatCard}>
-                <Text style={styles.heroStatLabel}>Session XP</Text>
-                <Text style={styles.heroStatValue}>⭐ {sessionXP}</Text>
-              </View>
-
-              <View style={styles.heroStatCard}>
-                <Text style={styles.heroStatLabel}>Accuracy</Text>
-                <Text style={styles.heroStatValue}>{sessionAccuracy}%</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.progressCard}>
-            <View style={styles.progressHeaderRow}>
-              <Text style={styles.progressTitle}>Session Progress</Text>
-              <Text style={styles.progressValue}>
-                {sessionIndex + 1}/{sessionPlan.length}
-              </Text>
-            </View>
-
-            <View style={styles.progressTrack}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { width: `${sessionProgressPercent}%` },
-                ]}
-              />
-            </View>
-
-            <View style={styles.progressFooterRow}>
-              <Text style={styles.progressHint}>
-                {currentKeywordPosition + 1}/{categoryOrderedKeywords.length} in{" "}
-                {category.title}
-              </Text>
-              <Text style={styles.progressHint}>
-                {Math.max(0, sessionPlan.length - (sessionIndex + 1))} left
-              </Text>
-            </View>
-          </View>
-
-          <Animated.View
-            style={[
-              styles.card,
+          <ScrollView
+            ref={scrollRef}
+            contentContainerStyle={[
+              styles.scrollContent,
               {
-                transform: [{ translateX: shakeAnim }, { scale: scaleAnim }],
+                paddingBottom: keyboardVisible ? keyboardHeight + 260 : 160,
               },
             ]}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive"
+            showsVerticalScrollIndicator={false}
           >
-            <Text style={styles.questionText}>{exercise.text}</Text>
+            <Pressable
+              style={styles.backButton}
+              onPress={() => setExitModalVisible(true)}
+            >
+              <Text style={styles.backText}>✕</Text>
+            </Pressable>
 
-            {exercise.type === "mc" &&
-              exercise.options.map((option, index) => (
-                <Pressable
-                  key={`${currentItem.sessionId}-option-${index}`}
-                  onPress={() => handleMCQPress(index)}
-                  disabled={locked}
-                  style={({ pressed }) => [
-                    optionStyle(index),
-                    pressed && !locked && styles.pressedOption,
+            <View style={styles.topRow}>
+              <XPBar />
+            </View>
+
+            <View style={styles.heroCard}>
+              <Text style={styles.heroEyebrow}>Syntax Practice</Text>
+              <Text style={styles.title}>{keyword.name}</Text>
+              <Text style={styles.subtitle}>{keyword.description}</Text>
+
+              <View style={styles.heroMetaRow}>
+                <View style={styles.metaPill}>
+                  <Text style={styles.metaLabel}>Category</Text>
+                  <Text style={styles.metaValue}>{category.title}</Text>
+                </View>
+
+                <View style={styles.metaPill}>
+                  <Text style={styles.metaLabel}>Mastery</Text>
+                  <Text style={styles.metaValue}>{keyword.mastery}%</Text>
+                </View>
+              </View>
+
+              <View style={styles.heroStatsRow}>
+                <View style={styles.heroStatCard}>
+                  <Text style={styles.heroStatLabel}>Streak</Text>
+                  <Text style={styles.heroStatValue}>🔥 {streak}</Text>
+                </View>
+
+                <View style={styles.heroStatCard}>
+                  <Text style={styles.heroStatLabel}>Session XP</Text>
+                  <Text style={styles.heroStatValue}>⭐ {sessionXP}</Text>
+                </View>
+
+                <View style={styles.heroStatCard}>
+                  <Text style={styles.heroStatLabel}>Accuracy</Text>
+                  <Text style={styles.heroStatValue}>{sessionAccuracy}%</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.progressCard}>
+              <View style={styles.progressHeaderRow}>
+                <Text style={styles.progressTitle}>Session Progress</Text>
+                <Text style={styles.progressValue}>
+                  {sessionIndex + 1}/{sessionPlan.length}
+                </Text>
+              </View>
+
+              <View style={styles.progressTrack}>
+                <View
+                  style={[
+                    styles.progressFill,
+                    { width: `${sessionProgressPercent}%` },
                   ]}
-                >
-                  <Text style={styles.optionText}>{option}</Text>
-                </Pressable>
-              ))}
-
-            {isCodeLikeExercise(exercise) && (
-              <>
-                {exercise.prompt ? (
-                  <View style={styles.promptBox}>
-                    <Text style={styles.promptText}>{exercise.prompt}</Text>
-                  </View>
-                ) : null}
-
-                {getTraceHint(exercise) ? (
-                  <Text style={styles.helperText}>
-                    {getTraceHint(exercise)}
-                  </Text>
-                ) : null}
-
-                <TextInput
-                  style={styles.input}
-                  value={codeAnswer}
-                  onChangeText={setCodeAnswer}
-                  editable={!locked}
-                  placeholder="Type your answer here"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  onSubmitEditing={handleCodeSubmit}
-                  returnKeyType="done"
-                  multiline
                 />
+              </View>
 
-                <Pressable
-                  onPress={handleCodeSubmit}
-                  disabled={locked}
-                  style={({ pressed }) => [
-                    styles.submitBtn,
-                    pressed && !locked && styles.pressedOption,
-                  ]}
-                >
-                  <Text style={styles.submitText}>Submit</Text>
-                </Pressable>
-              </>
-            )}
+              <View style={styles.progressFooterRow}>
+                <Text style={styles.progressHint}>
+                  {currentKeywordPosition + 1}/{categoryOrderedKeywords.length}{" "}
+                  in {category.title}
+                </Text>
+                <Text style={styles.progressHint}>
+                  {Math.max(0, sessionPlan.length - (sessionIndex + 1))} left
+                </Text>
+              </View>
+            </View>
 
-            {isTraceExercise(exercise) && (
-              <>
-                {exercise.prompt ? (
-                  <View style={styles.promptBox}>
-                    <Text style={styles.promptText}>{exercise.prompt}</Text>
-                  </View>
-                ) : null}
+            <Animated.View
+              onLayout={(event) => {
+                setQuestionCardY(event.nativeEvent.layout.y);
+              }}
+              style={[
+                styles.card,
+                {
+                  transform: [{ translateX: shakeAnim }, { scale: scaleAnim }],
+                },
+              ]}
+            >
+              <Text style={styles.questionText}>{exercise.text}</Text>
 
-                {getTraceHint(exercise) ? (
-                  <Text style={styles.helperText}>
-                    {getTraceHint(exercise)}
-                  </Text>
-                ) : null}
+              {exercise.type === "mc" &&
+                exercise.options.map((option, index) => (
+                  <Pressable
+                    key={`${currentItem.sessionId}-option-${index}`}
+                    onPress={() => handleMCQPress(index)}
+                    disabled={locked}
+                    style={({ pressed }) => [
+                      optionStyle(index),
+                      pressed && !locked && styles.pressedOption,
+                    ]}
+                  >
+                    <Text style={styles.optionText}>{option}</Text>
+                  </Pressable>
+                ))}
 
-                <View style={styles.traceTable}>
-                  <View style={styles.traceRow}>
-                    {exercise.columns.map((column, columnIndex) => (
+              {isCodeLikeExercise(exercise) && (
+                <View onLayout={handleAnswerAreaLayout}>
+                  {exercise.prompt ? (
+                    <View style={styles.promptBox}>
+                      <Text style={styles.promptText}>{exercise.prompt}</Text>
+                    </View>
+                  ) : null}
+
+                  {getTraceHint(exercise) ? (
+                    <Text style={styles.helperText}>
+                      {getTraceHint(exercise)}
+                    </Text>
+                  ) : null}
+
+                  <TextInput
+                    style={styles.input}
+                    value={codeAnswer}
+                    onChangeText={setCodeAnswer}
+                    editable={!locked}
+                    placeholder="Type your answer here"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    onSubmitEditing={handleCodeSubmit}
+                    returnKeyType="done"
+                    multiline
+                    onFocus={scrollToAnswerArea}
+                  />
+
+                  <Pressable
+                    onPress={handleCodeSubmit}
+                    disabled={locked}
+                    style={({ pressed }) => [
+                      styles.submitBtn,
+                      pressed && !locked && styles.pressedOption,
+                    ]}
+                  >
+                    <Text style={styles.submitText}>Submit</Text>
+                  </Pressable>
+                </View>
+              )}
+
+              {isTraceExercise(exercise) && (
+                <>
+                  {exercise.prompt ? (
+                    <View style={styles.promptBox}>
+                      <Text style={styles.promptText}>{exercise.prompt}</Text>
+                    </View>
+                  ) : null}
+
+                  {getTraceHint(exercise) ? (
+                    <Text style={styles.helperText}>
+                      {getTraceHint(exercise)}
+                    </Text>
+                  ) : null}
+
+                  <View style={styles.traceTable}>
+                    <View style={styles.traceRow}>
+                      {exercise.columns.map((column, columnIndex) => (
+                        <View
+                          key={`${currentItem.sessionId}-header-${columnIndex}`}
+                          style={[styles.traceCell, styles.traceHeader]}
+                        >
+                          <Text style={styles.traceHeaderText}>{column}</Text>
+                        </View>
+                      ))}
+                    </View>
+
+                    {exercise.answer.map((row, rowIndex) => (
                       <View
-                        key={`${currentItem.sessionId}-header-${columnIndex}`}
-                        style={[styles.traceCell, styles.traceHeader]}
+                        key={`${currentItem.sessionId}-row-${rowIndex}`}
+                        style={styles.traceRow}
                       >
-                        <Text style={styles.traceHeaderText}>{column}</Text>
+                        {row.map((_, columnIndex) => (
+                          <TextInput
+                            key={`${currentItem.sessionId}-cell-${rowIndex}-${columnIndex}`}
+                            style={styles.traceCellInput}
+                            value={traceInputs[rowIndex]?.[columnIndex] ?? ""}
+                            onChangeText={(text) => {
+                              setTraceInputs((prev) => {
+                                const next = prev.map((item) => [...item]);
+
+                                if (!next[rowIndex]) {
+                                  next[rowIndex] = [];
+                                }
+
+                                next[rowIndex][columnIndex] = text;
+                                return next;
+                              });
+                            }}
+                            editable={!locked}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            returnKeyType="done"
+                          />
+                        ))}
                       </View>
                     ))}
                   </View>
 
-                  {exercise.answer.map((row, rowIndex) => (
-                    <View
-                      key={`${currentItem.sessionId}-row-${rowIndex}`}
-                      style={styles.traceRow}
-                    >
-                      {row.map((_, columnIndex) => (
-                        <TextInput
-                          key={`${currentItem.sessionId}-cell-${rowIndex}-${columnIndex}`}
-                          style={styles.traceCellInput}
-                          value={traceInputs[rowIndex]?.[columnIndex] ?? ""}
-                          onChangeText={(text) => {
-                            setTraceInputs((prev) => {
-                              const next = prev.map((item) => [...item]);
+                  <Pressable
+                    onPress={handleTraceSubmit}
+                    disabled={locked}
+                    style={({ pressed }) => [
+                      styles.submitBtn,
+                      pressed && !locked && styles.pressedOption,
+                    ]}
+                  >
+                    <Text style={styles.submitText}>Submit Trace</Text>
+                  </Pressable>
+                </>
+              )}
+            </Animated.View>
 
-                              if (!next[rowIndex]) {
-                                next[rowIndex] = [];
-                              }
+            <View style={styles.bottomSpacer} />
+          </ScrollView>
 
-                              next[rowIndex][columnIndex] = text;
-                              return next;
-                            });
-                          }}
-                          editable={!locked}
-                          autoCapitalize="none"
-                          autoCorrect={false}
-                          returnKeyType="done"
-                        />
-                      ))}
-                    </View>
-                  ))}
-                </View>
-
-                <Pressable
-                  onPress={handleTraceSubmit}
-                  disabled={locked}
-                  style={({ pressed }) => [
-                    styles.submitBtn,
-                    pressed && !locked && styles.pressedOption,
-                  ]}
-                >
-                  <Text style={styles.submitText}>Submit Trace</Text>
-                </Pressable>
-              </>
-            )}
+          <Animated.View
+            pointerEvents="none"
+            style={[
+              styles.confetti,
+              { transform: [{ scale: confettiScale }], opacity: confettiScale },
+            ]}
+          >
+            <Text style={styles.confettiText}>🎉</Text>
           </Animated.View>
 
-          <View style={styles.bottomSpacer} />
-        </ScrollView>
-
-        <Animated.View
-          pointerEvents="none"
-          style={[
-            styles.confetti,
-            { transform: [{ scale: confettiScale }], opacity: confettiScale },
-          ]}
-        >
-          <Text style={styles.confettiText}>🎉</Text>
-        </Animated.View>
-
-        <Animated.View
-          style={[
-            styles.feedbackBar,
-            feedbackTone === "correct"
-              ? styles.feedbackBarCorrect
-              : feedbackTone === "wrong"
-                ? styles.feedbackBarWrong
-                : styles.feedbackBarIdle,
-            {
-              opacity: feedbackOpacity,
-              transform: [{ translateY: feedbackTranslateY }],
-            },
-          ]}
-        >
-          <View style={styles.feedbackTextWrap}>
-            <Text style={styles.feedbackTitle}>
-              {feedbackTone === "correct"
-                ? "Correct"
+          <Animated.View
+            style={[
+              styles.feedbackBar,
+              feedbackTone === "correct"
+                ? styles.feedbackBarCorrect
                 : feedbackTone === "wrong"
-                  ? "Try again"
-                  : "Ready"}
-            </Text>
-            <Text style={styles.feedbackText}>
-              {feedback ?? "Answer to see feedback."}
-            </Text>
-          </View>
-
-          {feedbackTone === "correct" ? (
-            <View style={styles.feedbackRewardWrap}>
-              <Text style={styles.feedbackRewardText}>
-                +{lastEarnedXP + lastComboBonus} XP
+                  ? styles.feedbackBarWrong
+                  : styles.feedbackBarIdle,
+              {
+                opacity: feedbackOpacity,
+                transform: [{ translateY: feedbackTranslateY }],
+              },
+            ]}
+          >
+            <View style={styles.feedbackTextWrap}>
+              <Text style={styles.feedbackTitle}>
+                {feedbackTone === "correct"
+                  ? "Correct"
+                  : feedbackTone === "wrong"
+                    ? "Try again"
+                    : "Ready"}
               </Text>
-              {lastComboBonus > 0 ? (
-                <Text style={styles.comboText}>Combo +{lastComboBonus}</Text>
-              ) : null}
+              <Text style={styles.feedbackText}>
+                {feedback ?? "Answer to see feedback."}
+              </Text>
             </View>
-          ) : null}
-        </Animated.View>
+
+            {feedbackTone === "correct" ? (
+              <View style={styles.feedbackRewardWrap}>
+                <Text style={styles.feedbackRewardText}>
+                  +{lastEarnedXP + lastComboBonus} XP
+                </Text>
+                {lastComboBonus > 0 ? (
+                  <Text style={styles.comboText}>Combo +{lastComboBonus}</Text>
+                ) : null}
+              </View>
+            ) : null}
+          </Animated.View>
+        </KeyboardAvoidingView>
       </View>
 
       <Modal visible={exitModalVisible} transparent animationType="fade">
