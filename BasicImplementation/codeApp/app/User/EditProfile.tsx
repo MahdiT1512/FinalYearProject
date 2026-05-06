@@ -263,7 +263,6 @@ export default function EditProfile() {
             : "3–20 characters. Letters, numbers, underscores."}
         </Text>
 
-        <Text style={styles.label}>Country</Text>
         <CountryPickerField value={country} onChange={setCountry} />
         <Text style={[styles.helperText, !!countryError && styles.helperError]}>
           {normalizedCountry

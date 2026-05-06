@@ -333,7 +333,6 @@ export default function LoginScreen() {
                 </View>
 
                 <View style={styles.inputWrap}>
-                  <Text style={styles.inputLabel}>Country</Text>
                   <CountryPickerField value={country} onChange={setCountry} />
                 </View>
 
